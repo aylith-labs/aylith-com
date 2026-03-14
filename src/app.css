@@ -36,6 +36,14 @@
 	--color-warm-400: #b0a08a;
 }
 
+html {
+	scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	html { scroll-behavior: auto; }
+}
+
 body {
 	@apply bg-white text-surface-900 dark:bg-surface-950 dark:text-warm-200;
 	font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
@@ -70,6 +78,34 @@ h1, h2, h3, h4, h5, h6 {
 }
 .btn-press:hover { transform: translateY(-2px); }
 .btn-press:active { transform: translateY(1px); transition-duration: 0.08s; }
+
+/* List row accent bar */
+.list-row {
+	position: relative;
+}
+.list-row::before {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 12px;
+	bottom: 12px;
+	width: 3px;
+	border-radius: 2px;
+	background: var(--row-accent, #8b5cf6);
+	transform: scaleY(0);
+	transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.list-row:hover::before {
+	transform: scaleY(1);
+}
+
+/* Theme toggle rotation */
+.theme-spin {
+	transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.theme-spin:active {
+	transform: rotate(180deg);
+}
 
 @media (prefers-reduced-motion: reduce) {
 	*, *::before, *::after {

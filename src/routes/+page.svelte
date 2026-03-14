@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { reveal } from '$lib/actions/reveal';
 	import { tilt } from '$lib/actions/tilt';
+	import { draw } from '$lib/actions/draw';
 	import type { Project } from '$lib/types/project';
 
 	let { data } = $props();
@@ -94,7 +95,7 @@
 					></div>
 
 					<div class="relative">
-						<svg class="mb-6 size-8" style="color: {project.gradientFrom}" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+						<svg class="mb-6 size-8" style="color: {project.gradientFrom}" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" use:draw={{ delay: i * 150 + 200 }}>
 							<path stroke-linecap="round" stroke-linejoin="round" d={project.iconPath} />
 						</svg>
 
@@ -121,7 +122,8 @@
 				{#each rest as project}
 					<a
 						href="/projects/{project.slug}"
-						class="group flex items-center gap-5 px-6 py-5 transition-colors first:rounded-t-2xl last:rounded-b-2xl hover:bg-surface-50 dark:hover:bg-surface-800/40"
+						class="list-row group flex items-center gap-5 px-6 py-5 transition-colors first:rounded-t-2xl last:rounded-b-2xl hover:bg-surface-50 dark:hover:bg-surface-800/40"
+						style="--row-accent: {project.gradientFrom}"
 					>
 						<svg class="size-5 shrink-0" style="color: {project.gradientFrom}" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
 							<path stroke-linecap="round" stroke-linejoin="round" d={project.iconPath} />
