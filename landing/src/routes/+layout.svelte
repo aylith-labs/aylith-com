@@ -1,16 +1,20 @@
 <script lang="ts">
 	import '../app.css';
 	import { browser } from '$app/environment';
+	import { onMount } from 'svelte';
 	import Navbar from '$lib/components/layout/Navbar.svelte';
 	import Footer from '$lib/components/layout/Footer.svelte';
+	import { motion } from '$lib/stores/motion.svelte';
 
 	let { children } = $props();
+
+	onMount(() => motion.init());
 
 	if (browser) {
 		// Console easter egg
 		console.log(
-			'%c Aylith ',
-			'background: #1c1a16; color: #f8f7f4; font-family: Newsreader, serif; font-size: 24px; font-weight: 500; padding: 8px 16px; letter-spacing: -0.01em;'
+			'%c A Y L I T H ',
+			'background: #1c1a16; color: #f8f7f4; font-family: "Space Grotesk", system-ui, sans-serif; font-size: 24px; font-weight: 600; padding: 8px 16px; letter-spacing: 0.34em;'
 		);
 		console.log(
 			'%cA lab that turns demand signals into shipped AI tools.\n%cgithub.com/aylith-labs',
@@ -43,7 +47,7 @@
 <svelte:head>
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
-	<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+	<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
 </svelte:head>
 
 <div class="flex min-h-screen flex-col">

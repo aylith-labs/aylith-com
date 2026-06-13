@@ -1,5 +1,10 @@
 <script lang="ts">
 	import { projectMeta } from '$lib/data/projects';
+	import Mark from '$lib/components/brand/Mark.svelte';
+	import Wordmark from '$lib/components/brand/Wordmark.svelte';
+	import { getMonthlyVariant } from '$lib/brand/rotation';
+
+	const variant = getMonthlyVariant();
 </script>
 
 <footer class="mt-auto border-t border-surface-200/60 bg-surface-50 dark:border-surface-800/40 dark:bg-surface-900/30">
@@ -7,14 +12,8 @@
 		<div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
 			<div>
 				<div class="flex items-center gap-2 text-surface-900 dark:text-warm-50">
-					<svg viewBox="0 0 64 64" class="size-[20px] shrink-0" stroke="currentColor" stroke-width="5" stroke-linecap="square" fill="none" aria-hidden="true">
-						<line x1="14" y1="14" x2="14" y2="50"/>
-						<line x1="22" y1="14" x2="22" y2="50"/>
-						<line x1="30" y1="14" x2="30" y2="50"/>
-						<line x1="38" y1="14" x2="38" y2="50"/>
-						<line x1="10" y1="50" x2="44" y2="14" class="stroke-accent-500"/>
-					</svg>
-					<span class="font-(family-name:--font-wordmark) text-base font-medium leading-none tracking-[-0.01em]">Aylith</span>
+					<Mark class="h-[20px] w-auto shrink-0" />
+					<Wordmark {variant} size="footer" />
 				</div>
 				<p class="mt-3 max-w-xs text-sm text-surface-500 dark:text-warm-400">
 					A lab that turns demand signals into shipped AI tools. Days, not quarters.
@@ -40,6 +39,11 @@
 					<li>
 						<a href="/" class="text-sm text-surface-600 transition-colors hover:text-accent-600 dark:text-warm-300 dark:hover:text-accent-400">
 							About
+						</a>
+					</li>
+					<li>
+						<a href="/design" class="text-sm text-surface-600 transition-colors hover:text-accent-600 dark:text-warm-300 dark:hover:text-accent-400">
+							Design system
 						</a>
 					</li>
 					<li>

@@ -30,9 +30,10 @@ colors:
   warm-400:           "#b0a08a"
 typography:
   wordmark:
-    fontFamily: "Newsreader, 'Iowan Old Style', Georgia, serif"
-    fontWeight: 500
-    letterSpacing: "-0.01em"
+    fontFamily: "Space Grotesk, system-ui, sans-serif"
+    fontWeight: 600
+    textTransform: uppercase
+    letterSpacing: "0.34em"
   display:
     fontFamily: "Space Grotesk, system-ui, sans-serif"
     fontSize: "clamp(2.5rem, 6vw, 4.5rem)"
@@ -155,15 +156,15 @@ A two-anchor palette: a single warm-neutral surface ramp and a single copper acc
 
 ## 3. Typography
 
-**Wordmark Font:** Newsreader (with Iowan Old Style, Georgia fallback)
+**Wordmark Font:** Space Grotesk, uppercase, wide-tracked (the spaced `A Y L I T H` lockup)
 **Display / Headline Font:** Space Grotesk (with system-ui fallback)
 **Body Font:** DM Sans (with system-ui fallback)
 
-**Character:** A three-family system in which each face has exactly one job. Newsreader sets the wordmark and only the wordmark — a serif with the cadence of a literary review, mid-weight, slightly tightened tracking. Space Grotesk handles every other headline; it carries the precision the lab voice requires without slipping into tech-monospace cliché. DM Sans handles all body copy; it's warm enough to sit on cream paper, geometric enough to disappear into the read.
+**Character:** A two-family system. Space Grotesk does double duty: as the wordmark it is set in all-caps with the six letters spaced a third of an em apart, an editorial-meets-sci-fi masthead in the spirit of the spaced `A L I E N` poster; as the display/headline face it runs at its normal tracking. DM Sans handles all body copy; it's warm enough to sit on cream paper, geometric enough to disappear into the read. (Newsreader was retired from the system when the wordmark moved to the spaced caps lockup.)
 
 ### Hierarchy
 
-- **Wordmark** (`Newsreader`, 500, tracking -0.01em): The name "aylith." Appears in the navbar and footer. Never substituted, never reset to display weight, never animated. The closest thing the system has to a sacred element.
+- **Wordmark** (`Space Grotesk`, 600 nav/footer, 500 hero; uppercase, letters spaced one-em apart as `A Y L I T H`): The name, set as a wide-tracked all-caps lockup in the spirit of the spaced `A L I E N` masthead. Appears in the navbar, footer, and as the large hero masthead. Carries the monthly letter-highlight animation (see Sacred Wordmark Rule). The closest thing the system has to a sacred element.
 - **Display** (`Space Grotesk`, 700, `clamp(2.5rem, 6vw, 4.5rem)`, line-height 1.05, tracking -0.02em): Hero headline only. One per page maximum.
 - **Headline** (`Space Grotesk`, 700, 1.5rem, line-height 1.2): Section starts. Card titles. The "h2-class" of the page.
 - **Title** (`Space Grotesk`, 700, 1rem): Subsection labels, project names inside cards.
@@ -173,9 +174,9 @@ A two-anchor palette: a single warm-neutral surface ramp and a single copper acc
 
 ### Named Rules
 
-**The One-Face-One-Job Rule.** Newsreader is for the wordmark. Space Grotesk is for headings. DM Sans is for body. Crossing the lanes — Newsreader on a heading, Space Grotesk in body copy — looks like a mistake even when it isn't. Don't.
+**The One-Face-One-Job Rule.** Space Grotesk does two jobs and the two are kept visually distinct: the wordmark is always uppercase and wide-tracked (`A Y L I T H`); headlines are always sentence/title case at normal tracking. DM Sans is for body. Don't set a headline in spaced caps (it reads as a second wordmark) and don't set body copy in Space Grotesk.
 
-**The Sacred Wordmark Rule.** The wordmark is set in Newsreader 500 with tracking -0.01em. Never recolor it for theming beyond a stroke inversion. Never animate it. Don't pair it with an icon graphic that competes for the same visual weight; the tally-mark is its own ID and lives separately.
+**The Sacred Wordmark Rule.** The wordmark is the six letters `A Y L I T H` in Space Grotesk, uppercase, spaced ~0.34em apart, ink-colored with the lone copper accent supplied by the highlight animation. Each letter is its own element; the lockup carries `aria-label="Aylith"` so assistive tech reads the name, not the letters. The wordmark IS animated — by exactly one effect at a time, drawn from the 12-variant letter-highlight set, which rotates monthly (`getMonthlyVariant()`, January = variant 1 … December = 12). Variants live in `Wordmark.svelte`; each ignites copper over ink and settles back to a static ink resting state. Rules that still hold: copper is the only accent the animation may use (One Accent Rule applies to motion too); the animation plays once on load/in-view and replays on hover, never loops in the navbar; under `prefers-reduced-motion: reduce` the wordmark holds its static ink state and does not animate. The six-stroke mark (six strokes climbing past a copper signal diagonal, with a copper AI spark in the top-left: a tally of shipped work that outpaces its signal) is the wordmark's companion ID, not a competitor — it pairs with the lockup but never out-weights it. The spark and the diagonal share the single copper accent. Its full rationale lives on the live design system at `/design`.
 
 **The No-Aspirational-Copy Rule.** Past and present tense, never future. "Built" not "will build." "Ships" not "will ship." A future-tense heading is the tell that the work isn't done yet; the typography spec carries the strategic line.
 
@@ -263,5 +264,5 @@ A horizontal list-item with the hover-revealed 3px copper accent bar (`list-row:
 - **Don't** ship a button without explicit `:hover`, `:focus-visible`, and `:active` states. Half-finished interactive components are how the system loses its quiet confidence.
 - **Don't** add a second accent color "for variety." The One Accent Rule is load-bearing — adding a second color collapses the whole system into generic-SaaS territory.
 - **Don't** write headings in future tense. "Coming soon." "Get started today." Both are the tell that the work isn't done.
-- **Don't** animate the tally-mark logo. It has one job: be recognizable. Animating it dilutes that job.
+- **Don't** add a second motion accent to the wordmark animation. The 12 highlight variants all ignite copper over ink; introducing a second color (or animating the six-stroke mark with its own competing effect) breaks the One Accent Rule. The mark stays static; the wordmark carries the motion.
 - **Don't** use em dashes in any user-facing copy. Aylith's voice uses commas, periods, semicolons, parentheses. Em dashes are out of brand by decree.

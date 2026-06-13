@@ -2,7 +2,12 @@
 	import { reveal } from '$lib/actions/reveal';
 	import { tilt } from '$lib/actions/tilt';
 	import { draw } from '$lib/actions/draw';
+	import Mark from '$lib/components/brand/Mark.svelte';
+	import Wordmark from '$lib/components/brand/Wordmark.svelte';
+	import { getMonthlyVariant } from '$lib/brand/rotation';
 	import type { Project } from '$lib/types/project';
+
+	const wordmarkVariant = getMonthlyVariant();
 
 	let { data } = $props();
 	let projects: Project[] = $derived(data.projects);
@@ -29,7 +34,12 @@
 <section class="relative">
 	<div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-32 lg:px-8 lg:py-44">
 		<div class="max-w-3xl">
-			<h1 class="animate-fade-in-up text-5xl font-bold leading-[1.08] tracking-tight text-surface-900 sm:text-6xl lg:text-7xl dark:text-warm-50">
+			<div class="animate-fade-in-up mb-10 flex items-center gap-4 text-surface-900 dark:text-warm-50">
+				<Mark class="h-11 w-auto shrink-0 sm:h-14" />
+				<Wordmark variant={wordmarkVariant} size="hero" />
+			</div>
+
+			<h1 class="animate-fade-in-up text-5xl font-bold leading-[1.08] tracking-tight text-surface-900 sm:text-6xl lg:text-7xl dark:text-warm-50" style="animation-delay: 0.05s">
 				Read the signal.<br />
 				Build the tool.<br />
 				Ship in days.

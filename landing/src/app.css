@@ -34,9 +34,6 @@
 	--color-warm-200: #e8e0d4;
 	--color-warm-300: #d4c8b8;
 	--color-warm-400: #b0a08a;
-
-	/* Brand wordmark face */
-	--font-wordmark: 'Newsreader', 'Iowan Old Style', Georgia, serif;
 }
 
 html {
@@ -110,8 +107,22 @@ h1, h2, h3, h4, h5, h6 {
 	transform: rotate(180deg);
 }
 
+/* Motion gating is driven by html[data-motion] (set before paint in app.html and kept
+   current by the motion store), so the design system can override the system setting for
+   preview. The media query only governs the no-JS / pre-script case, where the attribute
+   is still absent. */
+[data-motion='reduced'] *,
+[data-motion='reduced'] *::before,
+[data-motion='reduced'] *::after {
+	animation-duration: 0.01ms !important;
+	animation-iteration-count: 1 !important;
+	transition-duration: 0.01ms !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
-	*, *::before, *::after {
+	html:not([data-motion]) *,
+	html:not([data-motion]) *::before,
+	html:not([data-motion]) *::after {
 		animation-duration: 0.01ms !important;
 		animation-iteration-count: 1 !important;
 		transition-duration: 0.01ms !important;
