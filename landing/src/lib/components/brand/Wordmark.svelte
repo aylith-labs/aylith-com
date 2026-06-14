@@ -4,7 +4,12 @@
 
 	type Size = 'nav' | 'footer' | 'gallery' | 'hero';
 
-	let { variant = 1, size = 'nav' }: { variant?: number; size?: Size } = $props();
+	let {
+		variant = 1,
+		size = 'nav',
+		hoverReplay = true,
+		autoplay = true
+	}: { variant?: number; size?: Size; hoverReplay?: boolean; autoplay?: boolean } = $props();
 
 	const letters = ['A', 'Y', 'L', 'I', 'T', 'H'];
 
@@ -40,7 +45,7 @@
 	}
 
 	onMount(() => {
-		if (motion.isReduced) return;
+		if (motion.isReduced || !autoplay) return;
 
 		if (size === 'hero') {
 			const observer = new IntersectionObserver(
@@ -69,7 +74,7 @@
 	class="word-host wm-{size}"
 	role="img"
 	aria-label="Aylith"
-	onmouseenter={() => replay()}
+	onmouseenter={hoverReplay ? () => replay() : undefined}
 >
 	{#key playKey}
 		<span class="word v{variant}" class:is-playing={playKey > 0} aria-hidden="true">

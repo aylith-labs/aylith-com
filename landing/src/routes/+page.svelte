@@ -1,13 +1,35 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
 	import { reveal } from '$lib/actions/reveal';
 	import { tilt } from '$lib/actions/tilt';
 	import { draw } from '$lib/actions/draw';
 	import Mark from '$lib/components/brand/Mark.svelte';
 	import Wordmark from '$lib/components/brand/Wordmark.svelte';
 	import { getMonthlyVariant } from '$lib/brand/rotation';
+	import { motion } from '$lib/stores/motion.svelte';
 	import type { Project } from '$lib/types/project';
 
 	const wordmarkVariant = getMonthlyVariant();
+
+	// The hero mark and wordmark replay together, off one guard, so they always share a start
+	// time and a running pass finishes before a re-hover restarts it.
+	let heroMark = $state<{ replay: (force?: boolean) => void } | undefined>();
+	let heroWordmark = $state<{ replay: (force?: boolean) => void } | undefined>();
+	let lockupPlaying = false;
+	let lockupTimer: ReturnType<typeof setTimeout> | undefined;
+
+	function playLockup() {
+		if (motion.isReduced || lockupPlaying) return;
+		lockupPlaying = true;
+		heroMark?.replay(true);
+		heroWordmark?.replay(true);
+		clearTimeout(lockupTimer);
+		lockupTimer = setTimeout(() => {
+			lockupPlaying = false;
+		}, 2800);
+	}
+
+	onMount(() => playLockup());
 
 	let { data } = $props();
 	let projects: Project[] = $derived(data.projects);
@@ -34,9 +56,25 @@
 <section class="relative">
 	<div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-32 lg:px-8 lg:py-44">
 		<div class="max-w-3xl">
-			<div class="animate-fade-in-up mb-10 flex items-center gap-3 text-surface-900 sm:gap-4 dark:text-warm-50">
-				<Mark class="h-[clamp(2.5rem,8vw,5rem)] w-auto shrink-0" />
-				<Wordmark variant={wordmarkVariant} size="hero" />
+			<div
+				role="group"
+				onmouseenter={playLockup}
+				class="animate-fade-in-up mb-10 flex items-center gap-3 text-surface-900 sm:gap-4 dark:text-warm-50"
+			>
+				<Mark
+					bind:this={heroMark}
+					animate
+					hoverReplay={false}
+					autoplay={false}
+					class="h-[clamp(2.5rem,8vw,5rem)] w-auto shrink-0 translate-y-px"
+				/>
+				<Wordmark
+					bind:this={heroWordmark}
+					variant={wordmarkVariant}
+					size="hero"
+					hoverReplay={false}
+					autoplay={false}
+				/>
 			</div>
 
 			<h1 class="animate-fade-in-up text-4xl font-normal leading-[1.1] tracking-tight text-surface-900 sm:text-5xl lg:text-6xl dark:text-warm-50" style="animation-delay: 0.05s">
