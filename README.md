@@ -21,7 +21,7 @@ Founders, technical builders, and practitioners land here to answer one question
 | **Project detail** (`/projects/[slug]`) | Per-tool page rendered from Markdown: tagline, description, features, target user, long-form body. |
 | **About** (`/about`) | The lab's posture in three short paragraphs. |
 | **Design system** (`/design`) | Live brand reference — mark readings, wordmark variants, palette, motion controls, copy-to-clipboard tokens. |
-| **SEO & social** | Per-page `<title>`/description, canonical URLs, Open Graph + Twitter cards, `og:image`, `apple-touch-icon`, `theme-color`, a generated `sitemap.xml` (static routes + all 25 project slugs), and `robots.txt`. |
+| **SEO & social** | Per-page `<title>`/description, canonical URLs, Open Graph + Twitter cards, `og:image`, `apple-touch-icon`, `theme-color`, a generated `sitemap.xml` (static routes + all 26 project slugs), and `robots.txt`. |
 | **404 / error** | On-brand error page. |
 | **Settings menu** | Theme (system / light / dark) and motion (system / reduced / full) preferences, persisted. |
 
