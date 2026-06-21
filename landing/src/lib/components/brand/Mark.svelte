@@ -2,13 +2,11 @@
 	import { onMount, onDestroy } from 'svelte';
 	import { motion } from '$lib/stores/motion.svelte';
 
-	// The Aylith mark: six vertical strokes (one per letter of AYLITH) rising left to right and
-	// breaking past the copper "signal" diagonal that crosses them. The strokes are a tally of
-	// work shipped; the rise turns the count into a trend; the work exceeds the signal line. A
-	// copper sparkle cluster in the top-left (a main spark with two companions) marks it as
-	// AI-driven. Ink strokes follow currentColor; the diagonal and sparkles are the single accent.
-	// With `animate`, the mark builds itself on mount: bars grow left to right, the diagonal draws
-	// up in sync, a spark lifts off each bar and a field twinkles across, then the three settle.
+	// The Aylith mark: six bars climbing from the bottom edge, crossed by a copper parabolic
+	// progress curve that sweeps from the lower-left up to the upper-right. A copper sparkle
+	// cluster (one large, two small) fills the upper-left. Bars follow currentColor (theme
+	// ink); the curve and sparkles are the single copper accent. With `animate`, the bars grow
+	// up, the curve draws in behind them, then the three sparkles pop.
 	let {
 		class: className = 'h-[22px] w-auto',
 		animate = false,
@@ -17,31 +15,19 @@
 	}: { class?: string; animate?: boolean; hoverReplay?: boolean; autoplay?: boolean } = $props();
 
 	const BARS = [
-		[10, 40.5],
-		[17, 34.5],
-		[24, 28.5],
-		[31, 22.4],
-		[38, 16.4],
-		[45, 10.3]
+		[40, 228],
+		[76, 212],
+		[112, 188],
+		[148, 156],
+		[184, 112],
+		[220, 60]
 	];
-
-	const round = (value: number) => value.toFixed(2);
-	const star = (cx: number, cy: number, radius: number, waist: number) =>
-		`M${round(cx)} ${round(cy - radius)} L${round(cx + waist)} ${round(cy - waist)} ` +
-		`L${round(cx + radius)} ${round(cy)} L${round(cx + waist)} ${round(cy + waist)} ` +
-		`L${round(cx)} ${round(cy + radius)} L${round(cx - waist)} ${round(cy + waist)} ` +
-		`L${round(cx - radius)} ${round(cy)} L${round(cx - waist)} ${round(cy - waist)} Z`;
-
-	// a spark lifts off each bar top (bigger, higher); plus a dense field across the mark
-	const cascade = BARS.map(([x, y], index) => ({
-		d: star(x, y - 5, 2.6, 2.6 * 0.32),
-		delay: 0.12 + index * 0.13
-	}));
-	const field = [
-		[5, 10, 1.6], [16, 6, 1.6], [27, 13, 1.5], [38, 7, 1.7], [48, 11, 1.5], [8, 20, 1.5],
-		[21, 24, 1.5], [33, 20, 1.6], [44, 24, 1.5], [11, 14, 1.4], [30, 4, 1.5], [50, 5, 1.4],
-		[14, 18, 1.3], [25, 8, 1.3], [36, 14, 1.3], [42, 4, 1.3], [3, 16, 1.2], [19, 12, 1.3]
-	].map(([x, y, radius], index) => ({ d: star(x, y, radius, radius * 0.32), delay: index * 0.045 }));
+	const CURVE = 'M0 256 Q 209 219 256 0';
+	const STARS = [
+		'M70 8 L86 64 L142 80 L86 96 L70 152 L54 96 L-2 80 L54 64 Z',
+		'M150 6 L157 29 L180 36 L157 43 L150 66 L143 43 L120 36 L143 29 Z',
+		'M120 100 L125 117 L142 122 L125 127 L120 144 L115 127 L98 122 L115 117 Z'
+	];
 
 	let svgEl: SVGSVGElement;
 	let playing = false;
@@ -77,39 +63,23 @@
 
 <svg
 	bind:this={svgEl}
-	viewBox="0 0 56 64"
+	viewBox="0 0 256 256"
 	class="{className}{animate ? ' amark' : ''}"
 	fill="none"
-	stroke-linecap="square"
+	stroke-linecap="butt"
 	aria-hidden="true"
 	onmouseenter={animate && hoverReplay ? () => replay() : undefined}
 >
-	<g stroke="currentColor" stroke-width="4.2">
+	<g stroke="currentColor" stroke-width="15">
 		{#each BARS as [x, y], index}
-			<line class="bar" style="--i:{index}" x1={x} y1={y} x2={x} y2="50" />
+			<line class="bar" style="--i:{index}" x1={x} y1={y} x2={x} y2="256" />
 		{/each}
 	</g>
-	<line
-		class="diag stroke-accent-500"
-		x1="6"
-		y1="51"
-		x2="50"
-		y2="13"
-		pathLength="100"
-		stroke-width="4.2"
-	/>
+	<path class="diag stroke-accent-500" d={CURVE} pathLength="100" stroke-width="17" />
 	<g class="fill-accent-500">
-		{#if animate}
-			{#each field as spark}
-				<path class="wide" style="animation-delay:{spark.delay}s" d={spark.d} />
-			{/each}
-			{#each cascade as spark}
-				<path class="casc" style="animation-delay:{spark.delay}s" d={spark.d} />
-			{/each}
-		{/if}
-		<path class="final s1" d="M10 4 L11.5 9.5 L17 11 L11.5 12.5 L10 18 L8.5 12.5 L3 11 L8.5 9.5 Z" />
-		<path class="final s2" d="M18 14 L18.7 16.3 L21 17 L18.7 17.7 L18 20 L17.3 17.7 L15 17 L17.3 16.3 Z" />
-		<path class="final s3" d="M17 3.4 L17.6 5.4 L19.6 6 L17.6 6.6 L17 8.6 L16.4 6.6 L14.4 6 L16.4 5.4 Z" />
+		{#each STARS as d, index}
+			<path class="final s{index + 1}" {d} />
+		{/each}
 	</g>
 </svg>
 
@@ -122,16 +92,10 @@
 	.amark .diag {
 		stroke-dasharray: 100;
 	}
-	/* every sparkle scales/rotates around its own centre, not the SVG origin */
-	.amark .casc,
-	.amark .wide,
+	/* every sparkle scales around its own centre, not the SVG origin */
 	.amark .final {
 		transform-box: fill-box;
 		transform-origin: center;
-	}
-	.amark .casc,
-	.amark .wide {
-		opacity: 0;
 	}
 
 	.amark.play .bar {
@@ -151,35 +115,15 @@
 		to { stroke-dashoffset: 0; }
 	}
 
-	.amark.play .wide {
-		animation: sparkStar 0.85s ease-in-out both;
-	}
-	@keyframes sparkStar {
-		0% { opacity: 0; transform: scale(0); }
-		45% { opacity: 0.95; transform: scale(0.8); }
-		100% { opacity: 0; transform: scale(0.15); }
-	}
-
-	.amark.play .casc {
-		animation: cascRise 0.8s ease-out both;
-	}
-	@keyframes cascRise {
-		0% { opacity: 0; transform: translateY(3px) scale(0); }
-		42% { opacity: 1; transform: translateY(-1px) scale(1); }
-		100% { opacity: 0; transform: translateY(-9px) scale(0.45); }
-	}
-
 	.amark.play .final {
-		animation: sparkPop 0.78s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+		animation: sparkPop 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
 	}
 	.amark.play .s1 { animation-delay: 0.95s; }
 	.amark.play .s2 { animation-delay: 1.1s; }
 	.amark.play .s3 { animation-delay: 1.25s; }
 	@keyframes sparkPop {
-		0% { opacity: 0; transform: scale(0); }
-		45% { opacity: 1; transform: scale(1.8) rotate(25deg); }
-		72% { transform: scale(0.82) rotate(-6deg); }
-		100% { opacity: 1; transform: scale(1) rotate(0); }
+		from { opacity: 0; transform: scale(0) rotate(-12deg); }
+		to { opacity: 1; transform: scale(1) rotate(0); }
 	}
 
 	:global([data-motion='reduced']) .amark .bar,
@@ -189,9 +133,5 @@
 		opacity: 1 !important;
 		transform: none !important;
 		stroke-dashoffset: 0 !important;
-	}
-	:global([data-motion='reduced']) .amark .casc,
-	:global([data-motion='reduced']) .amark .wide {
-		display: none !important;
 	}
 </style>

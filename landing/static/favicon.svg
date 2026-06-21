@@ -1,13 +1,25 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" shape-rendering="geometricPrecision">
-  <g stroke="#1c1a16" stroke-width="6" stroke-linecap="square" fill="none">
-    <line x1="14" y1="36" x2="14" y2="50"/>
-    <line x1="25" y1="27" x2="25" y2="50"/>
-    <line x1="36" y1="18" x2="36" y2="50"/>
-    <line x1="47" y1="9"  x2="47" y2="50"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" shape-rendering="geometricPrecision">
+  <style>
+    .ink { stroke: #1c1a16; }
+    .knock { stroke: #f8f7f4; }
+    @media (prefers-color-scheme: dark) {
+      .ink { stroke: #f3efe7; }
+      .knock { stroke: #16140f; }
+    }
+  </style>
+  <g class="ink" stroke-width="15" stroke-linecap="butt" fill="none">
+    <line x1="40"  y1="228" x2="40"  y2="256"/>
+    <line x1="76"  y1="212" x2="76"  y2="256"/>
+    <line x1="112" y1="188" x2="112" y2="256"/>
+    <line x1="148" y1="156" x2="148" y2="256"/>
+    <line x1="184" y1="112" x2="184" y2="256"/>
+    <line x1="220" y1="60"  x2="220" y2="256"/>
   </g>
-  <line x1="9" y1="52" x2="52" y2="12" stroke="#c97a3a" stroke-width="6" stroke-linecap="square" fill="none"/>
+  <path class="knock" d="M0 256 Q 209 219 256 0" stroke-width="25" fill="none" stroke-linecap="butt"/>
+  <path d="M0 256 Q 209 219 256 0" stroke="#c97a3a" stroke-width="17" fill="none" stroke-linecap="butt"/>
   <g fill="#c97a3a">
-    <path d="M14 3 L16.2 10.8 L24 13 L16.2 15.2 L14 23 L11.8 15.2 L4 13 L11.8 10.8 Z"/>
-    <path d="M27 17.2 L28.1 20.9 L31.8 22 L28.1 23.1 L27 26.8 L25.9 23.1 L22.2 22 L25.9 20.9 Z"/>
+    <path d="M70 8 L86 64 L142 80 L86 96 L70 152 L54 96 L-2 80 L54 64 Z"/>
+    <path d="M150 6 L157 29 L180 36 L157 43 L150 66 L143 43 L120 36 L143 29 Z"/>
+    <path d="M120 100 L125 117 L142 122 L125 127 L120 144 L115 127 L98 122 L115 117 Z"/>
   </g>
 </svg>
