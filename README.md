@@ -8,7 +8,7 @@ The site is a fully prerendered, static SvelteKit app — intentionally lightwei
 
 ## What & Why
 
-Founders, technical builders, and practitioners land here to answer one question: *is this lab real, or theater?* The site answers it with evidence, not adjectives — 138+ launches analyzed, every tool public from day one, and the **complete 26-tool studio catalog** laid out in one index. The brand is quietly confident: warm-stone palette, Newsreader-class serif wordmark, copy that refuses superlatives and future-tense marketing. Restraint is the brand.
+Founders, technical builders, and practitioners land here to answer one question: *is this lab real, or theater?* The site answers it with evidence, not adjectives — 138+ launches analyzed, every tool public from day one, and the **complete studio catalog** laid out in one index, collected straight from the repos themselves. The brand is quietly confident: warm-stone palette, Newsreader-class serif wordmark, copy that refuses superlatives and future-tense marketing. Restraint is the brand.
 
 ## Features & Sections
 
@@ -17,11 +17,11 @@ Founders, technical builders, and practitioners land here to answer one question
 | **Hero** | Animated tally-mark + "A Y L I T H" wordmark lockup that builds itself on load (twelve monthly animation variants). Fluid type, viewport-aware. |
 | **The loop** | The three-step method — Listen → Pattern → Ship — with scroll-reveal. |
 | **Portfolio** | Featured tools as large cards plus a compact list of the rest, accent-coloured per tool. |
-| **Projects catalog** (`/projects`) | The complete catalog — all 26 studio tools as cards (name, tagline, one-line description, link to its detail page), with a status-mix overview and client-side category filtering (each category tab carries its count) across seven categories. Responsive, light + dark, no layout shift. |
+| **Projects catalog** (`/projects`) | The complete catalog — every studio tool as a card (name, tagline, one-line description, link to its detail page), collected from the org at build, with a status-mix overview and client-side category filtering (each category tab carries its count) across seven categories plus an "Unsorted" bucket for placeholders. Responsive, light + dark, no layout shift. |
 | **Project detail** (`/projects/[slug]`) | Per-tool page rendered from Markdown: tagline, description, features, target user, long-form body. |
 | **About** (`/about`) | The lab's posture in three short paragraphs. |
 | **Design system** (`/design`) | Live brand reference — mark readings, wordmark variants, palette, motion controls, copy-to-clipboard tokens. |
-| **SEO & social** | Per-page `<title>`/description, canonical URLs, Open Graph + Twitter cards, `og:image`, `apple-touch-icon`, `theme-color`, a generated `sitemap.xml` (static routes + all 26 project slugs), and `robots.txt`. |
+| **SEO & social** | Per-page `<title>`/description, canonical URLs, Open Graph + Twitter cards, `og:image`, `apple-touch-icon`, `theme-color`, a generated `sitemap.xml` (static routes + every collected project slug), and `robots.txt`. |
 | **404 / error** | On-brand error page. |
 | **Settings menu** | Theme (system / light / dark) and motion (system / reduced / full) preferences, persisted. |
 
@@ -36,7 +36,7 @@ Brand details: a Konami-code easter egg and a styled console signature live in t
 | Styling | Tailwind CSS v4 (`@theme` tokens via `@tailwindcss/vite`) + `@tailwindcss/typography` |
 | Build | Vite 8 |
 | Adapter | `@sveltejs/adapter-static` (full SSG — every route prerendered) |
-| Content | Markdown via `gray-matter` (frontmatter) + `marked` (rendering), parsed at build |
+| Content | Per-repo `.aylith/project.md` manifests, collected at build via `@octokit/rest`, parsed with `gray-matter` + `marked` |
 | Fonts | Space Grotesk (display) + DM Sans (body), via Google Fonts |
 | Quality | `svelte-check` (TypeScript + Svelte diagnostics) |
 | Hosting | GitHub Pages (Actions → Pages) on the custom domain `aylith.com` |
@@ -44,7 +44,8 @@ Brand details: a Konami-code easter egg and a styled console signature live in t
 ## Architecture
 
 - **Static-first.** Every route is prerendered (`adapter-static`, `prerender = true` in the root layout). There is no runtime server; the build emits a folder of HTML and assets.
-- **Content as data.** Tool copy lives in `src/content/projects/*.md`. Frontmatter (`name`, `tagline`, `description`, `category`, `status`, `features`, `targetUser`) is typed as `Project`; the Markdown body is rendered to HTML at build time by `src/lib/server/markdown.ts`. Visual metadata (icon path, accent gradient, featured flag, display order) lives alongside in `src/lib/data/projects.ts` and is merged by slug. Adding a tool = one Markdown file + one metadata entry.
+- **The catalog is collected, not authored here.** Each tool describes itself in its own repo via a `.aylith/project.md` manifest (frontmatter + Markdown body). At build time `scripts/collect.mjs` enumerates the `aylith-labs` org (octokit), skips archived repos and any carrying the `aylith-no-catalog` topic, fetches each manifest, and writes the merged set into the gitignored `landing/.generated/projects/`. A repo with no manifest still appears — as a "Planning" placeholder built from its GitHub name + description. `src/lib/server/markdown.ts` reads `.generated/projects` when present, else falls back to the committed snapshot in `src/content/projects/` so local dev and tokenless builds work. Adding a tool to the catalog = create one repo with a `.aylith/project.md` (or nothing — it shows as a placeholder). The manifest schema is documented at `.aylith/project.schema.json`.
+- **The catalog rebuilds on any org push.** Each product repo carries `.github/workflows/notify-catalog.yml`, which fires a `repository_dispatch` (`catalog-refresh`) at this repo on push to its default branch; the deploy workflow also runs hourly on `schedule` as a safety net for brand-new / not-yet-adopted repos.
 - **SEO is centralized.** A single `Seo.svelte` component sets per-page head tags (title, description, canonical, Open Graph, Twitter) on the home, about, design, projects, and project-detail pages. The `sitemap.xml` endpoint enumerates the static routes plus every project slug derived from the same content source, so it stays complete and in sync automatically.
 - **Theme & motion before paint.** A tiny inline script in `app.html` resolves theme and motion preferences from `localStorage` + system queries before first paint, so nothing flashes. Reactive stores (`theme.svelte.ts`, `motion.svelte.ts`) keep them current after hydration.
 - **Motion is gated.** Reveal / tilt / draw / count-up actions (`src/lib/actions/`) all honour `prefers-reduced-motion` and the user's motion preference via `html[data-motion]`.
@@ -76,6 +77,7 @@ Run from `landing/`:
 | Script | Command | Purpose |
 | --- | --- | --- |
 | `npm run dev` | `vite dev` | Start the Vite dev server (port 5847). |
+| `npm run collect` | `node scripts/collect.mjs` | Fetch every repo's `.aylith/project.md` from the org into `.generated/projects/` (needs `CATALOG_GITHUB_TOKEN`). CI runs this before the build; locally it's optional — the build falls back to the snapshot. |
 | `npm run build` | `vite build` | Produce the prerendered static site in `build/`. |
 | `npm run preview` | `vite preview` | Preview the production build (port 5848). |
 | `npm run check` | `svelte-kit sync && svelte-check` | Sync SvelteKit types and type-check the project. |
@@ -85,33 +87,40 @@ Run from `landing/`:
 
 ```
 aylith.com/
-├── .github/workflows/deploy.yml   # GitHub Pages deploy (Actions → Pages)
+├── .github/workflows/deploy.yml   # GitHub Pages deploy (push / repository_dispatch / cron)
+├── .aylith/
+│   ├── project.schema.json        # Manifest frontmatter schema (the contract each repo fills)
+│   └── templates/notify-catalog.yml   # Canonical per-repo notifier, rolled out to product repos
+├── scripts/
+│   └── rollout-notifier.sh        # Push notify-catalog.yml to every eligible org repo (gh)
 └── landing/
+    ├── scripts/collect.mjs    # Build-time collector: org repos → .generated/projects/*.md
     ├── src/
     │   ├── app.html          # Shell + pre-paint theme/motion script, base meta
     │   ├── app.css           # Tailwind v4 @theme tokens, keyframes, motion gating
     │   ├── content/
-    │   │   └── projects/      # One Markdown file per tool (source of truth for copy)
+    │   │   └── projects/      # Committed snapshot — dev / tokenless-build fallback only
     │   ├── lib/
     │   │   ├── actions/        # reveal, tilt, draw, countup (motion-gated)
     │   │   ├── brand/          # Wordmark variant rotation
+    │   │   ├── catalog/defaults.js # Shared constants (org, exclude topic, default icon/gradient)
     │   │   ├── components/
     │   │   │   ├── Seo.svelte   # Reusable per-page SEO / OG / Twitter head
     │   │   │   ├── brand/       # Mark, Wordmark, MotionControl
     │   │   │   ├── home/        # ProjectCard
     │   │   │   └── layout/      # Navbar, Footer, SettingsMenu
-    │   │   ├── data/projects.ts   # Per-tool visual metadata + display order
-    │   │   ├── server/markdown.ts # Frontmatter + body loader
+    │   │   ├── server/markdown.ts # Loader: .generated (else snapshot) → Project[]
     │   │   ├── stores/         # theme.svelte.ts, motion.svelte.ts (runes-based)
     │   │   └── types/project.ts # Project / category / status types
     │   └── routes/
     │       ├── +layout.svelte  # Navbar, Footer, easter eggs
+    │       ├── +layout.server.ts # Footer project index
     │       ├── +page.svelte    # Home (hero, method, portfolio)
     │       ├── about/
     │       ├── design/         # Live design system
     │       ├── projects/
-    │       │   ├── +page.svelte        # Catalog + category filter (26 tools)
-    │       │   └── [slug]/+page.svelte # Detail (rendered from Markdown)
+    │       │   ├── +page.svelte        # Catalog + category filter
+    │       │   └── [slug]/+page.svelte # Detail (Markdown body / Planning placeholder + Source link)
     │       └── sitemap.xml/    # Prerendered sitemap endpoint
     ├── static/                 # CNAME, favicons, brand avatars, robots.txt
     ├── svelte.config.js        # adapter-static
@@ -120,14 +129,19 @@ aylith.com/
 
 ## Environment Variables
 
-None. The site is fully static with no backend or third-party API calls at runtime.
+The site has no runtime env vars. Two **CI secrets** drive the catalog collection:
+
+- **`CATALOG_GITHUB_TOKEN`** (repo secret on this repo) — read-only token (`metadata:read` + `contents:read` org-wide; fine-grained PAT or GitHub App) used by `scripts/collect.mjs` to list org repos and read each `.aylith/project.md`. If unset, the deploy logs a warning and builds from the committed snapshot instead of failing.
+- **`CATALOG_DISPATCH_TOKEN`** (org-level Actions secret, inherited by every repo) — used by each product repo's `notify-catalog.yml` to fire the `catalog-refresh` `repository_dispatch` at this repo. Needs permission to dispatch to `aylith-labs/aylith-com`.
+
+Local dev needs neither — `npm run dev`/`build` fall back to `src/content/projects/`.
 
 ## Deployment
 
 Deployed to **GitHub Pages** at the custom domain **aylith.com** (`static/CNAME`), automatically via **GitHub Actions → Pages** (`.github/workflows/deploy.yml`):
 
-1. On every push to `main`, the workflow checks out the repo and sets up Node 22 (with npm cache).
-2. Runs `npm ci` and `npm run build` inside the `landing/` directory.
+1. Triggers: push to `main`, a `catalog-refresh` `repository_dispatch` from any product repo, an hourly `schedule`, or manual `workflow_dispatch`.
+2. Checks out the repo, sets up Node 22 (npm cache), runs `npm ci`, then `npm run collect` (fetches the catalog from the org; skipped with a warning if `CATALOG_GITHUB_TOKEN` is unset), then `npm run build` inside `landing/`.
 3. Uploads `landing/build/` as a Pages artifact (`actions/upload-pages-artifact`) and deploys it (`actions/deploy-pages`).
 
 Details:
@@ -137,16 +151,14 @@ Details:
 - **Concurrency:** deploys are serialized to the `pages` group with in-progress runs cancelled.
 - **Permissions:** the workflow uses `pages: write` and `id-token: write`.
 
-Because the adapter is static and every route is prerendered, the artifact is a plain folder of HTML/CSS/JS — no server runtime. To deploy: merge to `main`. To preview locally first: `npm run build && npm run preview`.
+Because the adapter is static and every route is prerendered, the artifact is a plain folder of HTML/CSS/JS — no server runtime. The catalog refreshes itself on any org push; to deploy site changes: merge to `main`. To preview locally first: `npm run build && npm run preview`.
 
 ## Roadmap
 
 Larger gaps intentionally left for a future pass:
 
 - **Contact path.** No current CTA for "I want to talk to the people behind this." A contact route or email CTA is the obvious next addition once the lab decides how it wants inbound.
-- **Live / repo links per project.** Surface a "Visit" or "Source" link on project pages as products ship, so the "what shipped" narrative has destinations.
 - **Per-project `og:image`.** Render a branded social card per tool instead of the shared studio avatar.
 - **JSON-LD structured data.** Add `Organization` / `WebSite` schema for richer search results, building on the existing sitemap + canonical tags.
-- **Per-tool status accuracy.** Statuses (`research` → `live`) are authored per Markdown file; keeping them in sync with each tool's real shipping state is an ongoing editorial task.
 - **Live receipts.** The "138+ launches analyzed" figure is static copy; wiring it to the lab's actual analysis pipeline would make the headline self-updating.
 - **Lint/format config.** Add ESLint/Prettier and a CI `check` step alongside the build.

@@ -1,7 +1,9 @@
 ---
 name: Apiflip
 tagline: Turn any website into a structured API
-description: Point at a URL, describe the data you want in plain language, and get clean typed JSON back — even when the site redesigns.
+description: >-
+  Point at a URL, describe the data you want in plain language, and get clean
+  typed JSON back — even when the site redesigns.
 category: developer-tools
 status: planning
 features:
@@ -11,6 +13,11 @@ features:
   - Built-in rate limiting and anti-detection
   - Scheduled extraction with webhook delivery
 targetUser: Developers building data pipelines and integrations without official APIs
+featured: false
+order: 5
+icon: M7.5 21L3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5
+gradientFrom: '#0ea5e9'
+gradientTo: '#38bdf8'
 ---
 
 ## Vision

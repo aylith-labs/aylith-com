@@ -5,7 +5,8 @@ export type ProjectCategory =
 	| 'productivity'
 	| 'data-tools'
 	| 'wellness'
-	| 'testing';
+	| 'testing'
+	| 'uncategorized';
 
 export type ProjectStatus = 'research' | 'planning' | 'building' | 'beta' | 'live';
 
@@ -23,4 +24,6 @@ export type Project = {
 	features: string[];
 	targetUser: string;
 	body?: string;
+	repoUrl?: string;
+	order?: number;
 };

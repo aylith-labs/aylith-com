@@ -1,16 +1,29 @@
 ---
 name: Plainbase
 tagline: Talk to your database in plain English
-description: AI-native business intelligence that lets anyone ask questions about their data in natural language and get instant visual answers.
+description: >-
+  AI-native business intelligence that lets anyone ask questions about their
+  data in natural language and get instant visual answers.
 category: data-tools
 status: planning
 features:
   - Natural language to SQL query generation
   - Auto-generated visualizations and dashboards
-  - Connects to PostgreSQL, MySQL, and SQLite
+  - 'Connects to PostgreSQL, MySQL, and SQLite'
   - Persistent context — remembers your schema and past queries
   - Shareable reports with one-click export
-targetUser: Non-technical founders, marketers, and operators at startups and SMBs
+targetUser: 'Non-technical founders, marketers, and operators at startups and SMBs'
+featured: false
+order: 6
+icon: >-
+  M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5
+  0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0
+  2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5
+  0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12
+  18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25
+  4.125s-8.25-1.847-8.25-4.125
+gradientFrom: '#3b82f6'
+gradientTo: '#60a5fa'
 ---
 
 ## Vision

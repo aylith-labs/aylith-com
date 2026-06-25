@@ -3,6 +3,13 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+  # Fired by each product repo's notify-catalog.yml on push to its default branch.
+  repository_dispatch:
+    types: [catalog-refresh]
+  # Safety net for brand-new / not-yet-adopted repos.
+  schedule:
+    - cron: '17 * * * *'
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -27,6 +34,17 @@ jobs:
           cache: npm
           cache-dependency-path: landing/package-lock.json
       - run: npm ci
+      - name: Collect catalog from org repos
+        env:
+          # Prefer a dedicated org-wide token (needed for private repos / higher
+          # rate limits); fall back to the workflow's default token, which can
+          # read public repos out of the box.
+          CATALOG_GITHUB_TOKEN: ${{ secrets.CATALOG_GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        # On failure, fall through to the committed snapshot rather than blocking
+        # the deploy — collect.mjs swaps .generated in atomically, so a failed run
+        # leaves no partial output.
+        run: npm run collect || echo "::warning::Catalog collection failed — building from the committed snapshot."
       - run: npm run build
       - uses: actions/upload-pages-artifact@v5
         with:

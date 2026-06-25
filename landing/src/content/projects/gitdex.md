@@ -1,7 +1,9 @@
 ---
 name: Gitdex
 tagline: An index for every repo you own
-description: A GitHub repository inventory that categorizes, scores, and tracks your repos across organizations — so you finally know what you have and what it is worth.
+description: >-
+  A GitHub repository inventory that categorizes, scores, and tracks your repos
+  across organizations — so you finally know what you have and what it is worth.
 category: developer-tools
 status: building
 features:
@@ -9,8 +11,15 @@ features:
   - Automatic categorization by purpose and stack
   - Health and activity scoring per repository
   - Tracking over time to spot drift and rot
-  - A single view across organizations, not one at a time
-targetUser: Engineers and orgs with sprawling repos who need to see the whole estate at once
+  - 'A single view across organizations, not one at a time'
+targetUser: >-
+  Engineers and orgs with sprawling repos who need to see the whole estate at
+  once
+featured: false
+order: 19
+icon: M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5
+gradientFrom: '#475569'
+gradientTo: '#94a3b8'
 ---
 
 ## Vision

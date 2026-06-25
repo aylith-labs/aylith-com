@@ -1,7 +1,9 @@
 ---
 name: Linkstash
 tagline: Bookmarks you will find again
-description: A bookmarks manager built for retrieval — save links with tags and context, then actually find them later instead of losing them to a forgotten folder.
+description: >-
+  A bookmarks manager built for retrieval — save links with tags and context,
+  then actually find them later instead of losing them to a forgotten folder.
 category: productivity
 status: building
 features:
@@ -9,8 +11,16 @@ features:
   - Fast search so saved means findable
   - Organized without a folder maze
   - Quick capture from anywhere you browse
-  - A private stash, not a social feed
+  - 'A private stash, not a social feed'
 targetUser: People who save links constantly and can never find the one they need later
+featured: false
+order: 22
+icon: >-
+  M13.19 8.688a4.5 4.5 0 0 1 1.242 7.244l-4.5 4.5a4.5 4.5 0 0
+  1-6.364-6.364l1.757-1.757m13.35-.622 1.757-1.757a4.5 4.5 0 0
+  0-6.364-6.364l-4.5 4.5a4.5 4.5 0 0 0 1.242 7.244
+gradientFrom: '#16a34a'
+gradientTo: '#4ade80'
 ---
 
 ## Vision

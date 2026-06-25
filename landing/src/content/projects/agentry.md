@@ -1,7 +1,10 @@
 ---
 name: Agentry
 tagline: Your prompt & agent library
-description: A library for the prompts and agents you actually reuse — organized, versioned, and ready to drop into any tool instead of scattered across notes and chat history.
+description: >-
+  A library for the prompts and agents you actually reuse — organized,
+  versioned, and ready to drop into any tool instead of scattered across notes
+  and chat history.
 category: developer-tools
 status: building
 features:
@@ -10,7 +13,18 @@ features:
   - Tags and search to find the right prompt fast
   - Portable exports that drop into any tool or runtime
   - Share and reuse across projects and teammates
-targetUser: Anyone who reuses prompts and agents and is tired of digging through chat history
+targetUser: >-
+  Anyone who reuses prompts and agents and is tired of digging through chat
+  history
+featured: false
+order: 17
+icon: >-
+  M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987
+  0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0
+  2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6
+  2.292m0-14.25v14.25
+gradientFrom: '#0d9488'
+gradientTo: '#5eead4'
 ---
 
 ## Vision

@@ -1,16 +1,27 @@
 ---
 name: Dictaro
 tagline: Speak messy. Get clean.
-description: Privacy-first AI voice dictation that transforms natural speech into polished, publication-ready text — without sending a word to the cloud.
+description: >-
+  Privacy-first AI voice dictation that transforms natural speech into polished,
+  publication-ready text — without sending a word to the cloud.
 category: productivity
 status: planning
 features:
   - Local Whisper processing — zero cloud dependency
-  - AI cleanup removes ums, stutters, and fixes grammar
+  - 'AI cleanup removes ums, stutters, and fixes grammar'
   - Works across every app and platform
   - Custom vocabulary and domain-specific jargon support
   - Accessibility-first design for RSI and disability users
-targetUser: Knowledge workers, people with RSI/disabilities, ADHD individuals, and displaced Dragon users
+targetUser: >-
+  Knowledge workers, people with RSI/disabilities, ADHD individuals, and
+  displaced Dragon users
+featured: false
+order: 3
+icon: >-
+  M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12
+  15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z
+gradientFrom: '#f59e0b'
+gradientTo: '#fbbf24'
 ---
 
 ## Vision

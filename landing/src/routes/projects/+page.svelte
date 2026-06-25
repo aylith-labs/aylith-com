@@ -7,7 +7,9 @@
 	let { data } = $props();
 	let projects: Project[] = $derived(data.projects);
 
-	const categories = [
+	// The seven curated categories. "Unsorted" is appended only when placeholder
+	// (uncategorized) projects exist, so it never inflates the real category count.
+	const baseCategories = [
 		{ key: 'all', label: 'All' },
 		{ key: 'ai-infrastructure', label: 'AI Infrastructure' },
 		{ key: 'developer-tools', label: 'Developer Tools' },
@@ -17,6 +19,11 @@
 		{ key: 'wellness', label: 'Wellness' },
 		{ key: 'testing', label: 'Testing' }
 	];
+
+	let hasUnsorted = $derived(projects.some((p) => p.category === 'uncategorized'));
+	let categories = $derived(
+		hasUnsorted ? [...baseCategories, { key: 'uncategorized', label: 'Unsorted' }] : baseCategories
+	);
 
 	// Count per category so the filter doubles as an index of the whole studio.
 	let counts = $derived.by(() => {
@@ -64,7 +71,7 @@
 				All Projects
 			</h1>
 			<p class="mt-3 text-lg text-surface-500 dark:text-warm-300">
-				The complete catalog — {projects.length} tools across {categories.length - 1} categories, each
+				The complete catalog — {projects.length} tools across {baseCategories.length - 1} categories, each
 				built from a signal that repeated.
 			</p>
 		</div>

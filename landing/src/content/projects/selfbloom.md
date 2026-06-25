@@ -1,16 +1,29 @@
 ---
 name: Selfbloom
 tagline: Your AI wellness companion
-description: Combines scientifically validated personality assessments with daily coaching, mood tracking, and CBT-based exercises — bridging the gap between therapy and shallow self-help.
+description: >-
+  Combines scientifically validated personality assessments with daily coaching,
+  mood tracking, and CBT-based exercises — bridging the gap between therapy and
+  shallow self-help.
 category: wellness
 status: planning
 features:
-  - Clinically-grounded personality assessments (Big Five, MBTI-adjacent)
+  - 'Clinically-grounded personality assessments (Big Five, MBTI-adjacent)'
   - Daily mood tracking with pattern recognition
   - CBT and journaling exercises adapted by AI
   - Progress visualization and growth insights
   - Privacy-first — conversations never used for training
-targetUser: Young adults seeking mental health support who can't afford or access traditional therapy
+targetUser: >-
+  Young adults seeking mental health support who can't afford or access
+  traditional therapy
+featured: false
+order: 9
+icon: >-
+  M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312
+  2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9
+  12s9-4.78 9-12z
+gradientFrom: '#e11d48'
+gradientTo: '#fb7185'
 ---
 
 ## Vision

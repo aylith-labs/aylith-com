@@ -1,7 +1,9 @@
 ---
 name: Knowmine
 tagline: Know what's mine.
-description: AI-powered home inventory. Scan items with your camera, identify them with AI, look up barcodes, parse receipts — and keep track of everything you own.
+description: >-
+  AI-powered home inventory. Scan items with your camera, identify them with AI,
+  look up barcodes, parse receipts — and keep track of everything you own.
 category: productivity
 status: building
 features:
@@ -10,7 +12,16 @@ features:
   - Receipt parsing that catalogs purchases automatically
   - Searchable inventory of everything you own
   - Value tracking for insurance and warranty records
-targetUser: Homeowners, renters, and collectors who want a real record of what they own without typing it all in
+targetUser: >-
+  Homeowners, renters, and collectors who want a real record of what they own
+  without typing it all in
+featured: false
+order: 14
+icon: >-
+  m21 7.5-9-5.25L3 7.5m18 0-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9
+  5.25m0-9v9
+gradientFrom: '#ca8a04'
+gradientTo: '#facc15'
 ---
 
 ## Vision

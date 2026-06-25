@@ -44,7 +44,8 @@
 		productivity: 'Productivity',
 		'data-tools': 'Data & Analytics',
 		wellness: 'Wellness',
-		testing: 'Testing'
+		testing: 'Testing',
+		uncategorized: 'Unsorted'
 	};
 </script>
 

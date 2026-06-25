@@ -1,16 +1,29 @@
 ---
 name: GitHerald
 tagline: From git push to published announcement
-description: Transforms code activity into marketing content — changelogs, blog posts, and social media updates from a single source of truth.
+description: >-
+  Transforms code activity into marketing content — changelogs, blog posts, and
+  social media updates from a single source of truth.
 category: developer-tools
 status: planning
 features:
   - Auto-generates changelogs from commits and PRs
   - Creates blog posts about releases
-  - Crafts social media threads for X, LinkedIn, Bluesky
-  - Understands the "why" behind changes, not just the "what"
+  - 'Crafts social media threads for X, LinkedIn, Bluesky'
+  - 'Understands the "why" behind changes, not just the "what"'
   - Scheduled publishing with approval workflows
 targetUser: Developer founders and small teams shipping fast but lagging on communication
+featured: false
+order: 2
+icon: >-
+  M10.34 15.84c-.688-.06-1.386-.09-2.09-.09H7.5a4.5 4.5 0 110-9h.75c.704 0
+  1.402-.03 2.09-.09m0 9.18c.253.962.584 1.892.985 2.783.247.55.06 1.21-.463
+  1.511l-.657.38a.75.75 0 01-1.021-.27 18.634 18.634 0 01-1.014-2.238.823.823 0
+  01.55-1.06c.53-.152 1.05-.328 1.57-.527m0-9.18a8.344 8.344 0
+  00-.985-2.783.75.75 0 01.464-1.511l.656-.38a.75.75 0 011.022.27 18.634 18.634
+  0 011.014 2.238.823.823 0 01-.55 1.06 12.11 12.11 0 00-1.571.527M12 18.75v.008
+gradientFrom: '#6366f1'
+gradientTo: '#818cf8'
 ---
 
 ## Vision

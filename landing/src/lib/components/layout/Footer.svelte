@@ -1,8 +1,9 @@
 <script lang="ts">
-	import { projectMeta } from '$lib/data/projects';
 	import Mark from '$lib/components/brand/Mark.svelte';
 	import Wordmark from '$lib/components/brand/Wordmark.svelte';
 	import { getMonthlyVariant } from '$lib/brand/rotation';
+
+	let { projects = [] }: { projects?: { slug: string; name: string }[] } = $props();
 
 	const variant = getMonthlyVariant();
 </script>
@@ -23,7 +24,7 @@
 			<div>
 				<h3 class="text-xs font-semibold uppercase tracking-wider text-surface-400 dark:text-warm-400">Products</h3>
 				<ul class="mt-3 columns-2 gap-x-8 space-y-2">
-					{#each projectMeta as project}
+					{#each projects as project (project.slug)}
 						<li>
 							<a href="/projects/{project.slug}" class="text-sm text-surface-600 transition-colors hover:text-accent-600 dark:text-warm-300 dark:hover:text-accent-400">
 								{project.name}

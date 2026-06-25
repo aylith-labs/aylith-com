@@ -7,7 +7,7 @@
 	import { motion } from '$lib/stores/motion.svelte';
 	import { theme } from '$lib/stores/theme.svelte';
 
-	let { children } = $props();
+	let { children, data } = $props();
 
 	onMount(() => {
 		const stopMotion = motion.init();
@@ -65,5 +65,5 @@
 		{@render children()}
 	</main>
 
-	<Footer />
+	<Footer projects={data.navProjects} />
 </div>

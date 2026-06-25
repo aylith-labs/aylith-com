@@ -1,0 +1,74 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "https://aylith.com/.aylith/project.schema.json",
+	"title": "Aylith catalog manifest frontmatter",
+	"description": "YAML frontmatter of a repo's .aylith/project.md. The catalog collector (aylith-com) reads this to build the tool's catalog card + detail page. The Markdown body below the frontmatter becomes the long-form detail content.",
+	"type": "object",
+	"required": ["name", "tagline", "description", "category", "status"],
+	"additionalProperties": false,
+	"properties": {
+		"name": {
+			"type": "string",
+			"description": "Display name of the tool, e.g. \"Gitdex\"."
+		},
+		"tagline": {
+			"type": "string",
+			"description": "One-line tagline (5-15 words)."
+		},
+		"description": {
+			"type": "string",
+			"description": "1-2 sentence summary — the \"why\"."
+		},
+		"category": {
+			"type": "string",
+			"description": "One of the seven curated categories. Omit / use a manifest-less repo to land in \"uncategorized\".",
+			"enum": [
+				"ai-infrastructure",
+				"developer-tools",
+				"design-tools",
+				"productivity",
+				"data-tools",
+				"wellness",
+				"testing",
+				"uncategorized"
+			]
+		},
+		"status": {
+			"type": "string",
+			"description": "Maturity stage. \"planning\" renders the catalog's amber placeholder state.",
+			"enum": ["research", "planning", "building", "beta", "live"]
+		},
+		"features": {
+			"type": "array",
+			"description": "Key feature bullets shown in the detail sidebar.",
+			"items": { "type": "string" }
+		},
+		"targetUser": {
+			"type": "string",
+			"description": "Who this is for (1-2 sentences)."
+		},
+		"featured": {
+			"type": "boolean",
+			"description": "Surface as a large card on the home page + catalog. Defaults to false.",
+			"default": false
+		},
+		"order": {
+			"type": "number",
+			"description": "Ascending display order across the whole portfolio. Unset sorts after ordered tools, then alphabetically by name."
+		},
+		"icon": {
+			"type": "string",
+			"description": "SVG stroke path (the `d` attribute) for the tool's icon. Defaults to a generic glyph if omitted."
+		},
+		"gradientFrom": {
+			"type": "string",
+			"description": "Accent gradient start, a hex color. Defaults to #6366f1.",
+			"pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$"
+		},
+		"gradientTo": {
+			"type": "string",
+			"description": "Accent gradient end, a hex color. Defaults to #818cf8.",
+			"pattern": "^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$"
+		}
+	}
+}

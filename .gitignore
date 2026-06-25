@@ -2,6 +2,7 @@ node_modules
 landing/node_modules
 landing/build
 landing/.svelte-kit
+landing/.generated
 landing/package
 .env
 .env.*
