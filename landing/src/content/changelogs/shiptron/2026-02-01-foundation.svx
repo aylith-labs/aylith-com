@@ -1,0 +1,11 @@
+---
+title: Foundation
+date: '2026-02-01'
+tags:
+  - added
+summary: The initial Shiptron MVP lands, an autonomous multi-agent SDLC framework with a themed web dashboard.
+---
+
+The initial Shiptron MVP: an **autonomous multi-agent SDLC framework** with a
+web dashboard (Kanban board, settings, task management) on a Vite build with
+theming.

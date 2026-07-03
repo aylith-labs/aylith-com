@@ -1,0 +1,30 @@
+---
+title: Web UI & desktop shell
+date: '2026-06-17'
+tags:
+  - added
+summary: A second front-end with full picker parity served by the daemon, plus a Tauri 2 frameless desktop shell with global hotkey, tray icon, hide-on-blur, and paste-back.
+hero:
+  light: https://media.aylith.com/clipwell/media/webui-light.png
+  dark: https://media.aylith.com/clipwell/media/webui-dark.png
+  alt: 'The Clipwell web UI as a Tauri desktop app: search, filter tabs, typed rows with favicons, image thumbnail, and source apps'
+  width: 1162
+  height: 1003
+---
+<script>
+  import ThemedShot from '$lib/components/changelog/ThemedShot.svelte';
+</script>
+
+Clipwell gained a second face.
+
+- **Web UI** — a second front-end (Solid + Vite + Tailwind v4, Bun + TypeScript), full feature-parity with the native picker, served by the daemon at `127.0.0.1:8787/app` over loopback CORS.
+- **Tauri 2 desktop shell** — the web UI as a frameless desktop app: global hotkey, tray icon, hide-on-blur, and `enigo` paste-back. Starts hidden and hides on blur so it never sits over your work. Verified on Windows (both themes).
+
+<ThemedShot
+  light="https://media.aylith.com/clipwell/media/webui-light.png"
+  dark="https://media.aylith.com/clipwell/media/webui-dark.png"
+  alt="The Clipwell web UI as a Tauri desktop app: search, filter tabs, typed rows with favicons, image thumbnail, and source apps"
+  width={1162}
+  height={1003}
+  caption="The web UI running as a frameless Tauri desktop app."
+/>

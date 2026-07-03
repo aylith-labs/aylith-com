@@ -1,0 +1,13 @@
+---
+title: Foundation
+date: '2026-02-01'
+tags:
+  - added
+  - changed
+summary: The initial Knowmine app lands, with AI-powered scanning and an inventory organized by locations, categories, and tags.
+---
+
+The initial Knowmine app: **AI-powered scanning**, an inventory with locations,
+categories, and tags, session auth, and a Bun + SvelteKit + Drizzle/LibSQL
+monorepo. The toolchain migrated to **tsgo**, dependencies were upgraded to
+latest, and docs were rebranded from Proomptal to Aylith.

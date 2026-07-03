@@ -1,0 +1,33 @@
+---
+title: Stack analysis and evolution
+date: '2026-06-16'
+tags:
+  - added
+  - changed
+summary: Deep per-app stack analysis, an evolution module with commit timelines and a contribution calendar, plus server-side filtering and a categories and tags management UI.
+hero:
+  light: https://media.aylith.com/gitdex/media/home-light.png
+  dark: https://media.aylith.com/gitdex/media/home-dark.png
+  alt: 'Gitdex connect screen: enter a GitHub personal access token to inventory your repositories'
+  width: 2720
+  height: 1760
+---
+<script>
+  import ThemedShot from '$lib/components/changelog/ThemedShot.svelte';
+</script>
+
+Gitdex learned to look inside your repos this milestone.
+
+- **Deep stack analysis** — per-app frameworks and backend/frontend breakdown.
+- **Evolution module** — commit timeline, contribution calendar, cross-repo Gantt, releases/versions, first-commit, and a commit browser.
+- **Server-side filtering / pagination** and a categories & tags management UI.
+- Honors a configurable attention threshold and health weights, surfaces repo metadata, and adds error/empty states.
+
+<ThemedShot
+  light="https://media.aylith.com/gitdex/media/home-light.png"
+  dark="https://media.aylith.com/gitdex/media/home-dark.png"
+  alt="Gitdex connect screen: enter a GitHub personal access token to inventory your repositories"
+  width={2720}
+  height={1760}
+  caption="The connect screen — the inventory dashboard, stack analysis, and evolution views render once a GitHub token is provided."
+/>

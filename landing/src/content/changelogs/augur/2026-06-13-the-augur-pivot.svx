@@ -1,0 +1,33 @@
+---
+title: 'The augur pivot: bring-your-own-model analysis'
+date: '2026-06-13'
+tags:
+  - added
+  - changed
+summary: The project was renamed to augur and rebuilt from a single-provider tool into a multi-provider, bring-your-own-key analyzer with token economics and real internationalization.
+---
+<script>
+  import ThemedShot from '$lib/components/changelog/ThemedShot.svelte';
+</script>
+
+The project was renamed to **augur**, relocated to aylith-labs, and rebuilt
+from a single-provider tool into a multi-provider, bring-your-own-key analyzer.
+
+- **Multi-provider AI** — choose hosted (Anthropic, OpenAI, OpenRouter) or local (Ollama, LM Studio, llama.cpp) models, or mix both.
+- **BYOK key vault** — a WebCrypto-encrypted vault keeps provider keys in your browser; the server takes the key per request, with test-connection and log redaction.
+- **First-run setup wizard** + expanded Firebase auth; a re-openable, discoverable wizard and a tabbed settings redesign with per-provider cards.
+- **Token economics** — every analysis reports its token usage and dollar cost.
+- **Real internationalization** — i18next-aligned i18n with translated analysis results, CLDR pluralization, and added languages (including Ukrainian and Hungarian).
+
+A **minimal-premium redesign** — a distinctive type system and a calm, precise
+interface (the "well-made instrument" look) — replaced the earlier neon/sci-fi
+styling, and the startup theme flash was fixed.
+
+<ThemedShot
+  light="https://media.aylith.com/augur/media/setup-light.png"
+  dark="https://media.aylith.com/augur/media/setup-dark.png"
+  alt="augur's first-run setup wizard: choose Hosted models, Local models, or Both, with a Skip setup option"
+  width={2560}
+  height={1664}
+  caption="The first-run setup wizard — hosted models, local models, or both."
+/>

@@ -1,0 +1,9 @@
+---
+title: Foundation
+date: '2026-03-01'
+tags:
+  - added
+  - changed
+summary: The initial Contactly personal CRM with contacts, interactions, reminders, search, and tags, backed by API integration tests.
+---
+The first cut of Contactly: a lightweight personal CRM with **contacts, interactions, reminders, search, and tags**, backed by API integration tests. The package was renamed from `proomptal-contactly` to `aylith-contactly`.

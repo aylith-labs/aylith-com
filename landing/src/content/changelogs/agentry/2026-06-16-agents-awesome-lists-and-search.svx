@@ -1,0 +1,45 @@
+---
+title: Agents, awesome lists, and search
+date: '2026-06-16'
+tags:
+  - added
+  - fixed
+summary: Versioned agents with snapshot history, curated awesome lists, FTS5 full-text search over prompts, and a hub surfacing activity across sibling apps.
+hero:
+  light: https://media.aylith.com/agentry/media/prompts-light.png
+  dark: https://media.aylith.com/agentry/media/prompts-dark.png
+  alt: "Agentry's Prompts library: a sidebar, a search bar, and prompt cards showing tags, ratings, and usage counts"
+  width: 2720
+  height: 1800
+---
+<script>
+  import ThemedShot from '$lib/components/changelog/ThemedShot.svelte';
+</script>
+
+Agentry grew from a prompt library into a full workbench.
+
+- **Agent versioning & history** — agents are versioned with a snapshot history, plus a dedicated agent detail page.
+- **Awesome lists** — curate "awesome" collections of AI resources (full CRUD).
+- **Full-text search (FTS5)** over prompts, with drizzle migrations for the schema.
+- **Collection-item resolution UI** — resolve and manage items inside collections.
+- **Hub** — surfaces activity across connected sibling apps (Wisdone, Brainstash, Knowmine, and more).
+
+Broken tags, categories, and search API wiring was repaired along the way.
+
+<ThemedShot
+  light="https://media.aylith.com/agentry/media/agents-light.png"
+  dark="https://media.aylith.com/agentry/media/agents-dark.png"
+  alt="Agentry's Agents page: cards for each agent with its description, version, and author"
+  width={2720}
+  height={1800}
+  caption="Agents — each with its own system prompt, tools, version, and history."
+/>
+
+<ThemedShot
+  light="https://media.aylith.com/agentry/media/hub-light.png"
+  dark="https://media.aylith.com/agentry/media/hub-dark.png"
+  alt="Agentry's Hub showing connected sibling apps"
+  width={2720}
+  height={1800}
+  caption="The Hub — activity across connected sibling apps, in one place."
+/>

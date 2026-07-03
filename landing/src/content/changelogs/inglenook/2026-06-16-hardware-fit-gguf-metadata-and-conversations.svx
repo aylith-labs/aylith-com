@@ -1,0 +1,32 @@
+---
+title: Hardware fit, GGUF metadata, and conversations
+date: '2026-06-16'
+tags:
+  - added
+summary: A hardware-fit estimator, GGUF quant metadata enrichment, a GPU-layer toggle, and full conversation management with archive, rename, and delete.
+hero:
+  light: https://media.aylith.com/inglenook/media/landing-light.png
+  dark: https://media.aylith.com/inglenook/media/landing-dark.png
+  alt: 'Inglenook landing: a desktop app for running local AI models on your own hardware'
+  width: 2720
+  height: 1700
+---
+<script>
+  import ThemedShot from '$lib/components/changelog/ThemedShot.svelte';
+</script>
+
+This milestone was about knowing what your machine can run — and keeping your
+chats organized. The **hardware-fit estimator** and **GGUF quant metadata**
+enrichment tell you whether a model fits before you download it, and a
+**GPU-layer toggle** gives you control over offloading. Conversations gained
+an **archive** UI, **rename / delete**, and **system-prompt persistence**,
+with a proper generation-error state.
+
+<ThemedShot
+  light="https://media.aylith.com/inglenook/media/landing-light.png"
+  dark="https://media.aylith.com/inglenook/media/landing-dark.png"
+  alt="Inglenook landing: a desktop app for running local AI models on your own hardware"
+  width={2720}
+  height={1700}
+  caption="The Inglenook landing — your AI, your hardware, your rules."
+/>

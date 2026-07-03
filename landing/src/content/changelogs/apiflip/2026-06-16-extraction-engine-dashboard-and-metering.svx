@@ -1,0 +1,38 @@
+---
+title: Extraction engine, dashboard, and metering
+date: '2026-06-16'
+tags:
+  - added
+summary: The self-healing extraction engine, a live dashboard, self-managed API keys with plan-based rate limiting and metering, and API docs.
+hero:
+  light: https://media.aylith.com/apiflip/media/home-light.png
+  dark: https://media.aylith.com/apiflip/media/home-dark.png
+  alt: 'Apiflip landing: turn any website into an API, with a curl example returning typed JSON'
+  width: 2720
+  height: 1800
+---
+<script>
+  import ThemedShot from '$lib/components/changelog/ThemedShot.svelte';
+</script>
+
+The core product arrived. The **extraction engine** lets you point at a URL,
+describe the data in plain language, and get typed JSON back — selectors
+**self-heal** with an LLM when the site changes, auto-applying when confident
+and flagging for review when not, all on a **model-agnostic AI layer**. A new
+**dashboard** runs extractions, watches saved schemas, and reviews self-heals,
+reading live from the `/api/v1` endpoints with nothing mocked.
+
+<ThemedShot
+  light="https://media.aylith.com/apiflip/media/dashboard-light.png"
+  dark="https://media.aylith.com/apiflip/media/dashboard-dark.png"
+  alt="Apiflip dashboard: an extract form, an API keys and usage panel with plan selector, and recent activity"
+  width={2720}
+  height={1800}
+  caption="The Apiflip dashboard — extract, manage API keys and usage, and review self-heals."
+/>
+
+Also in this milestone: **self-managed API keys with an auth guard** on
+`/api/v1` requests, **plan-based rate limiting and metering** enforced
+server-side, **API docs** with working dashboard search, a minimal
+`GET /health` endpoint for the infra-hub connector, and a `robots.txt`
+politeness guard.

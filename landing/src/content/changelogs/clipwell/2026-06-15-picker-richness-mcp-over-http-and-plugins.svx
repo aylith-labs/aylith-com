@@ -1,0 +1,85 @@
+---
+title: Picker richness, MCP-over-HTTP, plugins
+date: '2026-06-15'
+tags:
+  - added
+  - changed
+summary: A Ctrl+K action palette, Quick Look previews, Compact and Detail view modes, grouping by date or source, richer settings, a diagnostics window, a plugin host, and MCP served over HTTP/SSE by the daemon.
+---
+<script>
+  import ThemedShot from '$lib/components/changelog/ThemedShot.svelte';
+  import ThemedClip from '$lib/components/changelog/ThemedClip.svelte';
+</script>
+
+The picker grew up in one milestone.
+
+**Action palette (Ctrl+K)** — content-aware actions for the selected item (open in browser, copy domain, and more) via `IClipAction`.
+
+<ThemedShot
+  light="https://media.aylith.com/clipwell/media/actions-light.png"
+  dark="https://media.aylith.com/clipwell/media/actions-dark.png"
+  alt="The Ctrl+K action palette over a selected link, listing Open in browser, Copy to clipboard, and Copy domain"
+  width={862}
+  height={1016}
+/>
+
+**Quick Look (Ctrl+Y)** — a fast, full-content preview without leaving the list.
+
+<ThemedShot
+  light="https://media.aylith.com/clipwell/media/quicklook-light.png"
+  dark="https://media.aylith.com/clipwell/media/quicklook-dark.png"
+  alt="Quick Look overlay showing the selected item's full content over a dimmed picker"
+  width={862}
+  height={1016}
+/>
+
+**Compact / Detail view modes** — Detail adds a live preview pane beside the list.
+
+<ThemedShot
+  light="https://media.aylith.com/clipwell/media/detail-light.png"
+  dark="https://media.aylith.com/clipwell/media/detail-dark.png"
+  alt="Clipwell in Detail view: the history list on the left and a preview pane on the right showing the selected item's full content"
+  width={862}
+  height={1016}
+/>
+
+**Group by date or source** — inline headers above each day's / app's items.
+
+<ThemedShot
+  light="https://media.aylith.com/clipwell/media/grouped-light.png"
+  dark="https://media.aylith.com/clipwell/media/grouped-dark.png"
+  alt="The picker grouped by source app, with a header above each app's items"
+  width={862}
+  height={1016}
+/>
+
+**Richer settings** — appearance, default view & grouping, row metadata toggles, retention, and picker position — and a **diagnostics window** with daemon health and real picker show-cycle latencies.
+
+<ThemedShot
+  light="https://media.aylith.com/clipwell/media/settings-light.png"
+  dark="https://media.aylith.com/clipwell/media/settings-dark.png"
+  alt="The Clipwell settings window: appearance, default view, grouping, row metadata, retention, and picker position"
+  width={682}
+  height={1016}
+/>
+
+<ThemedShot
+  light="https://media.aylith.com/clipwell/media/diagnostics-light.png"
+  dark="https://media.aylith.com/clipwell/media/diagnostics-dark.png"
+  alt="The Clipwell diagnostics window showing daemon status and picker show-cycle timings"
+  width={802}
+  height={956}
+/>
+
+Also in this milestone: a **rebindable global hotkey chord**, **pagination / infinite scroll**, **source-app capture** (records the foreground app at copy time, shown per row), a **plugin host** for external detectors and actions via `PluginLoader`, and **MCP over HTTP/SSE** — the same four clipboard tools as the stdio server, now served in-process by the daemon.
+
+Picker filtering is now live as you type — narrowing the history without leaving the box.
+
+<ThemedClip
+  light="https://media.aylith.com/clipwell/media/usage-light.webm"
+  dark="https://media.aylith.com/clipwell/media/usage-dark.webm"
+  alt="Typing in the picker's search box filters the clipboard history live"
+  width={862}
+  height={1016}
+  caption="Live filtering as you type."
+/>

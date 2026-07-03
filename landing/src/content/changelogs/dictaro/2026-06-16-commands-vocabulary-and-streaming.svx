@@ -1,0 +1,32 @@
+---
+title: Commands, vocabulary, and streaming
+date: '2026-06-16'
+tags:
+  - added
+  - fixed
+summary: Voice commands, streaming partial transcripts, a custom vocabulary dictionary wired into cleanup, a language selector, and a transcript field fix.
+hero:
+  light: https://media.aylith.com/dictaro/media/landing-light.png
+  dark: https://media.aylith.com/dictaro/media/landing-dark.png
+  alt: 'Dictaro landing: speak messy, get clean — a cassette-tape pipeline with transcribe, filler-strip, tone, and dictionary stages'
+  width: 2720
+  height: 1700
+---
+<script>
+  import ThemedShot from '$lib/components/changelog/ThemedShot.svelte';
+</script>
+
+Dictation got faster and more personal. **Voice commands** and **streaming
+partial transcripts** landed, along with a **custom vocabulary / replacement
+dictionary** wired into the cleanup pass. A **language selector** and
+microphone error handling round out the release, and a transcript field
+mismatch was fixed.
+
+<ThemedShot
+  light="https://media.aylith.com/dictaro/media/landing-light.png"
+  dark="https://media.aylith.com/dictaro/media/landing-dark.png"
+  alt="Dictaro landing: speak messy, get clean"
+  width={2720}
+  height={1700}
+  caption="The Dictaro landing — local Whisper plus a small AI for cleanup, no cloud."
+/>

@@ -1,0 +1,10 @@
+---
+title: Origins
+date: '2026-05-01'
+tags:
+  - added
+summary: Vendored the runnable app and the marketing landing into the repo.
+---
+
+Githerald entered the umbrella: the **runnable app** and the **landing** were
+vendored in.

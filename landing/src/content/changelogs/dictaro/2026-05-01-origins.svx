@@ -1,0 +1,12 @@
+---
+title: Origins
+date: '2026-05-01'
+tags:
+  - added
+  - changed
+summary: Vendored the runnable app, moved the marketing site into landing/, and modernized the toolchain.
+---
+
+Dictaro entered the umbrella: the **runnable app** was vendored in and the
+marketing site moved into `landing/`. The toolchain moved to TypeScript 7
+beta, and the source tree was renamed from *aylith-apps* to *aylith-labs*.

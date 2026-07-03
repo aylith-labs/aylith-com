@@ -2,9 +2,12 @@
 	import type { Project } from '$lib/types/project';
 	import { reveal } from '$lib/actions/reveal';
 	import Seo from '$lib/components/Seo.svelte';
+	import ThemedShot from '$lib/components/changelog/ThemedShot.svelte';
+	import { getHero } from '$lib/changelog/entries';
 
 	let { data } = $props();
 	let project: Project = $derived(data.project);
+	let hero = $derived(getHero(project.slug));
 
 	const categoryLabels: Record<string, string> = {
 		'ai-infrastructure': 'AI Infrastructure',
@@ -86,6 +89,15 @@
 					<span class="text-xs font-medium text-surface-400 dark:text-warm-400">
 						{categoryLabels[project.category] ?? project.category}
 					</span>
+					<a
+						href="/projects/{project.slug}/changelog"
+						class="inline-flex items-center gap-1 text-xs font-semibold text-accent-600 transition-colors hover:text-accent-700 dark:text-accent-400 dark:hover:text-accent-300"
+					>
+						Changelog
+						<svg class="size-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+							<path d="M5 12h14M12 5l7 7-7 7" />
+						</svg>
+					</a>
 					{#if project.repoUrl}
 						<a
 							href={project.repoUrl}
@@ -100,6 +112,37 @@
 				</div>
 			</div>
 		</div>
+	</div>
+</section>
+
+<!-- Product screenshot (theme-aware) -->
+<section class="pb-4">
+	<div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8" use:reveal>
+		{#if hero}
+			<ThemedShot
+				light={hero.light}
+				dark={hero.dark}
+				alt={hero.alt}
+				width={hero.width}
+				height={hero.height}
+			/>
+		{:else}
+			<div
+				class="my-8 flex flex-col items-center justify-center rounded-xl border border-dashed border-surface-300 dark:border-warm-700"
+				style="aspect-ratio: 16 / 10"
+			>
+				<svg
+					class="size-12 opacity-40"
+					style="color: {project.gradientFrom}"
+					fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"
+				>
+					<path stroke-linecap="round" stroke-linejoin="round" d={project.iconPath} />
+				</svg>
+				<p class="mt-4 text-sm text-surface-400 dark:text-warm-400">
+					Screenshots are on their way — {project.name} doesn't have a capturable public surface yet.
+				</p>
+			</div>
+		{/if}
 	</div>
 </section>
 

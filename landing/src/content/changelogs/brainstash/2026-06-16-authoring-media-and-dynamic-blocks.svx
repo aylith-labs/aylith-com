@@ -1,0 +1,46 @@
+---
+title: Authoring, media, and dynamic blocks
+date: '2026-06-16'
+tags:
+  - added
+  - changed
+summary: A media library with working upload, live dynamic content blocks, XSS-safe server-side markdown rendering, and a move to cookie-based auth.
+hero:
+  light: https://media.aylith.com/brainstash/media/entries-light.png
+  dark: https://media.aylith.com/brainstash/media/entries-dark.png
+  alt: 'Brainstash entries: the personal knowledge base with full-text search, categories, and tags'
+  width: 2720
+  height: 1800
+---
+<script>
+  import ThemedShot from '$lib/components/changelog/ThemedShot.svelte';
+</script>
+
+Authoring in Brainstash got markedly richer.
+
+- **Media library** — a page for uploaded media, with working upload.
+- **Dynamic content blocks** — a live dynamic-block authoring UI plus settings.
+- **Server-side markdown rendering** — XSS-safe HTML generated on the server.
+- **Stats & profile** endpoints.
+
+The frontend was rewired to **cookie-based auth**, query-params and media
+upload were fixed, the README was modernized, and the suite copy was rebranded
+from Proomptal to **Aylith**.
+
+<ThemedShot
+  light="https://media.aylith.com/brainstash/media/entries-light.png"
+  dark="https://media.aylith.com/brainstash/media/entries-dark.png"
+  alt="Brainstash entries: the personal knowledge base with full-text search, categories, and tags"
+  width={2720}
+  height={1800}
+  caption="Entries — everything you learn, searchable and versioned."
+/>
+
+<ThemedShot
+  light="https://media.aylith.com/brainstash/media/categories-light.png"
+  dark="https://media.aylith.com/brainstash/media/categories-dark.png"
+  alt="Brainstash categories: browsing the knowledge base by category"
+  width={2720}
+  height={1800}
+  caption="Categories — the knowledge base, organized by topic."
+/>

@@ -1,0 +1,45 @@
+---
+title: Dark mode, taxonomy pages, and export
+date: '2026-06-16'
+tags:
+  - added
+  - changed
+  - fixed
+summary: Exhaustive dark-mode coverage, standalone tag and category pages, and a ZIP-with-photos data export, plus a svelte-query v6 migration and a repaired scan API client.
+hero:
+  light: https://media.aylith.com/knowmine/media/inventory-light.png
+  dark: https://media.aylith.com/knowmine/media/inventory-dark.png
+  alt: 'Knowmine inventory: items organized by location, category, and tags'
+  width: 2720
+  height: 1800
+---
+<script>
+  import ThemedShot from '$lib/components/changelog/ThemedShot.svelte';
+</script>
+
+Knowmine now looks right in both themes and lets your data leave with you.
+
+- **Exhaustive dark-mode coverage** across the app.
+- **Standalone tag & category pages** for browsing the inventory by taxonomy.
+- **Data export** — including a ZIP-with-photos export of your inventory.
+
+The app migrated to **svelte-query v6**, upgraded the scan model, moved
+validation to **Zod 4**, and repaired the broken scan API client.
+
+<ThemedShot
+  light="https://media.aylith.com/knowmine/media/inventory-light.png"
+  dark="https://media.aylith.com/knowmine/media/inventory-dark.png"
+  alt="Knowmine inventory: items organized by location, category, and tags"
+  width={2720}
+  height={1800}
+  caption="The inventory — everything you own, organized by location, category, and tags."
+/>
+
+<ThemedShot
+  light="https://media.aylith.com/knowmine/media/locations-light.png"
+  dark="https://media.aylith.com/knowmine/media/locations-dark.png"
+  alt="Knowmine locations page: browse the inventory by where things live"
+  width={2720}
+  height={1800}
+  caption="Locations — browse the inventory by where things live."
+/>

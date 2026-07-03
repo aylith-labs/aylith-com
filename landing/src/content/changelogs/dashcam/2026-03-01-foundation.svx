@@ -1,0 +1,8 @@
+---
+title: Foundation
+date: '2026-03-01'
+tags:
+  - added
+summary: The initial Dashcam implementation, a flight recorder for AI coding agents, plus a 22-page Fumadocs documentation website.
+---
+The first cut of Dashcam: a **flight recorder for AI coding agents**, alongside a Fumadocs documentation website (22 pages).

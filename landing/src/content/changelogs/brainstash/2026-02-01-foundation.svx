@@ -1,0 +1,13 @@
+---
+title: Foundation
+date: '2026-02-01'
+tags:
+  - added
+  - changed
+summary: The full Brainstash application lands, with versioned entries, full-text search, OAuth and session auth, and a CLI.
+---
+
+The full Brainstash application: **entries** with categories, tags, and
+versioning; **full-text search**; OAuth + session auth; a **CLI**; and a
+Bun + SvelteKit + Drizzle/LibSQL monorepo. The toolchain migrated to **tsgo**
+and dependencies were upgraded to latest.

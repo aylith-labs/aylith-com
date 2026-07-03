@@ -1,0 +1,9 @@
+---
+title: Foundation
+date: '2026-03-01'
+tags:
+  - added
+  - changed
+summary: The initial Daylog daily journal with entries, metrics, streaks, search, and pagination, backed by API integration tests.
+---
+The first cut of Daylog: a calm, private daily journal with **entries, metrics, streaks, search, and pagination**, backed by API integration tests. The package was renamed from `proomptal-daylog` to `aylith-daylog`.

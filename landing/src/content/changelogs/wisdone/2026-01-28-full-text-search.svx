@@ -1,0 +1,16 @@
+---
+title: Full-text search
+date: '2026-01-28'
+tags:
+  - added
+summary: Search across tasks, projects, tags, and goals from a single box, with advanced filters, rich context previews, and direct actions on results.
+---
+
+Version 1.1.0 makes everything in Wisdone findable.
+
+- **Full-text search** — search across tasks, projects, tags, and goals from a single box, with instant results.
+- **Advanced filters** — narrow results by status, date range, priority, and project.
+- **Rich context preview** — results show surrounding context so you can preview an item before opening it.
+- **Direct actions** — act on a result (complete, open, and more) without navigating away.
+
+Authentic product screenshots are pending — the in-app surfaces sit behind sign-in, so a seeded demo session is needed before light/dark captures can be taken.

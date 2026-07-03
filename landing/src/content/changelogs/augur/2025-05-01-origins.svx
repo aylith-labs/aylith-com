@@ -1,0 +1,13 @@
+---
+title: Origins
+date: '2025-05-01'
+tags:
+  - added
+summary: The initial application was a session-monitoring and log-streaming tool with real-time event streaming, later overhauled before the augur pivot.
+---
+
+The initial application: a **session-monitoring / log-streaming tool** with
+real-time event streaming, error tracking, a light/dark theme toggle, a
+responsive mobile menu, and a client/server package split. It was later
+overhauled — dependency bumps, UI improvements, containerization — before the
+augur pivot.

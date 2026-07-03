@@ -1,0 +1,29 @@
+---
+title: Capture pipeline and rollups
+date: '2026-06-17'
+tags:
+  - added
+  - fixed
+  - changed
+summary: The capture pipeline wired end-to-end with real import and worktree hook endpoints, cost rollups, a fixed hook-body race, and the package consolidated under the dashcam name.
+hero:
+  light: https://media.aylith.com/dashcam/media/sessions-light.png
+  dark: https://media.aylith.com/dashcam/media/sessions-dark.png
+  alt: 'Dashcam sessions view: recorded AI coding agent sessions in the dashboard'
+  width: 2720
+  height: 1800
+---
+<script>
+  import ThemedShot from '$lib/components/changelog/ThemedShot.svelte';
+</script>
+
+The recorder records now. The **capture pipeline** is wired end-to-end, with real import and **worktree hook endpoints**, plus **cost rollups** and `doctor` / `uninstall` fixes. A hook-body race that dropped payloads was fixed, and the package was renamed to **dashcam** (consolidated from dashcam-team).
+
+<ThemedShot
+  light="https://media.aylith.com/dashcam/media/sessions-light.png"
+  dark="https://media.aylith.com/dashcam/media/sessions-dark.png"
+  alt="Dashcam sessions view: recorded AI coding agent sessions in the dashboard"
+  width={2720}
+  height={1800}
+  caption="The sessions browser — everything your agents built while you were away."
+/>

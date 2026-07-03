@@ -1,0 +1,12 @@
+---
+title: Origins
+date: '2026-05-01'
+tags:
+  - added
+  - changed
+summary: Vendored the runnable app and marketing landing; renamed the source tree from aylith-apps to aylith-labs.
+---
+
+Plainbase entered the umbrella: the **runnable app** and the **marketing
+landing** were vendored in, and the source tree was renamed from
+*aylith-apps* to *aylith-labs*.

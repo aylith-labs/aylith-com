@@ -1,0 +1,16 @@
+---
+title: Workspace and collaboration
+date: '2026-06-17'
+tags:
+  - added
+summary: Real-time chat, Linear-style issue boards, Postgres-backed documents, wired-in search, and full workspace and member management.
+---
+
+The core workspace surfaces came together in this group.
+
+- **Chat** — a real-time WebSocket gateway with DragonflyDB pub/sub.
+- **Issues** — board + list views with Linear-style keyboard navigation.
+- **Documents** — real Postgres-backed documents (chat/issues/documents/search routers moved off stubs), with document revisions and relations.
+- **Search** — index events wired into write handlers, with integration tests.
+- **Workspaces & members** — a workspace-creation UI, plus list, change-role, remove, and invite + accept flows with admin delete/archive.
+- **Theme system** — a ThemeSwitcher and command-palette theme commands, alongside an **activity log**, **link resolution**, an accessibility pass, and a branded 404 page.

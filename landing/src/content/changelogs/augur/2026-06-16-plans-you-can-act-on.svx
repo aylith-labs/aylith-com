@@ -1,0 +1,35 @@
+---
+title: Plans you can act on
+date: '2026-06-16'
+tags:
+  - added
+  - changed
+summary: The three implementation plans render as actionable, explorable output, with plan-feedback capture, durable file-backed storage, and corrected pricing data.
+hero:
+  light: https://media.aylith.com/augur/media/app-light.png
+  dark: https://media.aylith.com/augur/media/app-dark.png
+  alt: "augur's main screen: the headline 'Can AI do your task?', a one-line value prop, and a card prompting you to connect an AI provider to get started"
+  width: 2560
+  height: 1664
+---
+<script>
+  import ThemedShot from '$lib/components/changelog/ThemedShot.svelte';
+</script>
+
+Analysis results stopped being a wall of text this milestone.
+
+- **Functional plan reveal** — the three implementation plans render as actionable, explorable output rather than a static blob.
+- **Plan-feedback capture** — record which plan was useful.
+- **Durable file-backed storage** for analyses, plus a Vitest test suite.
+
+Anthropic pricing and context-window data were corrected so the reported cost
+is trustworthy, and the README was modernized.
+
+<ThemedShot
+  light="https://media.aylith.com/augur/media/app-light.png"
+  dark="https://media.aylith.com/augur/media/app-dark.png"
+  alt="augur's main screen: the headline 'Can AI do your task?' with a card prompting you to connect an AI provider"
+  width={2560}
+  height={1664}
+  caption="Can AI do your task? Connect a provider and find out."
+/>

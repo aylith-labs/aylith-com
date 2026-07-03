@@ -1,0 +1,32 @@
+---
+title: Watch, fix, and coverage targeting
+date: '2026-06-16'
+tags:
+  - added
+  - changed
+summary: Real watch, fix, and ci commands, coverage-gap targeting for test generation, convention learning, and dependency-graph-aware regeneration.
+hero:
+  light: https://media.aylith.com/specwatch/media/landing-light.png
+  dark: https://media.aylith.com/specwatch/media/landing-dark.png
+  alt: Specwatch landing page
+  width: 2720
+  height: 1700
+---
+<script>
+  import ThemedShot from '$lib/components/changelog/ThemedShot.svelte';
+</script>
+
+The CLI grew up this milestone. The **`watch` and `fix` commands** — previously
+stubs — became real, joined by a new **`ci` command**. Test generation now uses
+**coverage-gap targeting**, and the engine picked up **convention learning**
+and **dependency-graph-aware regeneration**. The AI layer was made
+**model/provider-agnostic**.
+
+<ThemedShot
+  light="https://media.aylith.com/specwatch/media/landing-light.png"
+  dark="https://media.aylith.com/specwatch/media/landing-dark.png"
+  alt="Specwatch landing page"
+  width={2720}
+  height={1700}
+  caption="The Specwatch landing — a local-first AI testing CLI."
+/>

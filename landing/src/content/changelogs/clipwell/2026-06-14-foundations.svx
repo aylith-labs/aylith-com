@@ -1,0 +1,27 @@
+---
+title: Foundations
+date: '2026-06-14'
+tags:
+  - added
+summary: The clipboard daemon with one public API, cross-platform capture, a pre-warmed Avalonia picker with typed items and detectors, pin/sensitive/alias metadata, and two documentation sites.
+---
+<script>
+  import ThemedShot from '$lib/components/changelog/ThemedShot.svelte';
+</script>
+
+The Clipwell architecture landed in one piece.
+
+- **Clipboard daemon** — ASP.NET minimal API (REST + WebSocket/SSE + MCP) over a SQLite history store; one public API for every client.
+- **Cross-platform capture** — Windows (Win32 clipboard listener, text/HTML/image), macOS/Linux (polling `pbpaste`/`wl-paste`/`xclip`), with a null fallback.
+- **Native picker (Avalonia)** — pre-warmed window shown on a global hotkey (~16 ms warm show-cycle), tray icon, single-instance, paste-into-source app, image thumbnails, typed items + detectors (url / github-pr / email / jira / color / path / code / image).
+- **Pin / sensitive / alias metadata** and picker type filters.
+- **Documentation sites** — user-facing feature docs and an engineering / ADR site (Fumadocs static export), both light/dark with the OS preference as default.
+
+<ThemedShot
+  light="https://media.aylith.com/clipwell/media/picker-light.png"
+  dark="https://media.aylith.com/clipwell/media/picker-dark.png"
+  alt="The Clipwell picker showing a search box, filter tabs, and a list of typed clipboard items"
+  width={862}
+  height={1016}
+  caption="The native Avalonia picker: search, filter tabs, and typed clipboard items."
+/>

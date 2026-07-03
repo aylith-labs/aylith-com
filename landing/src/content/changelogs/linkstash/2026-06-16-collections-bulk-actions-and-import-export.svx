@@ -1,0 +1,33 @@
+---
+title: Collections, bulk actions, and import/export
+date: '2026-06-16'
+tags:
+  - added
+summary: Collections with a picker and assign dialog, bulk actions over selected bookmarks, search with status tabs, JSON and Netscape import/export, and automatic OG metadata fetching.
+hero:
+  light: https://media.aylith.com/linkstash/media/home-light.png
+  dark: https://media.aylith.com/linkstash/media/home-dark.png
+  alt: 'Linkstash bookmarks view: search, Active/Archived/All tabs, collection and tag chips, and saved bookmarks with title, domain, description, and tags'
+  width: 2720
+  height: 1960
+---
+<script>
+  import ThemedShot from '$lib/components/changelog/ThemedShot.svelte';
+</script>
+
+Linkstash became a full bookmarks manager this milestone.
+
+- **Collections** — create and manage collections, a collection picker + assign dialog, and per-collection detail/CRUD.
+- **Bulk actions** over selected bookmarks; **edit / archive / delete**.
+- **Search + status tabs** (Active / Archived / All) and tag chips.
+- **Import / export** — JSON and Netscape (browser) bookmark formats; drizzle migrations.
+- **OG metadata** auto-fetch (title, description, image) and a theme toggle.
+
+<ThemedShot
+  light="https://media.aylith.com/linkstash/media/collections-light.png"
+  dark="https://media.aylith.com/linkstash/media/collections-dark.png"
+  alt="Linkstash collections page"
+  width={2720}
+  height={1800}
+  caption="Collections, with per-collection detail and CRUD."
+/>

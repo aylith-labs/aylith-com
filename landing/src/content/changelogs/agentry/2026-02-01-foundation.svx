@@ -1,0 +1,17 @@
+---
+title: Foundation
+date: '2026-02-01'
+tags:
+  - added
+  - changed
+summary: Full prompt CRUD with a rich-text editor, ratings, forking, and visibility controls, plus authentication and a Svelte 5 migration.
+---
+
+The prompt library landed first.
+
+- **Prompts** — full CRUD with a Tiptap rich-text editor, draft/published status, private/public visibility, category + tags, model hint, fork, favorite, and 1–5 ratings.
+- **Authentication** — registration + login with session tokens, plus Google OAuth and a protected workbench.
+
+The codebase completed the **Svelte 5 + TanStack Query** migration (runes
+idiom, typed queries), moved the toolchain to **tsgo**, and upgraded
+dependencies to latest.

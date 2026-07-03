@@ -1,0 +1,36 @@
+---
+title: Engine-agnostic toolkit
+date: '2026-06-16'
+tags:
+  - added
+  - changed
+summary: An engine-agnostic core with config schema and CLI init scaffolding, MCP and GitHub helpers, a changelog dashboard agent fleet, and provider-agnostic cost estimation.
+hero:
+  light: https://media.aylith.com/ourobuild/media/hero.png
+  dark: https://media.aylith.com/ourobuild/media/hero.png
+  alt: 'ourobuild landing page'
+  width: 2720
+  height: 1700
+---
+<script>
+  import ThemedShot from '$lib/components/changelog/ThemedShot.svelte';
+</script>
+
+Ourobuild became a real toolkit this milestone, decoupled from any specific build engine.
+
+- **Landing page.**
+- **Engine-agnostic core** — a config schema and CLI `init` scaffolding from single-source templates.
+- **CLI** — generates `.mcp.json` from MCP helpers (with a search-provider prompt), renders a subagent fleet in the `changelog --html` dashboard, and re-exports the public config API.
+- **PR-side helpers** — GitHub + MCP helpers, a dashboard agent fleet, and a skill generator.
+- **Observability** — provider-agnostic, USD-first cost estimation.
+
+The PRD, docs, and templates were modernized around the engine-agnostic stack.
+
+<ThemedShot
+  light="https://media.aylith.com/ourobuild/media/hero.png"
+  dark="https://media.aylith.com/ourobuild/media/hero.png"
+  alt="ourobuild landing page"
+  width={2720}
+  height={1700}
+  caption="The ourobuild landing — the self-building serpent."
+/>

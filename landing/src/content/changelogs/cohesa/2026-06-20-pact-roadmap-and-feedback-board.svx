@@ -1,0 +1,18 @@
+---
+title: The Pact, roadmap, and feedback board
+date: '2026-06-20'
+tags:
+  - added
+  - changed
+  - docs
+summary: The project covenant lands alongside a status-grouped roadmap page, an authenticated feature-request board, and a full docs refresh.
+---
+
+Cohesa now states how it is built, and where it is going.
+
+- **The Pact** — the project covenant: self-built platforms (no third-party services for core surfaces), documentation as a living product surface with liveness-contract frontmatter, the live-blocks spec, trunk-based + TDD + tag-deploy ground rules, and the team model policy.
+- **Roadmap page** — status-grouped (planned / building / shipped, never calendar-based), wired to a live BFF source with a provenance popover.
+- **Feature-request board** — authenticated users submit requests, upvote, and comment; Rust API + tRPC router + workspace-scoped E2E coverage.
+- **Docs refresh** — all markdown updated to build reality, with the implementation strategy fully rewritten as the canonical process doc and liveness-contract frontmatter added to every doc.
+
+Authentic product screenshots are pending — Cohesa sits behind umbrella SSO, so a seeded, unauthenticated demo surface is needed before light/dark captures can be taken.

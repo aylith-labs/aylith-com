@@ -1,0 +1,14 @@
+---
+title: App connectors, docs surface, and centralized health
+date: '2026-06-16'
+tags:
+  - added
+  - changed
+summary: A generic AppConnector template onboarded 13 aylith apps to the dashboard, a full Docs surface shipped, and service health centralized on the aylith-hub status API.
+---
+
+The dashboard became the umbrella's control room: a **generic AppConnector
+template** batch-onboarded 13 aylith apps, a complete **Docs surface** shipped
+(routes, hooks, page, git-backed docs with provenance), and service health was
+**centralized** on the aylith-hub `/api/status` signal — dropping the redundant
+poller. Dashcam joined the connector registry the next day.

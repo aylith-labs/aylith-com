@@ -35,6 +35,28 @@ No runtime env vars — fully static, no backend.
 - **Self-refreshing.** Deploy fires on push to `main`, a `catalog-refresh` `repository_dispatch` from any product repo, an hourly cron, or manual dispatch; builds and deploys to GitHub Pages.
 - Key dirs: `landing/src/routes/` (pages incl. `/projects`, `/projects/[slug]`, `/design`, `sitemap.xml`), `landing/src/lib/` (`actions/`, `brand/`, `components/`, `server/`, `stores/`), `landing/static/` (CNAME, favicons, brand avatars), `.aylith/project.schema.json` (manifest contract).
 
+## Changelog system
+
+Product changelogs live HERE, not in the product repos (CHANGELOG.md is retired
+umbrella-wide). One mdsvex `.svx` file per shipped change at
+`landing/src/content/changelogs/<slug>/YYYY-MM-DD-<title>.svx` (slug = repo name),
+rendered at `/projects/<slug>/changelog` and exposed as prerendered JSON at
+`/api/changelog/<slug>.json`. The newest entry with a `hero:` block provides the
+theme-aware screenshot on the `/projects/<slug>` detail page.
+
+**When any aylith-labs repo ships a user-visible change, follow the
+`aylith-changelog-entry` skill** (capture light/dark media → upload to
+media.aylith.com → author the entry → build + push). Entry format, component
+catalog (ThemedShot/ThemedClip/BeforeAfter/Diagram in
+`landing/src/lib/components/changelog/`), and capture technique are documented
+in the skill.
+
+- Media is never committed here (small SVGs and brand logos are the exception);
+  screenshots and clips load from https://media.aylith.com.
+- Theme swap is class-based (`.dark` on `<html>`, store `src/lib/stores/theme.svelte.ts`,
+  localStorage key `theme`); media components use `dark:hidden` / `hidden dark:block`
+  with reserved aspect-ratio boxes (no CLS).
+
 ## Conventions
 
 - Catalog data is **collected at build, not edited in this repo** — to add/change a tool, edit that tool's own repo `.aylith/project.md`, not files here.

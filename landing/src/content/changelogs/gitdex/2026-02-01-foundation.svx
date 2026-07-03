@@ -1,0 +1,9 @@
+---
+title: Foundation
+date: '2026-02-01'
+tags:
+  - added
+  - changed
+summary: The initial Gitdex app with repository inventory, health scoring, GraphQL enrichment, and light/dark theme support.
+---
+The first cut of Gitdex: a digital repository inventory with **health scoring**, **GraphQL enrichment**, and light/dark theme support. The toolchain was migrated to Bun + tsgo and dependencies were upgraded.

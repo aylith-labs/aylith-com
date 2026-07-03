@@ -1,0 +1,17 @@
+---
+title: Platform and infrastructure
+date: '2026-06-14'
+tags:
+  - added
+  - changed
+  - infra
+summary: Umbrella SSO with self-healing Zitadel bootstrap, a full observability stack, and a toolchain modernization pass across TypeScript, Rust, and Docker.
+---
+
+The platform layer hardened underneath the product.
+
+- **Umbrella SSO** — Cohesa users provisioned on OIDC login with real workspace IDs; `make doctor` + self-healing Zitadel bootstrap; auth preferences.
+- **Observability stack** — OpenTelemetry, Prometheus, Loki, Tempo, and Grafana.
+- An **AppConnector** template for the infra-hub dashboard, plus performance work (indexed hot read paths, bounded document lists).
+- **Modernization** — pinned all Docker images to current stable, migrated `tsc` to **tsgo** (TypeScript 7 native preview), adopted **Biome** in place of ESLint + Prettier, and moved Rust to edition 2024 (clippy clean).
+- **Deterministic E2E** — Playwright web E2E made deterministic (hydration gate, worker cap) and local-only.

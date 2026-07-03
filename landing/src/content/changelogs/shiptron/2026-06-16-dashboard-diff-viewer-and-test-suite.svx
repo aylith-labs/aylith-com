@@ -1,0 +1,31 @@
+---
+title: Dashboard, diff viewer, and test suite
+date: '2026-06-16'
+tags:
+  - added
+summary: The dashboard reaches P0 with a Kanban board, project wizard, multi-project tabs, and a diff-viewer/worktree panel, backed by agent retry services and a 65-test core suite.
+hero:
+  light: https://media.aylith.com/shiptron/media/board-light.png
+  dark: https://media.aylith.com/shiptron/media/board-dark.png
+  alt: 'Shiptron dashboard: the Kanban board tracking agent work across a project'
+  width: 2720
+  height: 1800
+---
+<script>
+  import ThemedShot from '$lib/components/changelog/ThemedShot.svelte';
+</script>
+
+The web dashboard reached its first real milestone.
+
+- **Dashboard P0** — a Kanban board, a project wizard, and settings; multi-project tabs; a **diff-viewer / worktree panel**.
+- **Agent retry** plus complexity and review services.
+- A **65-test core suite**.
+
+<ThemedShot
+  light="https://media.aylith.com/shiptron/media/board-light.png"
+  dark="https://media.aylith.com/shiptron/media/board-dark.png"
+  alt="Shiptron dashboard: the Kanban board tracking agent work across a project"
+  width={2720}
+  height={1800}
+  caption="The Kanban board — the agent fleet's work, tracked column by column."
+/>

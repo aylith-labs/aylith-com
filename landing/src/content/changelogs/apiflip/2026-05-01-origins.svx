@@ -1,0 +1,11 @@
+---
+title: Origins
+date: '2026-05-01'
+tags:
+  - added
+summary: Initial landing site and the first runnable app vendored into the repo, with a modernized toolchain.
+---
+
+Apiflip entered the umbrella: the initial **landing** site and the first
+**runnable app** were vendored into the repo, with the toolchain modernized
+(TypeScript 7 beta, latest dependencies).

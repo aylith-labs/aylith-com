@@ -1,0 +1,21 @@
+---
+title: First public release
+date: '2026-01-10'
+tags:
+  - added
+  - changed
+  - infra
+summary: Version 1.0.0 ships the full task-management foundation, from natural-language task creation and goal tracking to a work log, authentication, and offline PWA support.
+---
+
+Version 1.0.0 is the full task-management foundation.
+
+- **Task management** — full CRUD for creating, viewing, updating, and completing tasks, with filtering.
+- **Natural-language task creation** — parse free text to extract due dates and recurrence.
+- **Goal tracking** — goals with target dates, progress, and automatic completion detection; multi-goal task linking; a confetti celebration on completion.
+- **Project organization** and a **tag system** for grouping and filtering tasks.
+- **Work log** — a tracker-agnostic work journal with timeline view, filters, quick-add, and external-ref badges; surfaced in global search, activity log, and webhook events.
+- **Authentication** — email/password registration, login, and password reset; Google OAuth; session-based protected routes.
+- **Offline support (PWA)** — installable app with offline access, automatic update detection, and sync on reconnect.
+
+Under the hood: a Hono API on Bun, a SvelteKit frontend, and a Drizzle/LibSQL schema with migrations, Lucia auth, and Zod validation across endpoints — plus performance work (LCP resource hints, responsive authenticated layout) and TypeScript strict-mode fixes.
