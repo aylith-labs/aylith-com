@@ -5,8 +5,8 @@ tags:
   - added
 summary: A second front-end with full picker parity served by the daemon, plus a Tauri 2 frameless desktop shell with global hotkey, tray icon, hide-on-blur, and paste-back.
 hero:
-  light: https://media.aylith.com/clipwell/media/webui-light.png
-  dark: https://media.aylith.com/clipwell/media/webui-dark.png
+  light: https://media.aylith.com/clipwell/media/webui-v1-light.png
+  dark: https://media.aylith.com/clipwell/media/webui-v1-dark.png
   alt: 'The Clipwell web UI as a Tauri desktop app: search, filter tabs, typed rows with favicons, image thumbnail, and source apps'
   width: 1162
   height: 1003
@@ -21,8 +21,8 @@ Clipwell gained a second face.
 - **Tauri 2 desktop shell** — the web UI as a frameless desktop app: global hotkey, tray icon, hide-on-blur, and `enigo` paste-back. Starts hidden and hides on blur so it never sits over your work. Verified on Windows (both themes).
 
 <ThemedShot
-  light="https://media.aylith.com/clipwell/media/webui-light.png"
-  dark="https://media.aylith.com/clipwell/media/webui-dark.png"
+  light="https://media.aylith.com/clipwell/media/webui-v1-light.png"
+  dark="https://media.aylith.com/clipwell/media/webui-v1-dark.png"
   alt="The Clipwell web UI as a Tauri desktop app: search, filter tabs, typed rows with favicons, image thumbnail, and source apps"
   width={1162}
   height={1003}

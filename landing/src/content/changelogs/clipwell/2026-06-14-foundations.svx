@@ -18,8 +18,8 @@ The Clipwell architecture landed in one piece.
 - **Documentation sites** — user-facing feature docs and an engineering / ADR site (Fumadocs static export), both light/dark with the OS preference as default.
 
 <ThemedShot
-  light="https://media.aylith.com/clipwell/media/picker-light.png"
-  dark="https://media.aylith.com/clipwell/media/picker-dark.png"
+  light="https://media.aylith.com/clipwell/media/picker-v1-light.png"
+  dark="https://media.aylith.com/clipwell/media/picker-v1-dark.png"
   alt="The Clipwell picker showing a search box, filter tabs, and a list of typed clipboard items"
   width={862}
   height={1016}

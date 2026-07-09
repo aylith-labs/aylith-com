@@ -16,8 +16,8 @@ The picker grew up in one milestone.
 **Action palette (Ctrl+K)** — content-aware actions for the selected item (open in browser, copy domain, and more) via `IClipAction`.
 
 <ThemedShot
-  light="https://media.aylith.com/clipwell/media/actions-light.png"
-  dark="https://media.aylith.com/clipwell/media/actions-dark.png"
+  light="https://media.aylith.com/clipwell/media/actions-v1-light.png"
+  dark="https://media.aylith.com/clipwell/media/actions-v1-dark.png"
   alt="The Ctrl+K action palette over a selected link, listing Open in browser, Copy to clipboard, and Copy domain"
   width={862}
   height={1016}
@@ -26,8 +26,8 @@ The picker grew up in one milestone.
 **Quick Look (Ctrl+Y)** — a fast, full-content preview without leaving the list.
 
 <ThemedShot
-  light="https://media.aylith.com/clipwell/media/quicklook-light.png"
-  dark="https://media.aylith.com/clipwell/media/quicklook-dark.png"
+  light="https://media.aylith.com/clipwell/media/quicklook-v1-light.png"
+  dark="https://media.aylith.com/clipwell/media/quicklook-v1-dark.png"
   alt="Quick Look overlay showing the selected item's full content over a dimmed picker"
   width={862}
   height={1016}
@@ -36,8 +36,8 @@ The picker grew up in one milestone.
 **Compact / Detail view modes** — Detail adds a live preview pane beside the list.
 
 <ThemedShot
-  light="https://media.aylith.com/clipwell/media/detail-light.png"
-  dark="https://media.aylith.com/clipwell/media/detail-dark.png"
+  light="https://media.aylith.com/clipwell/media/detail-v1-light.png"
+  dark="https://media.aylith.com/clipwell/media/detail-v1-dark.png"
   alt="Clipwell in Detail view: the history list on the left and a preview pane on the right showing the selected item's full content"
   width={862}
   height={1016}
@@ -46,8 +46,8 @@ The picker grew up in one milestone.
 **Group by date or source** — inline headers above each day's / app's items.
 
 <ThemedShot
-  light="https://media.aylith.com/clipwell/media/grouped-light.png"
-  dark="https://media.aylith.com/clipwell/media/grouped-dark.png"
+  light="https://media.aylith.com/clipwell/media/grouped-v1-light.png"
+  dark="https://media.aylith.com/clipwell/media/grouped-v1-dark.png"
   alt="The picker grouped by source app, with a header above each app's items"
   width={862}
   height={1016}
@@ -56,16 +56,16 @@ The picker grew up in one milestone.
 **Richer settings** — appearance, default view & grouping, row metadata toggles, retention, and picker position — and a **diagnostics window** with daemon health and real picker show-cycle latencies.
 
 <ThemedShot
-  light="https://media.aylith.com/clipwell/media/settings-light.png"
-  dark="https://media.aylith.com/clipwell/media/settings-dark.png"
+  light="https://media.aylith.com/clipwell/media/settings-v1-light.png"
+  dark="https://media.aylith.com/clipwell/media/settings-v1-dark.png"
   alt="The Clipwell settings window: appearance, default view, grouping, row metadata, retention, and picker position"
   width={682}
   height={1016}
 />
 
 <ThemedShot
-  light="https://media.aylith.com/clipwell/media/diagnostics-light.png"
-  dark="https://media.aylith.com/clipwell/media/diagnostics-dark.png"
+  light="https://media.aylith.com/clipwell/media/diagnostics-v1-light.png"
+  dark="https://media.aylith.com/clipwell/media/diagnostics-v1-dark.png"
   alt="The Clipwell diagnostics window showing daemon status and picker show-cycle timings"
   width={802}
   height={956}

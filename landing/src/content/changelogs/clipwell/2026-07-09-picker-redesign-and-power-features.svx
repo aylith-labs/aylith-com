@@ -1,0 +1,75 @@
+---
+title: Both pickers redesigned, plus edit, highlighting, and live counts
+date: '2026-07-09'
+tags:
+  - changed
+  - added
+summary: A shared zinc-and-violet design language with Lucide icons replaces the stock look in both pickers, and the old app's power features land - search highlighting, live filter counts, non-destructive edit, plain-text paste, and an offline banner.
+hero:
+  light: https://media.aylith.com/clipwell/media/picker-light.png
+  dark: https://media.aylith.com/clipwell/media/picker-dark.png
+  alt: 'The redesigned Clipwell picker: count pills, Lucide kind icons, rich metadata'
+  width: 718
+  height: 847
+---
+<script>
+  import BeforeAfter from '$lib/components/changelog/BeforeAfter.svelte';
+  import ThemedShot from '$lib/components/changelog/ThemedShot.svelte';
+</script>
+
+Both pickers dropped their stock look for one shared design language: a zinc
+neutral ramp with a single violet accent (the product gradient), **Lucide
+icons** everywhere emoji used to be, accent-tinted selection with an edge
+indicator instead of a solid fill, and a deliberate type scale. The native
+Avalonia picker gets a real token layer (theme dictionaries over Fluent); the
+web UI gets the same palette as Tailwind theme tokens. Same icons, same
+anatomy, same accent in both.
+
+<BeforeAfter
+  before={{
+    light: 'https://media.aylith.com/clipwell/media/picker-v1-light.png',
+    dark: 'https://media.aylith.com/clipwell/media/picker-v1-dark.png',
+    alt: 'The old picker: stock Fluent controls and emoji glyphs',
+    width: 862,
+    height: 1016
+  }}
+  after={{
+    light: 'https://media.aylith.com/clipwell/media/picker-light.png',
+    dark: 'https://media.aylith.com/clipwell/media/picker-dark.png',
+    alt: 'The redesigned picker: count pills, Lucide icons, richer metadata',
+    width: 718,
+    height: 847
+  }}
+  caption="Drag to compare: stock Fluent + emoji before, the zinc-and-violet system after."
+/>
+
+The redesign carries a batch of features ported from the original Windows app:
+
+- **Search highlighting** — every match is marked in the previews, and the
+  filter pills and kind dropdown show **live counts** that follow the search
+  (new `GET /api/clipboard/counts` endpoint, scoped to the query).
+- **Edit content** (`Ctrl+E`) — a non-destructive override stored in the
+  metadata overlay: the original capture is kept, the row shows an *edited*
+  tag, empty text restores it, and edited text re-classifies its kind.
+- **Paste as plain text** (`Alt+Shift+Enter`) — and the default paste now
+  restores captured HTML on Windows, so rich-text targets keep formatting.
+- **Offline banner** — when the daemon is unreachable the pickers keep the
+  last loaded history, show a Retry banner, and resync automatically on
+  reconnect.
+- **Richer metadata** — character counts, image dimensions (new
+  `imageWidth`/`imageHeight` on the API), color swatches on color items, and
+  monospace previews for code, colors, and paths.
+- Sensitive toggling moved to `Ctrl+Shift+L` to make room for edit — the same
+  chords the original app used.
+
+<ThemedShot
+  light="https://media.aylith.com/clipwell/media/webui-light.png"
+  dark="https://media.aylith.com/clipwell/media/webui-dark.png"
+  alt="The redesigned web UI with count pills, Lucide icons, an edited tag, and keycap hints"
+  width={760}
+  height={660}
+  caption="The web UI, same system: count pills, icons, edited tag, and keycap hints in the footer."
+/>
+
+Decisions are written up in ADR-0008 (design tokens and Lucide iconography)
+and ADR-0009 (edit overlay and counts endpoints) on the engineering site.
