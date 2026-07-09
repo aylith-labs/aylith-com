@@ -52,6 +52,6 @@ Standalone binaries, no runtime required:
 curl -fsSL https://raw.githubusercontent.com/aylith-labs/tickets/main/install.sh | bash
 ```
 
-Or `mise use -g "ubi:aylith-labs/tickets[exe=tickets]"`, or the npm packages
-`@aylith/tickets-server` and `@aylith/tickets-tui`. Then `tickets init` in a
-repo, `tickets serve`, and `tickets tui`.
+Or `mise use -g "ubi:aylith-labs/tickets[exe=tickets]"`, or one npm package
+with everything: `npm i -g @aylith/tickets`. Then `tickets init` in a repo,
+`tickets serve`, and `tickets tui`.
