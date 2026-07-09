@@ -1,0 +1,57 @@
+---
+title: 'Tickets: file it, hand it to your agent'
+date: '2026-07-09'
+tags:
+  - added
+summary: A pluggable personal issue tracker that opens a terminal running your coding agent on any ticket — with a web UI, a terminal TUI, AI enrichment, and git-backed history.
+hero:
+  light: https://media.aylith.com/tickets/media/central-light.png
+  dark: https://media.aylith.com/tickets/media/central-dark.png
+  alt: 'Tickets central UI: one board across every plugged-in project'
+  width: 1280
+  height: 556
+---
+<script>
+  import ThemedShot from '$lib/components/changelog/ThemedShot.svelte';
+</script>
+
+**Tickets** is the first release: a local-first issue tracker that turns "I
+should fix that" into agent work. File a ticket in the browser or a terminal,
+then hand it off — the ticket can copy a composed prompt or **open your terminal
+running `claude` on it**, in the right repo, with a prompt you didn't have to
+write.
+
+<ThemedShot
+  light="https://media.aylith.com/tickets/media/central-light.png"
+  dark="https://media.aylith.com/tickets/media/central-dark.png"
+  alt="The central UI lists tickets across every registered project, with status chips and a per-ticket action menu."
+  width={1280}
+  height={556}
+  caption="One board across every plugged-in project — filter to one with /project."
+/>
+
+## What shipped
+
+- **Three surfaces, one daemon.** A browser UI (all projects at once, or one), a
+  terminal **TUI** across every project, and framework-agnostic web components you
+  can embed in any app — all over a single local, auth-less REST + SSE API.
+- **Real terminal handoff.** A ticket's action opens *your* terminal — Windows
+  Terminal, Tabby, or whatever you configure — running your agent on the ticket,
+  not a headless runner. The ticket flips to in-progress automatically.
+- **AI enrichment with undo.** Sharpen a hurried title and description with one
+  key. History is just git — every edit is a commit on a per-project orphan
+  branch, so undo is real and your main branch stays clean.
+- **Evidence built in.** Before/after images and video attach to each ticket and
+  publish to media.aylith.com, so the fix is documented, not just done.
+
+## Install
+
+Standalone binaries, no runtime required:
+
+```
+curl -fsSL https://raw.githubusercontent.com/aylith-labs/tickets/main/install.sh | bash
+```
+
+Or `mise use -g "ubi:aylith-labs/tickets[exe=tickets]"`, or the npm packages
+`@aylith/tickets-server` and `@aylith/tickets-tui`. Then `tickets init` in a
+repo, `tickets serve`, and `tickets tui`.
