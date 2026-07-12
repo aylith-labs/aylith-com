@@ -21,7 +21,7 @@ PHQ-9 and GAD-7 — landed with a weekly-summary UI, alongside a **CBT library**
 and **coaching / journal** detail routes. **Crisis safety** is deterministic:
 a crisis-keyword detector paired with crisis resources and helplines. The AI
 layer became **model-agnostic**, with secure cookies, an error page, and a
-`GET /health` endpoint for the infra-hub connector. Navigation and a broken
+`GET /health` endpoint for the aylith-infra connector. Navigation and a broken
 chart were fixed.
 
 <ThemedShot

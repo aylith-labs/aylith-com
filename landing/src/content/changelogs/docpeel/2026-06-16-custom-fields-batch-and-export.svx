@@ -21,7 +21,7 @@ now drive extraction, backed by **field validation** and
 look. **Batch upload**, a **re-process** action, and document delete handle
 volume, and results **export** to CSV, JSON, or Excel. The extraction layer
 is now **model-agnostic** (provider/model-neutral), and a real **waitlist
-form** plus a minimal `GET /health` endpoint for the infra-hub connector
+form** plus a minimal `GET /health` endpoint for the aylith-infra connector
 round out the release.
 
 <ThemedShot

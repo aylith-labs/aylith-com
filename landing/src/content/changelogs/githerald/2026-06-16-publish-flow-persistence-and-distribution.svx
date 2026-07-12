@@ -20,7 +20,7 @@ Githerald learned to publish. The new **publish flow** renders a public
 changelog and supports **export**, backed by a **SQLite-persistent store**,
 an **RSS feed**, and an **embeddable changelog widget**. **Semver inference**
 now derives versions from conventional commits, and a minimal `GET /health`
-endpoint plugs into the infra-hub connector. The AI layer became
+endpoint plugs into the aylith-infra connector. The AI layer became
 **provider-agnostic**, modernized to structured outputs with updated default
 models.
 

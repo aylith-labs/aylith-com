@@ -21,7 +21,7 @@ create, pin, share, drag-reorder, and export to CSV or PNG. **Sessions and
 profile** saving arrived with a connection test route. On the safety side,
 **read-only SQL enforcement** — a server-side `sql-guard` — guarantees
 generated queries can never mutate data, and the AI layer is now
-**model-agnostic**, with a `GET /api/health` endpoint for the infra-hub
+**model-agnostic**, with a `GET /api/health` endpoint for the aylith-infra
 connector.
 
 <ThemedShot

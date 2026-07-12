@@ -34,5 +34,5 @@ reading live from the `/api/v1` endpoints with nothing mocked.
 Also in this milestone: **self-managed API keys with an auth guard** on
 `/api/v1` requests, **plan-based rate limiting and metering** enforced
 server-side, **API docs** with working dashboard search, a minimal
-`GET /health` endpoint for the infra-hub connector, and a `robots.txt`
+`GET /health` endpoint for the aylith-infra connector, and a `robots.txt`
 politeness guard.

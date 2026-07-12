@@ -6,9 +6,9 @@ tags:
   - infra
 summary: A Caddy static host stack serving all umbrella screenshots and clips at media.aylith.com, with immutable caching and an idempotent rsync upload script.
 hero:
-  light: https://media.aylith.com/infra-hub/media/home-light.png
-  dark: https://media.aylith.com/infra-hub/media/home-dark.png
-  alt: Infra Hub dashboard — at-a-glance status across servers, services, and spend
+  light: https://media.aylith.com/aylith-infra/media/home-light.png
+  dark: https://media.aylith.com/aylith-infra/media/home-dark.png
+  alt: Aylith Infra dashboard — at-a-glance status across servers, services, and spend
   width: 2720
   height: 1800
 ---
@@ -23,10 +23,10 @@ rsyncs a local staging tree to the host — every screenshot and clip on this si
 is served from it.
 
 <ThemedShot
-  light="https://media.aylith.com/infra-hub/media/home-light.png"
-  dark="https://media.aylith.com/infra-hub/media/home-dark.png"
-  alt="Infra Hub dashboard with servers online, subscriptions, monthly spend, certificates, and live VPS performance"
+  light="https://media.aylith.com/aylith-infra/media/home-light.png"
+  dark="https://media.aylith.com/aylith-infra/media/home-dark.png"
+  alt="Aylith Infra dashboard with servers online, subscriptions, monthly spend, certificates, and live VPS performance"
   width={2720}
   height={1800}
-  caption="The Infra Hub dashboard — servers, spend, renewals, certificates, and live VPS performance in one place."
+  caption="The Aylith Infra dashboard — servers, spend, renewals, certificates, and live VPS performance in one place."
 />
