@@ -1,7 +1,22 @@
 export function tilt(node: HTMLElement, options: { max?: number; scale?: number } = {}) {
 	const { max = 6, scale = 1.02 } = options;
+	const root = document.documentElement;
+	const media = window.matchMedia('(prefers-reduced-motion: reduce)');
+	const reduced = () => root.dataset.motion ? root.dataset.motion === 'reduced' : media.matches;
+	const transition = 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
+	const reset = () => {
+		// Shortening a transition's duration does not cancel one already running.
+		// Remove the transition before resetting when Reduced is selected.
+		node.style.transition = reduced() ? 'none' : transition;
+		node.style.transform = '';
+		node.style.willChange = reduced() ? '' : 'transform';
+	};
+	const preferenceObserver = new MutationObserver(reset);
+	preferenceObserver.observe(root, { attributes: true, attributeFilter: ['data-motion'] });
+	media.addEventListener('change', reset);
 
 	function handleMouseMove(e: MouseEvent) {
+		if (reduced()) { reset(); return; }
 		const rect = node.getBoundingClientRect();
 		const x = e.clientX - rect.left;
 		const y = e.clientY - rect.top;
@@ -14,16 +29,17 @@ export function tilt(node: HTMLElement, options: { max?: number; scale?: number 
 	}
 
 	function handleMouseLeave() {
-		node.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+		reset();
 	}
 
-	node.style.transition = 'transform 0.4s cubic-bezier(0.16, 1, 0.3, 1)';
-	node.style.willChange = 'transform';
+	reset();
 	node.addEventListener('mousemove', handleMouseMove);
 	node.addEventListener('mouseleave', handleMouseLeave);
 
 	return {
 		destroy() {
+			preferenceObserver.disconnect();
+			media.removeEventListener('change', reset);
 			node.removeEventListener('mousemove', handleMouseMove);
 			node.removeEventListener('mouseleave', handleMouseLeave);
 		}

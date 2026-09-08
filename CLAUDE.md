@@ -1,5 +1,11 @@
 # aylith-com — Claude Code guidance
 
+Owner mainline direction (8 September 2026): promptly commit/push small reviewed,
+tested routine changes to main and follow existing CI/Pages delivery to verified
+served output. Never use stashes to hold work. Preserve unique dirty/peer work;
+remove only verified redundant inactive branches/worktrees. Public announcements,
+pricing/legal/account/security/spending/outreach remain separately gated.
+
 <!-- aylith-handbook:start -->
 > **📖 Aylith handbook (authoritative).** This repo is part of the `aylith-labs` lab. Before any
 > cross-repo, catalog, design-system, CI/runner, or data-flow work you **must** consult the org

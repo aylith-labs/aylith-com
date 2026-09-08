@@ -29,6 +29,12 @@
 	--color-accent-800: oklch(0.36 0.090 50);
 	--color-accent-900: oklch(0.28 0.070 50);
 
+	/* Selected controls pair white labels with the darker existing copper ramp. */
+	--color-on-accent: var(--color-white);
+	--color-accent-selected: var(--color-accent-600);
+	--color-accent-selected-hover: var(--color-accent-700);
+	--color-accent-selected-active: var(--color-accent-800);
+
 	--color-warm-50: #faf8f5;
 	--color-warm-100: #f3efe8;
 	--color-warm-200: #e8e0d4;
@@ -40,10 +46,6 @@ html {
 	scroll-behavior: smooth;
 	/* always reserve the scrollbar gutter so pages without overflow don't shift horizontally */
 	scrollbar-gutter: stable;
-}
-
-@media (prefers-reduced-motion: reduce) {
-	html { scroll-behavior: auto; }
 }
 
 body {
@@ -109,24 +111,67 @@ h1, h2, h3, h4, h5, h6 {
 	transform: rotate(180deg);
 }
 
+:where(a, button, input, select):focus-visible {
+	outline: 3px solid var(--color-accent-600);
+	outline-offset: 4px;
+}
+
+.preference-option {
+	@apply flex min-h-11 min-w-11 items-center justify-center gap-1 rounded-md px-2 text-xs font-medium text-surface-600 hover:bg-surface-100 dark:text-warm-300 dark:hover:bg-surface-700;
+}
+
+.preference-option[aria-pressed='true'] {
+	color: var(--color-on-accent);
+	background-color: var(--color-accent-selected);
+}
+.preference-option[aria-pressed='true']:hover {
+	background-color: var(--color-accent-selected-hover);
+}
+.preference-option[aria-pressed='true']:active {
+	background-color: var(--color-accent-selected-active);
+}
+.preference-option:focus-visible {
+	position: relative;
+	z-index: 1;
+	outline-offset: 2px;
+}
+
 /* Motion gating is driven by html[data-motion] (set before paint in app.html and kept
    current by the motion store), so the design system can override the system setting for
    preview. The media query only governs the no-JS / pre-script case, where the attribute
    is still absent. */
+html[data-motion='reduced'],
 [data-motion='reduced'] *,
 [data-motion='reduced'] *::before,
 [data-motion='reduced'] *::after {
 	animation-duration: 0.01ms !important;
 	animation-iteration-count: 1 !important;
+	animation-delay: 0ms !important;
 	transition-duration: 0.01ms !important;
+	transition-delay: 0ms !important;
+	scroll-behavior: auto !important;
+}
+
+html[data-motion='reduced'] .btn-press {
+	transform: none !important;
+	transition-property: none !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
+	html:not([data-motion]),
 	html:not([data-motion]) *,
 	html:not([data-motion]) *::before,
 	html:not([data-motion]) *::after {
 		animation-duration: 0.01ms !important;
 		animation-iteration-count: 1 !important;
+		animation-delay: 0ms !important;
 		transition-duration: 0.01ms !important;
+		transition-delay: 0ms !important;
+		scroll-behavior: auto !important;
+	}
+
+	html:not([data-motion]) .btn-press {
+		transform: none !important;
+		transition-property: none !important;
 	}
 }

@@ -48,10 +48,9 @@ jobs:
           # read public repos out of the box.
           CATALOG_GITHUB_TOKEN: ${{ secrets.CATALOG_GITHUB_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        # On failure, fall through to the committed snapshot rather than blocking
-        # the deploy — collect.mjs swaps .generated in atomically, so a failed run
-        # leaves no partial output.
-        run: npm run collect || echo "::warning::Catalog collection failed — building from the committed snapshot."
+        # A failed collection must not replace the live catalog with the older
+        # tokenless development snapshot. Retain the last successful deployment.
+        run: npm run collect
       - run: npm run build
       # Blocking in `verify`, where the content is this repo's own snapshot. Here the pages are
       # built from manifests collected out of other repos, and a relative link in somebody else's

@@ -6,8 +6,12 @@ export const THEME_STORAGE_KEY = 'theme';
 
 function readStored(): ThemePreference {
 	if (!browser) return 'system';
-	const value = localStorage.getItem(THEME_STORAGE_KEY);
-	return value === 'light' || value === 'dark' || value === 'system' ? value : 'system';
+	try {
+		const value = localStorage.getItem(THEME_STORAGE_KEY);
+		return value === 'light' || value === 'dark' || value === 'system' ? value : 'system';
+	} catch {
+		return 'system';
+	}
 }
 
 function systemDark(): boolean {
@@ -17,19 +21,30 @@ function systemDark(): boolean {
 /** Three-state theme preference resolved against the OS setting and applied as `.dark` on `<html>`. */
 class ThemeState {
 	preference = $state<ThemePreference>(readStored());
+	systemPrefersDark = $state(systemDark());
 
 	get isDark(): boolean {
-		return this.preference === 'dark' || (this.preference === 'system' && systemDark());
+		return this.preference === 'dark' || (this.preference === 'system' && this.systemPrefersDark);
 	}
 
 	set(preference: ThemePreference) {
 		this.preference = preference;
-		if (browser) localStorage.setItem(THEME_STORAGE_KEY, preference);
 		this.apply();
+		if (browser) {
+			try {
+				localStorage.setItem(THEME_STORAGE_KEY, preference);
+			} catch {
+				// Keep the current-page choice usable when persistence is unavailable.
+			}
+		}
 	}
 
 	private apply() {
-		if (browser) document.documentElement.classList.toggle('dark', this.isDark);
+		if (!browser) return;
+		const root = document.documentElement;
+		root.classList.toggle('dark', this.isDark);
+		if (this.preference === 'system') delete root.dataset.theme;
+		else root.dataset.theme = this.preference;
 	}
 
 	/** Call once on mount. Keeps the resolved theme current when the OS setting changes. */
@@ -37,11 +52,26 @@ class ThemeState {
 		if (!browser) return () => {};
 		const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 		const sync = () => {
-			if (this.preference === 'system') this.apply();
+			this.systemPrefersDark = mediaQuery.matches;
+			this.apply();
 		};
-		this.apply();
+		const syncStorage = (event: StorageEvent) => {
+			if (event.key !== null && event.key !== THEME_STORAGE_KEY) return;
+			try {
+				if (event.storageArea !== localStorage) return;
+			} catch {
+				return;
+			}
+			this.preference = readStored();
+			sync();
+		};
+		sync();
 		mediaQuery.addEventListener('change', sync);
-		return () => mediaQuery.removeEventListener('change', sync);
+		window.addEventListener('storage', syncStorage);
+		return () => {
+			mediaQuery.removeEventListener('change', sync);
+			window.removeEventListener('storage', syncStorage);
+		};
 	}
 }
 

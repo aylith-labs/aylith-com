@@ -14,11 +14,11 @@
 				: 'Following your system setting: motion is allowed, so the animations play.';
 		}
 		if (motion.preference === 'reduced') {
-			return 'Forced reduced. Animations are held still for preview, regardless of your system setting.';
+			return 'Reduced motion is on across the site, regardless of your system setting.';
 		}
 		return motion.systemPrefersReduced
-			? 'Forced full, overriding your system reduced-motion setting so you can preview the animations.'
-			: 'Forced full. Every animation plays.';
+			? 'Full motion is allowed across the site, overriding your system reduced-motion setting.'
+			: 'Full motion is allowed across the site.';
 	});
 </script>
 
@@ -44,11 +44,11 @@
 					type="button"
 					onclick={() => motion.set(option.value)}
 					aria-pressed={motion.preference === option.value}
-					class="btn-press rounded-md px-3 py-1.5 text-xs font-medium transition-colors {motion.preference ===
-					option.value
-						? 'bg-accent-500 text-surface-900'
-						: 'text-surface-600 hover:bg-surface-100 dark:text-warm-300 dark:hover:bg-surface-700'}"
+					class="preference-option"
 				>
+					<svg class="size-3 shrink-0 {motion.preference === option.value ? '' : 'invisible'}" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+						<path stroke-linecap="round" stroke-linejoin="round" d="m3 8 3 3 7-7" />
+					</svg>
 					{option.label}
 				</button>
 			{/each}

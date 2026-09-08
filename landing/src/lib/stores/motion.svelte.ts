@@ -7,8 +7,12 @@ export const MOTION_STORAGE_KEY = 'aylith:motion';
 
 function readStored(): MotionPreference {
 	if (!browser) return 'system';
-	const value = localStorage.getItem(MOTION_STORAGE_KEY);
-	return value === 'reduced' || value === 'full' || value === 'system' ? value : 'system';
+	try {
+		const value = localStorage.getItem(MOTION_STORAGE_KEY);
+		return value === 'reduced' || value === 'full' || value === 'system' ? value : 'system';
+	} catch {
+		return 'system';
+	}
 }
 
 function systemReduced(): boolean {
@@ -39,8 +43,14 @@ class MotionState {
 
 	set(preference: MotionPreference) {
 		this.preference = preference;
-		if (browser) localStorage.setItem(MOTION_STORAGE_KEY, preference);
 		this.apply();
+		if (browser) {
+			try {
+				localStorage.setItem(MOTION_STORAGE_KEY, preference);
+			} catch {
+				// Keep the current-page choice usable when persistence is unavailable.
+			}
+		}
 	}
 
 	cycle() {
@@ -61,9 +71,23 @@ class MotionState {
 			this.system = mediaQuery.matches ? 'reduced' : 'full';
 			this.apply();
 		};
+		const syncStorage = (event: StorageEvent) => {
+			if (event.key !== null && event.key !== MOTION_STORAGE_KEY) return;
+			try {
+				if (event.storageArea !== localStorage) return;
+			} catch {
+				return;
+			}
+			this.preference = readStored();
+			sync();
+		};
 		sync();
 		mediaQuery.addEventListener('change', sync);
-		return () => mediaQuery.removeEventListener('change', sync);
+		window.addEventListener('storage', syncStorage);
+		return () => {
+			mediaQuery.removeEventListener('change', sync);
+			window.removeEventListener('storage', syncStorage);
+		};
 	}
 }
 
