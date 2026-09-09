@@ -4,16 +4,7 @@ date: '2026-06-16'
 tags:
   - added
 summary: Analytics, time-series, and eval APIs; real MCP/skills/topology collectors with SSE live log streaming; a health endpoint for the aylith-infra connector.
-hero:
-  light: https://media.aylith.com/bract/media/landing-light.png
-  dark: https://media.aylith.com/bract/media/landing-dark.png
-  alt: 'Bract landing: The Vercel for AI Agents — deploy agents with memory, tracing, evals, MCP hosting, and scale-to-zero'
-  width: 2720
-  height: 1700
 ---
-<script>
-  import ThemedShot from '$lib/components/changelog/ThemedShot.svelte';
-</script>
 
 The dashboard became real this milestone — **analytics, time-series, and eval
 endpoints**, agents resolvable by id-or-name, and a deploy route with surface
@@ -21,11 +12,9 @@ info. Behind it, the **MCP, skills, and topology collectors** now gather live
 data, streamed to the UI over **SSE**, and a `GET /api/health` endpoint plugs
 Bract into the aylith-infra dashboard.
 
-<ThemedShot
-  light="https://media.aylith.com/bract/media/landing-light.png"
-  dark="https://media.aylith.com/bract/media/landing-dark.png"
-  alt="Bract landing: The Vercel for AI Agents"
-  width={2720}
-  height={1700}
-  caption="The Bract landing — write your agent, run `bract deploy`, and you're live."
-/>
+**Editorial clarification, 8 September 2026:** the deployment route records a
+local lifecycle; there is no production compute backend. The historical marketing
+image and its “you're live” caption have been withdrawn from this page because
+they also carried unsupported price and deployment claims. The original media
+files are retained; this correction is not a new release or a new runtime test.
+See [current capabilities](/projects/bract).
