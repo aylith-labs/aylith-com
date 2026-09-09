@@ -14,6 +14,7 @@
 // Auth: CATALOG_GITHUB_TOKEN (preferred) or GITHUB_TOKEN. Unauthenticated runs
 // hit the 60 req/hr ceiling, so a token is effectively required in CI.
 
+import { spawnSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -30,7 +31,8 @@ const snapshotDir = path.resolve(scriptDir, '../src/content/projects');
 const MANIFEST_PATH = '.aylith/project.md';
 
 const token = process.env.CATALOG_GITHUB_TOKEN || process.env.GITHUB_TOKEN;
-if (!token) {
+const useGh = process.argv.includes('--gh');
+if (!token && !useGh) {
 	console.error(
 		'[collect] No CATALOG_GITHUB_TOKEN / GITHUB_TOKEN set — refusing to run unauthenticated.'
 	);
@@ -42,10 +44,25 @@ if (!token) {
 
 const octokit = new Octokit({ auth: token });
 
+// Explicit local option: use the already authenticated gh CLI without extracting
+// or logging its credential. Never performs login or changes account settings.
+function ghRead(endpoint, paginate = false) {
+	const result = spawnSync('gh', ['api', endpoint, ...(paginate ? ['--paginate', '--slurp'] : [])], {
+		encoding: 'utf8', timeout: 30000, maxBuffer: 16 * 1024 * 1024, windowsHide: true
+	});
+	if (result.status !== 0) {
+		if (result.stderr?.includes('(HTTP 404)')) return null;
+		throw new Error(`Read-only gh request failed: ${endpoint}; ${result.error?.message ?? result.stderr}`);
+	}
+	return JSON.parse(result.stdout);
+}
+
 /** Fetch the raw text of a file at the repo's default branch, or null if missing. */
 async function fetchFile(repo, filePath) {
 	try {
-		const { data } = await octokit.repos.getContent({ owner: ORG, repo, path: filePath });
+		const data = useGh ? ghRead(`repos/${ORG}/${repo}/contents/${filePath}`)
+			: (await octokit.repos.getContent({ owner: ORG, repo, path: filePath })).data;
+		if (data === null) return null;
 		if (Array.isArray(data) || data.type !== 'file' || typeof data.content !== 'string') return null;
 		return Buffer.from(data.content, data.encoding === 'base64' ? 'base64' : 'utf-8').toString(
 			'utf-8'
@@ -82,7 +99,7 @@ function reportDroppedProjects(collectedSlugs) {
 
 async function main() {
 	console.log(`[collect] Listing repos for org "${ORG}"…`);
-	const repos = await octokit.paginate(octokit.repos.listForOrg, {
+	const repos = useGh ? ghRead(`orgs/${ORG}/repos?type=all&per_page=100`, true).flat() : await octokit.paginate(octokit.repos.listForOrg, {
 		org: ORG,
 		type: 'all',
 		per_page: 100

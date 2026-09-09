@@ -28,7 +28,7 @@
 		<div class="mt-8 flex justify-center gap-4">
 			<a
 				href="/"
-				class="btn-press rounded-xl bg-accent-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-accent-500 dark:bg-accent-500 dark:hover:bg-accent-400"
+				class="btn-press rounded-xl bg-accent-selected px-5 py-2.5 text-sm font-semibold text-on-accent hover:bg-accent-selected-hover active:bg-accent-selected-active "
 			>
 				Back home
 			</a>

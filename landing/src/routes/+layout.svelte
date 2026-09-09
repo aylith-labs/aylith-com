@@ -25,7 +25,7 @@
 			'background: #1c1a16; color: #f8f7f4; font-family: "Space Grotesk", system-ui, sans-serif; font-size: 24px; font-weight: 600; padding: 8px 16px; letter-spacing: 0.34em;'
 		);
 		console.log(
-			'%cA lab that turns demand signals into shipped AI tools.\n%cgithub.com/aylith-labs',
+			'%cAn evolving software lab.\n%cgithub.com/aylith-labs',
 			'color: #c97a3a; font-size: 13px; font-weight: 500;',
 			'color: #908970; font-size: 12px;'
 		);

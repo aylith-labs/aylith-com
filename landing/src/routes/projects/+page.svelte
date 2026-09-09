@@ -5,12 +5,16 @@
 	import type { Project, ProjectStatus } from '$lib/types/project';
 	import { rankProjects } from '$lib/search/ranking';
 	import Seo from '$lib/components/Seo.svelte';
+	import { statusLabels } from '$lib/catalog/availability';
 
 	let { data } = $props();
 	let projects: Project[] = $derived(data.projects);
 
 	let searchQuery = $state('');
 	let activeCategory = $state('all');
+	let activeStatus = $state('all');
+	let page = $state(1);
+	const pageSize = 12;
 
 	// The seven curated categories.
 	const baseCategories = [
@@ -31,13 +35,6 @@
 
 	// Status mix
 	const statusOrder: ProjectStatus[] = ['live', 'beta', 'building', 'planning', 'research'];
-	const statusLabels: Record<ProjectStatus, string> = {
-		research: 'In Research',
-		planning: 'Planning',
-		building: 'In Development',
-		beta: 'Beta',
-		live: 'Live'
-	};
 	let statusCounts = $derived.by(() =>
 		statusOrder
 			.map((key) => ({ key, label: statusLabels[key], count: projects.filter((p) => p.status === key).length }))
@@ -50,9 +47,12 @@
 	// Category filter applied over ranked results
 	let filtered = $derived.by(() => {
 		const base = rankedResults.map((r) => r.project);
-		if (activeCategory === 'all') return base;
-		return base.filter((p) => p.category === activeCategory);
+		return base.filter((p) => (activeCategory === 'all' || p.category === activeCategory) &&
+			(activeStatus === 'all' || p.status === activeStatus));
 	});
+	let visible = $derived(filtered.slice((page - 1) * pageSize, page * pageSize));
+	let pageCount = $derived(Math.max(1, Math.ceil(filtered.length / pageSize)));
+	$effect(() => { searchQuery; activeCategory; activeStatus; page = 1; });
 
 	// Dynamic counts per category reflecting search matches
 	let counts = $derived.by(() => {
@@ -76,6 +76,7 @@
 	function clearSearch() {
 		searchQuery = '';
 	}
+	function resetFilters() { searchQuery = ''; activeCategory = 'all'; activeStatus = 'all'; page = 1; }
 </script>
 
 <Seo
@@ -90,8 +91,8 @@
 				All Projects
 			</h1>
 			<p class="mt-3 text-lg text-surface-500 dark:text-warm-300">
-				The complete catalog — {projects.length} tools across {baseCategories.length - 1} categories, each
-				built from a signal that repeated.
+				The complete catalog — {projects.length} entries, from early betas to proposed products.
+				A listing is not a usable release. Open a product for its stage, setup and access limits.
 			</p>
 		</div>
 
@@ -107,6 +108,7 @@
 				<input
 					type="text"
 					bind:value={searchQuery}
+					aria-label="Search catalog"
 					onkeydown={handleKeyDown}
 					placeholder="Search tools by keyword or prompt (press Enter to ask assistant)…"
 					class="w-full rounded-2xl border border-surface-200/80 bg-white/80 py-3.5 pr-28 pl-11 text-[0.95rem] text-surface-900 placeholder:text-surface-400 focus:border-accent-500 focus:bg-white focus:ring-4 focus:ring-accent-500/10 focus:outline-none dark:border-surface-800 dark:bg-surface-900/60 dark:text-warm-50 dark:placeholder:text-warm-500 dark:focus:border-accent-400 dark:focus:bg-surface-900"
@@ -124,7 +126,7 @@
 						</button>
 						<button
 							onclick={() => goto(`/ask?q=${encodeURIComponent(searchQuery.trim())}`)}
-							class="inline-flex items-center gap-1 rounded-xl bg-accent-600 px-2.5 py-1.5 text-xs font-medium text-white shadow-sm transition-colors hover:bg-accent-500 dark:bg-accent-500 dark:hover:bg-accent-400"
+							class="inline-flex items-center gap-1 rounded-xl bg-accent-selected px-2.5 py-1.5 text-xs font-medium text-on-accent shadow-sm transition-colors hover:bg-accent-selected-hover active:bg-accent-selected-active "
 						>
 							Ask AI &crarr;
 						</button>
@@ -166,18 +168,26 @@
 		</div>
 
 		<!-- Category filter -->
+		<div class="mt-6 flex items-center gap-3 text-sm text-surface-700 dark:text-warm-200">
+			<label for="catalog-stage">Stage</label>
+			<select id="catalog-stage" bind:value={activeStatus} class="rounded-xl border border-surface-300 bg-white p-3 dark:border-surface-700 dark:bg-surface-900">
+				<option value="all">All stages</option>
+				{#each statusOrder as status}<option value={status}>{statusLabels[status]}</option>{/each}
+			</select>
+		</div>
 		<div class="mt-8 flex flex-wrap gap-2" use:reveal={{ delay: 100 }}>
 			{#each categories as cat (cat.key)}
 				<button
 					onclick={() => (activeCategory = cat.key)}
+					aria-pressed={activeCategory === cat.key}
 					class="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-medium transition-colors {activeCategory === cat.key
-						? 'bg-accent-600 text-white'
+						? 'bg-accent-selected text-on-accent'
 						: 'bg-surface-100 text-surface-500 hover:bg-surface-200 hover:text-surface-700 dark:bg-surface-800 dark:text-warm-400 dark:hover:bg-surface-700 dark:hover:text-warm-200'}"
 				>
 					{cat.label}
 					<span
 						class="rounded-full px-1.5 text-xs tabular-nums {activeCategory === cat.key
-							? 'bg-white/20 text-white'
+							? 'bg-black/15 text-on-accent'
 							: 'bg-surface-200/70 text-surface-500 dark:bg-surface-700/70 dark:text-warm-400'}"
 					>
 						{counts[cat.key] ?? 0}
@@ -189,12 +199,17 @@
 		<!-- Project Grid -->
 		{#if filtered.length > 0}
 			<div class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-				{#each filtered as project (project.slug)}
+				{#each visible as project (project.slug)}
 					<div use:reveal={{ delay: 0 }}>
 						<ProjectCard {project} {searchQuery} />
 					</div>
 				{/each}
 			</div>
+			<nav aria-label="Catalog pages" class="mt-8 flex flex-wrap items-center gap-4 text-surface-700 dark:text-warm-200">
+				<button disabled={page === 1} onclick={() => page--} class="rounded-xl border border-surface-300 px-4 py-3 disabled:opacity-40 dark:border-surface-700">Previous page</button>
+				<span aria-live="polite">Page {page} of {pageCount} · {filtered.length} entries</span>
+				<button disabled={page === pageCount} onclick={() => page++} class="rounded-xl border border-surface-300 px-4 py-3 disabled:opacity-40 dark:border-surface-700">Next page</button>
+			</nav>
 		{:else}
 			<div class="mt-12 rounded-2xl border border-dashed border-surface-200 p-12 text-center dark:border-surface-800" use:reveal={{ delay: 0 }}>
 				<p class="text-base font-medium text-surface-700 dark:text-warm-200">
@@ -205,14 +220,14 @@
 				</p>
 				<div class="mt-6 flex justify-center gap-3">
 					<button
-						onclick={clearSearch}
+						onclick={resetFilters}
 						class="rounded-xl border border-surface-200 bg-surface-50 px-4 py-2 text-sm font-medium text-surface-700 hover:bg-surface-100 dark:border-surface-800 dark:bg-surface-900 dark:text-warm-200 dark:hover:bg-surface-800"
 					>
 						Clear filter
 					</button>
 					<button
 						onclick={() => goto(`/ask?q=${encodeURIComponent(searchQuery.trim())}`)}
-						class="rounded-xl bg-accent-600 px-4 py-2 text-sm font-medium text-white hover:bg-accent-500 dark:bg-accent-500 dark:hover:bg-accent-400"
+						class="rounded-xl bg-accent-selected px-4 py-2 text-sm font-medium text-on-accent hover:bg-accent-selected-hover active:bg-accent-selected-active "
 					>
 						Ask assistant about "{searchQuery.slice(0, 30)}" &crarr;
 					</button>

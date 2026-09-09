@@ -4,7 +4,7 @@
 
 <Seo
 	title="About — Aylith"
-	description="Aylith is patient about the right things. We watch what people keep asking for, find the pattern, and ship the tool in days, not quarters."
+	description="Aylith is an evolving software lab. Explore early betas, ongoing development and planned products with clear availability limits."
 />
 
 <section class="mx-auto max-w-3xl px-4 py-24 sm:px-6 sm:py-32 lg:px-8">
@@ -30,10 +30,10 @@
 			repeats.
 		</p>
 		<p>
-			When the pattern is clear, the patience ends. We build the tool and ship it in days, not
-			quarters. Each product grew from a signal we were quiet enough to hear.
+			We use those patterns to choose what to build and verify a useful workflow. Our catalog
+			includes early betas, ongoing development and planned products, not a finished suite.
 		</p>
-		<p>The portfolio is what listening turned into.</p>
+		<p>Product research and internal use guide the work; neither establishes customer adoption. Each product page separates its current stage from its intended capabilities.</p>
 	</div>
 
 	<p
@@ -62,9 +62,9 @@
 	<div class="animate-fade-in-up mt-10 flex flex-wrap items-center gap-4" style="animation-delay: 0.22s">
 		<a
 			href="/projects"
-			class="btn-press inline-flex items-center gap-2 rounded-xl bg-accent-600 px-6 py-3.5 text-sm font-semibold text-white shadow-lg shadow-accent-600/20 hover:bg-accent-500 dark:bg-accent-500 dark:shadow-accent-500/10 dark:hover:bg-accent-400"
+			class="btn-press inline-flex items-center gap-2 rounded-xl bg-accent-selected px-6 py-3.5 text-sm font-semibold text-on-accent shadow-lg shadow-accent-600/20 hover:bg-accent-selected-hover active:bg-accent-selected-active dark:shadow-accent-500/10 "
 		>
-			See what shipped
+			Explore the catalog
 			<svg class="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
 				<path d="M19 14l-7 7m0 0l-7-7m7 7V3" />
 			</svg>

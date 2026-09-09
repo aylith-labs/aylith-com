@@ -1,0 +1,33 @@
+---
+title: Workspace context development preview
+date: '2026-09-09'
+tags:
+  - docs
+summary: An actual local Cohesa workspace capture, showing Ayla's linked Tickets result and explicit unavailable-source states.
+hero:
+  light: https://media.aylith.com/cohesa/media/project-context-preview-20260908.png
+  dark: https://media.aylith.com/cohesa/media/project-context-preview-20260908.png
+  alt: 'Cohesa local development preview with a fixture account, linked Tickets work, and unavailable Stith and Dashcam sources; not the public service'
+  width: 1440
+  height: 1483
+---
+<script>
+  import ThemedShot from '$lib/components/changelog/ThemedShot.svelte';
+</script>
+
+This is an actual local development capture from 8 September, not a mockup or
+a screenshot of the public hosted service. The example account and workspace
+are test fixtures. This preview does not establish public access or production SSO.
+
+<ThemedShot
+  light="https://media.aylith.com/cohesa/media/project-context-preview-20260908.png"
+  dark="https://media.aylith.com/cohesa/media/project-context-preview-20260908.png"
+  alt="Cohesa local workspace with Ayla project context and a linked Tickets record"
+  width={1440}
+  height={1483}
+  caption="Local development preview: Tickets work is linked; Stith and Dashcam are explicitly unavailable in this captured setup. The same unmodified light-theme capture is used in both site themes."
+/>
+
+The workspace presents current access and source-owned work together, with a link
+back to the original Tickets record. Other workspace tools remain unconnected in
+this captured host. This entry documents the preview; it is not a new application release.

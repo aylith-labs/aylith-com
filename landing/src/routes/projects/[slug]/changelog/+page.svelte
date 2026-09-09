@@ -66,8 +66,8 @@
 					{project.name} <span class="font-normal text-surface-400 dark:text-warm-400">Changelog</span>
 				</h1>
 				<p class="mt-2 max-w-2xl text-surface-500 dark:text-warm-300">
-					Every meaningful change to {project.name}, told with the media it deserves — screenshots
-					and clips adapt to your current theme.
+					Published studio release notes for {project.name}. Package releases and setup
+					requirements are documented separately.
 				</p>
 			</div>
 		</div>
@@ -83,11 +83,16 @@
 				use:reveal
 			>
 				<p class="text-surface-600 dark:text-warm-300">No changelog entries yet.</p>
-				<p class="mt-2 text-sm text-surface-400 dark:text-warm-400">
-					{project.name} is {project.status === 'research' || project.status === 'planning'
-						? 'still on the drawing board'
-						: 'under active development'} — entries land here the moment something ships.
+				<p class="mt-2 text-sm text-surface-500 dark:text-warm-300">
+					No studio release notes have been added here. This is not a complete package
+					release history and does not determine whether {project.name} is available.
 				</p>
+				<a href="/projects/{project.slug}#setup" class="mt-5 inline-flex min-h-11 items-center rounded-lg px-3 text-sm font-medium text-accent-700 underline underline-offset-4 dark:text-accent-300">
+					Check {project.name} setup &amp; availability →
+				</a>
+				{#if project.onboarding?.releasesUrl}
+					<p class="mt-2"><a href={project.onboarding.releasesUrl} rel="noreferrer" class="inline-flex min-h-11 items-center px-3 text-sm font-medium text-accent-700 underline underline-offset-4 dark:text-accent-300">Package versions &amp; publication dates →</a></p>
+				{/if}
 			</div>
 		{:else}
 			<ol class="relative space-y-16 border-l border-surface-200 pl-8 sm:pl-10 dark:border-warm-700">

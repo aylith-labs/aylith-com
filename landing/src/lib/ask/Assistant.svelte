@@ -128,7 +128,7 @@
 				<div
 					class="max-w-[85%] rounded-2xl px-4 py-2.5 text-[0.95rem] leading-relaxed {message.role ===
 					'user'
-						? 'bg-accent-600 text-white'
+						? 'bg-accent-selected text-on-accent'
 						: 'bg-surface-100 text-surface-900 dark:bg-surface-800 dark:text-warm-100'}"
 				>
 					{#if tools.length > 0}
@@ -194,7 +194,7 @@
 				<button
 					onclick={() => send(input)}
 					disabled={!input.trim()}
-					class="btn-press rounded-xl bg-accent-600 px-3 py-2 text-white transition-opacity disabled:opacity-40"
+					class="btn-press rounded-xl bg-accent-selected px-3 py-2 text-on-accent transition-opacity disabled:opacity-40"
 					aria-label="Send"
 				>
 					<svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
