@@ -161,6 +161,24 @@ describe('placeholderProject', () => {
 });
 
 describe('toMarkdown', () => {
+	it('round-trips source-owned release references through collected YAML', () => {
+		const raw = FULL_MANIFEST.replace('featured: true', 'featured: true\nonboarding:\n  access: public-source\n  url: https://example.org/setup\n  releasesUrl: https://registry.npmjs.org/@aylith/inspekt-vite\n  prerequisites: [Local]\n  limitations: [Beta]');
+		const original = projectFromManifest('probe', 'https://example.org', raw);
+		expect(original.onboarding.releasesUrl).toBe('https://registry.npmjs.org/@aylith/inspekt-vite');
+		expect(projectFromManifest('probe', 'https://example.org', toMarkdown(original))).toEqual(original);
+		expect(() => projectFromManifest('probe', 'https://example.org', raw.replace('https://registry.npmjs.org/@aylith/inspekt-vite', 'javascript:alert(1)'))).toThrow(/onboarding/);
+	});
+	it('serializes restricted access without an invented URL', () => {
+		const original = projectFromManifest('probe', 'https://example.org', FULL_MANIFEST.replace('featured: true', 'featured: true\nonboarding:\n  access: restricted\n  prerequisites: [Permission]\n  limitations: [Private]'));
+		expect(projectFromManifest('probe', 'https://example.org', toMarkdown(original))).toEqual(original);
+		expect(toMarkdown(original)).not.toContain('url:');
+	});
+	it('preserves validated onboarding across collection and rejects invalid source data', () => {
+		const raw = FULL_MANIFEST.replace('featured: true', `featured: true\nonboarding:\n  access: public-source\n  url: https://example.org/setup\n  prerequisites: [Bun]\n  limitations: [Beta]`);
+		const original = projectFromManifest('probe', 'https://example.org', raw);
+		expect(projectFromManifest('probe', 'https://example.org', toMarkdown(original))).toEqual(original);
+		expect(() => projectFromManifest('probe', 'https://example.org', raw.replace('https://example.org/setup', 'javascript:alert(1)'))).toThrow(/onboarding/);
+	});
 	it('round-trips a project back through the manifest parser', () => {
 		const original = projectFromManifest('bract', 'https://github.com/aylith-labs/bract', FULL_MANIFEST);
 		const reparsed = projectFromManifest('bract', 'https://github.com/aylith-labs/bract', toMarkdown(original));

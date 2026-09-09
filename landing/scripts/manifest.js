@@ -10,6 +10,7 @@ import {
 	PLACEHOLDER_CATEGORY,
 	PLACEHOLDER_STATUS
 } from '../src/lib/catalog/defaults.js';
+import { normalizeOnboarding } from '../src/lib/catalog/onboarding.js';
 
 /** Title-case a repo slug for placeholder display names: "entity-graph" -> "Entity Graph". */
 export function titleCase(slug) {
@@ -52,6 +53,8 @@ export function projectFromManifest(slug, repoUrl, raw) {
 		throw new Error(`manifest for ${slug} is missing a "name"`);
 	}
 	const body = content.trim();
+	const setup = normalizeOnboarding(data.onboarding);
+	if (data.onboarding !== undefined && !setup) throw new Error(`manifest for ${slug} has invalid onboarding`);
 	return {
 		slug,
 		name: data.name,
@@ -73,7 +76,8 @@ export function projectFromManifest(slug, repoUrl, raw) {
 				? data.gradientTo
 				: DEFAULT_GRADIENT_TO,
 		repoUrl,
-		body: body || undefined
+		body: body || undefined,
+		onboarding: setup
 	};
 }
 
@@ -116,5 +120,6 @@ export function toMarkdown(project) {
 		repoUrl: project.repoUrl
 	};
 	if (project.order !== undefined) frontmatter.order = project.order;
+	if (project.onboarding !== undefined) frontmatter.onboarding = project.onboarding;
 	return matter.stringify(project.body ? `\n${project.body}\n` : '', frontmatter);
 }

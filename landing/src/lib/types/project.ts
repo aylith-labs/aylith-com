@@ -26,4 +26,11 @@ export type Project = {
 	body?: string;
 	repoUrl?: string;
 	order?: number;
+	onboarding?: {
+		access: 'public-source' | 'restricted';
+		url?: string;
+		releasesUrl?: string;
+		prerequisites: string[];
+		limitations: string[];
+	};
 };
