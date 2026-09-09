@@ -67,9 +67,6 @@
 					aria-pressed={current === option.value}
 					class="preference-option flex-1"
 				>
-					<svg class="size-3 shrink-0 {current === option.value ? '' : 'invisible'}" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-						<path stroke-linecap="round" stroke-linejoin="round" d="m3 8 3 3 7-7" />
-					</svg>
 					{option.label}
 				</button>
 			{/each}
