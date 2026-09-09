@@ -11,6 +11,7 @@
     "compokit": ["Release"],
     "inspekt": ["Deploy site"],
     "tickets": ["Publish to npm", "Release binaries"],
+    "torbie": ["tagged-release"],
     "wisdone": ["Deploy to EC2"]
   }
 }
