@@ -1,9 +1,10 @@
 import DOMPurify from 'dompurify';
-import { marked } from 'marked';
+import { Marked } from 'marked';
 
 // Render streamed assistant markdown to sanitized HTML. LLM output is untrusted,
 // so every render passes through DOMPurify. Links open in a new tab with safe rel.
-marked.setOptions({ gfm: true, breaks: true });
+// A private instance: the global `marked` is shared with the prerendered project pages.
+const marked = new Marked({ gfm: true, breaks: true });
 
 export function renderMarkdown(source: string): string {
   const rawHtml = marked.parse(source, { async: false }) as string;

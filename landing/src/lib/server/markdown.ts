@@ -37,6 +37,10 @@ export function projectFromFrontmatter(
 	} as Project;
 }
 
+export function renderProjectBody(content: string): string {
+	return marked.parse(content) as string;
+}
+
 export function getProjects(): Project[] {
 	if (!fs.existsSync(contentDir)) return [];
 
@@ -47,7 +51,7 @@ export function getProjects(): Project[] {
 			const raw = fs.readFileSync(path.join(contentDir, filename), 'utf-8');
 			const { data, content } = matter(raw);
 			const slug = filename.replace('.md', '');
-			const html = content.trim() ? (marked.parse(content) as string) : undefined;
+			const html = content.trim() ? renderProjectBody(content) : undefined;
 
 			return projectFromFrontmatter(data, slug, html);
 		})
