@@ -10,5 +10,3 @@ landing/package
 landing/vite.config.js.timestamp-*
 landing/vite.config.ts.timestamp-*
 
-# graft's local graph cache — regenerable, not committed (run `graft build`).
-/graft/
