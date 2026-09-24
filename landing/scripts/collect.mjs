@@ -4,7 +4,7 @@
 //
 // Lists every repo in the aylith-labs org, drops archived repos, the site repo
 // itself, and any repo carrying the EXCLUDE_TOPIC. For each remaining repo it
-// fetches `.aylith/project.md`; when that's absent it synthesizes a "Planning"
+// fetches `.aylith/project.md`; when that's absent it synthesizes an uncategorized
 // placeholder from the repo name + GitHub description. Results are written as
 // frontmatter+body Markdown into landing/.generated/projects/<slug>.md so the
 // existing gray-matter + marked pipeline (server/markdown.ts) reads them unchanged.

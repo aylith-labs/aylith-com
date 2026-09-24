@@ -9,7 +9,6 @@ const sampleProjects: Project[] = [
 		tagline: 'Control plane for coding agents',
 		description: 'Ingests the full hook stream from every coding agent on your machine.',
 		category: 'developer-tools',
-		status: 'live',
 		iconPath: '',
 		gradientFrom: '#3b82f6',
 		gradientTo: '#1d4ed8',
@@ -23,7 +22,6 @@ const sampleProjects: Project[] = [
 		tagline: 'Always-on voice AI assistant',
 		description: 'Voice-first AI assistant daemon with local wake-word and faster-whisper.',
 		category: 'ai-infrastructure',
-		status: 'beta',
 		iconPath: '',
 		gradientFrom: '#10b981',
 		gradientTo: '#059669',
@@ -37,7 +35,6 @@ const sampleProjects: Project[] = [
 		tagline: 'Terminal UI primitives',
 		description: 'Modern ratatui TUI component library.',
 		category: 'developer-tools',
-		status: 'building',
 		iconPath: '',
 		gradientFrom: '#f59e0b',
 		gradientTo: '#d97706',
@@ -71,6 +68,11 @@ describe('rankProjects', () => {
 		const results = rankProjects(sampleProjects, 'coding agent');
 		expect(results.length).toBe(1);
 		expect(results[0].project.slug).toBe('stith');
+	});
+
+	it('does not match retired stage words', () => {
+		expect(rankProjects(sampleProjects, 'beta')).toEqual([]);
+		expect(rankProjects(sampleProjects, 'building')).toEqual([]);
 	});
 
 	it('tokenizes multi-word queries correctly', () => {

@@ -6,7 +6,6 @@ description: >-
   mood tracking, and CBT-based exercises — bridging the gap between therapy and
   shallow self-help.
 category: wellness
-status: planning
 features:
   - 'Clinically-grounded personality assessments (Big Five, MBTI-adjacent)'
   - Daily mood tracking with pattern recognition

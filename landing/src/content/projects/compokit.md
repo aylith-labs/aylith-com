@@ -5,7 +5,6 @@ description: >-
   Generate production-ready frontend code using your existing design system. Not
   generic HTML — your components, your tokens, your patterns.
 category: design-tools
-status: planning
 features:
   - Ingests your component library and design tokens
   - Generates code using your actual components

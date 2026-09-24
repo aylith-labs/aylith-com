@@ -29,7 +29,7 @@ export function tokenize(query: string): string[] {
  * - Name prefix/includes: +40 per token
  * - Tagline match: +20 per token
  * - Keywords/Features match: +15 per token
- * - Category / Target user / Status match: +10 per token
+ * - Category / Target user match: +10 per token
  * - Description body match: +5 per token
  */
 export function rankProjects(projects: Project[], query: string): RankedProject[] {
@@ -53,7 +53,6 @@ export function rankProjects(projects: Project[], query: string): RankedProject[
 		const descLower = project.description.toLowerCase();
 		const targetLower = project.targetUser?.toLowerCase() || '';
 		const catLower = project.category.toLowerCase();
-		const statusLower = project.status.toLowerCase();
 		const featuresLower = (project.features || []).map((f) => f.toLowerCase());
 
 		// 1. Exact or whole-query matches
@@ -97,7 +96,7 @@ export function rankProjects(projects: Project[], query: string): RankedProject[
 				score += 10;
 				tokenHit = true;
 			}
-			if (catLower.includes(token) || targetLower.includes(token) || statusLower.includes(token)) {
+			if (catLower.includes(token) || targetLower.includes(token)) {
 				score += 8;
 				tokenHit = true;
 			}

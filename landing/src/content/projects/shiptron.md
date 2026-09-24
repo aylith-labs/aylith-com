@@ -6,7 +6,6 @@ description: >-
   end — planning, building, reviewing, and shipping with a coordinated fleet of
   AI agents.
 category: ai-infrastructure
-status: building
 features:
   - Multi-agent orchestration across the full SDLC
   - 'Specialized agents for planning, coding, review, and release'

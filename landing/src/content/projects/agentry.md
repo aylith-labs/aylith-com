@@ -6,7 +6,6 @@ description: >-
   versioned, and ready to drop into any tool instead of scattered across notes
   and chat history.
 category: developer-tools
-status: building
 features:
   - One home for reusable prompts and agent definitions
   - Versioning so you can iterate without losing what worked

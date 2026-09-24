@@ -62,8 +62,8 @@ try {
 			if (response.request().isNavigationRequest()) receipt.responses.push({ profile: profile.name, url: response.url(), status: response.status() });
 		});
 		await page.goto(`${origin}/projects/bract`);
-		await page.getByTestId('maturity').waitFor();
-		check(`${profile.name}: planning label retained`, await page.getByTestId('maturity').innerText() === 'Planning');
+		await page.getByRole('heading', { name: 'Setup & access' }).waitFor();
+		check(`${profile.name}: no stage label`, !/\bPlanning\b/.test(await page.locator('main header').innerText()));
 		const mainText = await page.locator('main').innerText();
 		for (const copy of [
 			'Local deployment-lifecycle prototype; no production compute backend',

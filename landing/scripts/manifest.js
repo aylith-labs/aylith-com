@@ -3,12 +3,12 @@
 // plain value-in, value-out transform.
 
 import matter from 'gray-matter';
+import { publicCatalogBody } from '../src/lib/catalog/body.js';
 import {
 	DEFAULT_GRADIENT_FROM,
 	DEFAULT_GRADIENT_TO,
 	DEFAULT_ICON,
-	PLACEHOLDER_CATEGORY,
-	PLACEHOLDER_STATUS
+	PLACEHOLDER_CATEGORY
 } from '../src/lib/catalog/defaults.js';
 import { normalizeOnboarding } from '../src/lib/catalog/onboarding.js';
 
@@ -61,7 +61,6 @@ export function projectFromManifest(slug, repoUrl, raw) {
 		tagline: typeof data.tagline === 'string' ? data.tagline : '',
 		description: typeof data.description === 'string' ? data.description : '',
 		category: typeof data.category === 'string' ? data.category : PLACEHOLDER_CATEGORY,
-		status: typeof data.status === 'string' ? data.status : PLACEHOLDER_STATUS,
 		features: Array.isArray(data.features) ? data.features : [],
 		targetUser: typeof data.targetUser === 'string' ? data.targetUser : '',
 		featured: data.featured === true,
@@ -76,7 +75,7 @@ export function projectFromManifest(slug, repoUrl, raw) {
 				? data.gradientTo
 				: DEFAULT_GRADIENT_TO,
 		repoUrl,
-		body: body || undefined,
+		body: body ? publicCatalogBody(body) : undefined,
 		onboarding: setup
 	};
 }
@@ -90,7 +89,6 @@ export function placeholderProject(repo, readme) {
 		tagline: description,
 		description,
 		category: PLACEHOLDER_CATEGORY,
-		status: PLACEHOLDER_STATUS,
 		features: [],
 		targetUser: '',
 		featured: false,
@@ -110,7 +108,6 @@ export function toMarkdown(project) {
 		tagline: project.tagline,
 		description: project.description,
 		category: project.category,
-		status: project.status,
 		features: project.features,
 		targetUser: project.targetUser,
 		featured: project.featured,

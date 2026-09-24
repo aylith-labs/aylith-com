@@ -4,14 +4,14 @@
 	"title": "Aylith catalog manifest frontmatter",
 	"description": "YAML frontmatter of a repo's .aylith/project.md. The catalog collector (aylith-com) reads this to build the tool's catalog card + detail page. The Markdown body below the frontmatter becomes the long-form detail content.",
 	"type": "object",
-	"required": ["name", "tagline", "description", "category", "status"],
+	"required": ["name", "tagline", "description", "category"],
 	"additionalProperties": false,
 	"properties": {
 		"onboarding": {
 			"type": "object",
 			"additionalProperties": false,
 			"required": ["access", "prerequisites", "limitations"],
-			"description": "Source-owned setup information. Beta/live alone does not establish public availability.",
+			"description": "Source-owned setup information. Public availability requires a usable public setup URL, prerequisites, and limitations.",
 			"properties": {
 				"access": { "enum": ["public-source", "restricted"] },
 				"url": { "type": "string", "pattern": "^https://" },
@@ -45,11 +45,6 @@
 				"testing",
 				"uncategorized"
 			]
-		},
-		"status": {
-			"type": "string",
-			"description": "Maturity stage. \"planning\" renders the catalog's amber placeholder state.",
-			"enum": ["research", "planning", "building", "beta", "live"]
 		},
 		"features": {
 			"type": "array",

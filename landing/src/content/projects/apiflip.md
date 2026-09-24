@@ -5,7 +5,6 @@ description: >-
   Point at a URL, describe the data you want in plain language, and get clean
   typed JSON back — even when the site redesigns.
 category: developer-tools
-status: planning
 features:
   - Natural language data extraction from any webpage
   - Resilient to site redesigns — no brittle CSS selectors

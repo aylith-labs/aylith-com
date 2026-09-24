@@ -6,7 +6,6 @@ description: >-
   self-building one — from market signal to ticket to merge to changelog, then
   around again.
 category: developer-tools
-status: building
 features:
   - >-
     Closes the full loop — signal, ticket, implementation, review, merge,

@@ -5,7 +5,6 @@ description: >-
   A multi-provider AI task analyzer that tells you whether a task is feasible,
   which model fits, and what it will cost — with token economics built in.
 category: developer-tools
-status: building
 features:
   - Feasibility analysis across multiple AI providers
   - Token-level cost estimates before you commit

@@ -18,7 +18,7 @@ describe('getProjects', () => {
 			expect(typeof project.name, `${project.slug} name`).toBe('string');
 			expect(project.name.length, `${project.slug} name`).toBeGreaterThan(0);
 			expect(typeof project.category, `${project.slug} category`).toBe('string');
-			expect(typeof project.status, `${project.slug} status`).toBe('string');
+			expect(project).not.toHaveProperty('status');
 			expect(project.iconPath, `${project.slug} iconPath`).toBeTruthy();
 			expect(project.gradientFrom, `${project.slug} gradientFrom`).toBeTruthy();
 			expect(project.gradientTo, `${project.slug} gradientTo`).toBeTruthy();
@@ -68,7 +68,6 @@ describe('projectFromFrontmatter', () => {
 		tagline: 'tagline',
 		description: 'description',
 		category: 'developer-tools',
-		status: 'building',
 		features: [],
 		targetUser: 'someone'
 	};
@@ -80,6 +79,12 @@ describe('projectFromFrontmatter', () => {
 		expect(project.gradientFrom).toBe(DEFAULT_GRADIENT_FROM);
 		expect(project.gradientTo).toBe(DEFAULT_GRADIENT_TO);
 		expect(project.featured).toBe(false);
+	});
+
+	it('drops legacy maturity metadata from snapshot frontmatter', () => {
+		const project = projectFromFrontmatter({ ...required, status: 'beta', stage: 'building' }, 'probe');
+		expect(project).not.toHaveProperty('status');
+		expect(project).not.toHaveProperty('stage');
 	});
 
 	it('keeps the manifest values when they are present', () => {

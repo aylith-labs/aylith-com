@@ -169,7 +169,6 @@ try {
     await page.reload(); await trigger.waitFor(); await open();
     check('both preferences survive reload', await group('Theme').getByRole('button', { name: 'Dark', exact: true }).getAttribute('aria-pressed') === 'true' && await group('Motion').getByRole('button', { name: 'Reduced', exact: true }).getAttribute('aria-pressed') === 'true');
     await page.keyboard.press('Escape');
-    await page.getByLabel('Stage', { exact: true }).selectOption('beta');
     await page.getByLabel('Search catalog').fill('Inspekt');
     await page.locator('main').getByRole('link', { name: /Inspekt/ }).first().click();
     await page.waitForURL(`${origin}/projects/inspekt`);

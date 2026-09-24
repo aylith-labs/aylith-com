@@ -17,4 +17,3 @@ export const DEFAULT_GRADIENT_TO = '#818cf8';
 
 // Placeholder repos (no manifest) land here so the catalog filter has a home for them.
 export const PLACEHOLDER_CATEGORY = 'uncategorized';
-export const PLACEHOLDER_STATUS = 'planning';

@@ -6,7 +6,6 @@ description: >-
   prompts into Claude Code, Cursor, and any AI tool, with one-click install and
   a proomptal CLI for the terminal.
 category: ai-infrastructure
-status: building
 features:
   - 'Craft prompts with variable templating, preview, and version history'
   - 'Organize with tags, favorites, and collections instead of loose files'

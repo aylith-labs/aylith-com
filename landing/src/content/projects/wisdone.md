@@ -5,7 +5,6 @@ description: >-
   AI-powered task management that helps you finish the right things — surfacing
   what actually moves the needle instead of growing an infinite backlog.
 category: productivity
-status: building
 features:
   - 'Prioritizes by impact, not by who shouted loudest'
   - AI surfaces the next right thing to do

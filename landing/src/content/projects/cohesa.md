@@ -5,7 +5,6 @@ description: >-
   A unified workplace platform that replaces the fragmented stack of enterprise
   SaaS tools with a single application backed by a single data store.
 category: productivity
-status: building
 features:
   - One application instead of a dozen disconnected tools
   - A single shared data store across every workflow

@@ -5,7 +5,6 @@ description: >-
   A local-first AI testing CLI that watches your code and automatically
   generates, updates, and maintains test suites as you develop.
 category: testing
-status: planning
 features:
   - Watches file changes and auto-generates tests
   - Updates existing tests when code changes

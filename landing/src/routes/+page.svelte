@@ -29,7 +29,7 @@
 	let available = $derived(projects.filter(hasPublicOnboarding));
 </script>
 
-<Seo title="Aylith — tools in progress, built to work together" description="Explore Aylith's early tools, their setup requirements and the work still ahead. Beta software and planned products are clearly separated." />
+<Seo title="Aylith — tools in progress, built to work together" description="Explore Aylith's tools, their setup requirements and the work still ahead. Each product page explains its access limits." />
 
 <section class="mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-28 lg:px-8">
 	<div class="max-w-3xl">
@@ -38,9 +38,9 @@
 			<Wordmark bind:this={heroWordmark} variant={wordmarkVariant} size="hero" hoverReplay={false} autoplay={false} />
 		</div>
 		<h1 class="text-4xl leading-tight font-bold tracking-tight text-surface-900 sm:text-5xl lg:text-6xl dark:text-warm-50">Useful tools.<br />An evolving suite.</h1>
-		<p class="mt-6 max-w-xl text-lg leading-relaxed text-surface-600 dark:text-warm-300">We're building tools for connected work. Start with early software that has public setup instructions, or explore what's still being developed and planned.</p>
+		<p class="mt-6 max-w-xl text-lg leading-relaxed text-surface-600 dark:text-warm-300">We're building tools for connected work. Start with products that have public setup instructions, or explore the full catalog.</p>
 		<div class="mt-8 flex flex-wrap gap-4">
-			<a href="#try" class="btn-press rounded-xl bg-accent-selected px-6 py-3.5 font-semibold text-on-accent hover:bg-accent-selected-hover active:bg-accent-selected-active">Explore available betas ↓</a>
+			<a href="#try" class="btn-press rounded-xl bg-accent-selected px-6 py-3.5 font-semibold text-on-accent hover:bg-accent-selected-hover active:bg-accent-selected-active">Explore public source setup ↓</a>
 			<a href="/projects" class="rounded-xl border border-surface-300 px-6 py-3.5 font-semibold text-surface-700 dark:border-surface-700 dark:text-warm-200">Browse the full catalog →</a>
 		</div>
 	</div>
@@ -48,8 +48,8 @@
 
 <section id="try" class="scroll-mt-24 border-t border-surface-200/60 py-16 dark:border-surface-800/60">
 	<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-		<h2 class="text-3xl font-bold tracking-tight text-surface-900 dark:text-warm-50">Start with a beta</h2>
-		<p class="mt-4 max-w-2xl text-surface-600 dark:text-warm-300">These entries have public source setup instructions. They are early software, not a hosted or production-ready suite. Check each product's prerequisites and limitations before installing.</p>
+		<h2 class="text-3xl font-bold tracking-tight text-surface-900 dark:text-warm-50">Start with public source setup</h2>
+		<p class="mt-4 max-w-2xl text-surface-600 dark:text-warm-300">These entries have public source setup instructions. They are not a hosted or production-ready suite. Check each product's prerequisites and limitations before installing.</p>
 		{#if available.length}
 			<div class="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3" data-testid="public-showcase">
 				{#each available as project (project.slug)}
@@ -60,11 +60,11 @@
 				{/each}
 			</div>
 		{:else}
-			<p class="mt-8 rounded-xl border border-surface-300 p-6 text-surface-700 dark:border-surface-700 dark:text-warm-200">Public quick-starts are being verified. <a class="underline" href="/projects">Check the catalog for each product's current stage and access limits.</a></p>
+			<p class="mt-8 rounded-xl border border-surface-300 p-6 text-surface-700 dark:border-surface-700 dark:text-warm-200">Public quick-starts are being verified. <a class="underline" href="/projects">Check the catalog for each product's setup and access limits.</a></p>
 		{/if}
 		<div class="mt-12 rounded-2xl bg-surface-100 p-6 dark:bg-surface-900">
-			<h3 class="text-xl font-bold text-surface-900 dark:text-warm-50">The rest of the work, without the release promise</h3>
-			<p class="mt-3 text-surface-600 dark:text-warm-300">The full catalog includes beta, development and planning entries. A listing describes a direction; it does not mean the product is available or that every app already works together.</p>
+			<h3 class="text-xl font-bold text-surface-900 dark:text-warm-50">Explore the full catalog</h3>
+			<p class="mt-3 text-surface-600 dark:text-warm-300">A listing describes a product; it does not mean the product is available or that every app already works together. Check each detail page for access and setup.</p>
 			<a href="/projects" class="mt-4 inline-block font-semibold text-accent-700 underline dark:text-accent-400">Explore all {projects.length} catalog entries →</a>
 		</div>
 	</div>

@@ -5,7 +5,6 @@ description: >-
   AI-powered home inventory. Scan items with your camera, identify them with AI,
   look up barcodes, parse receipts — and keep track of everything you own.
 category: productivity
-status: building
 features:
   - Camera scan with AI item identification
   - Barcode lookup for instant product details

@@ -5,7 +5,6 @@ description: >-
   AI-native business intelligence that lets anyone ask questions about their
   data in natural language and get instant visual answers.
 category: data-tools
-status: planning
 features:
   - Natural language to SQL query generation
   - Auto-generated visualizations and dashboards

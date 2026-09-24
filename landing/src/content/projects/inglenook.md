@@ -5,7 +5,6 @@ description: >-
   A beautiful desktop app that makes running local AI models as easy as using
   ChatGPT — with zero data leaving your machine.
 category: ai-infrastructure
-status: planning
 features:
   - One-click model download and management
   - Polished chat interface rivaling cloud AI products

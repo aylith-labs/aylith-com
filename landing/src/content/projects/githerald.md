@@ -5,7 +5,6 @@ description: >-
   Transforms code activity into marketing content — changelogs, blog posts, and
   social media updates from a single source of truth.
 category: developer-tools
-status: planning
 features:
   - Auto-generates changelogs from commits and PRs
   - Creates blog posts about releases

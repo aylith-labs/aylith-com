@@ -6,7 +6,6 @@ description: >-
   the source and destination, and AI agents map, transform, and verify the
   crossing.
 category: data-tools
-status: building
 features:
   - Connects arbitrary sources and destinations without bespoke connectors
   - AI agents infer field mappings and transformations

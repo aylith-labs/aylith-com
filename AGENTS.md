@@ -41,7 +41,7 @@ No runtime env vars — fully static, no backend.
 ## Architecture
 
 - **Static-first.** `adapter-static`, `prerender = true` in the root layout; build emits a plain HTML/asset folder, no server.
-- **Catalog is collected, not authored here.** `landing/scripts/collect.mjs` enumerates the `aylith-labs` org via `@octokit/rest`, skips archived repos and any with the `aylith-meta` topic, fetches each `.aylith/project.md`, and writes the merged set into gitignored `landing/.generated/projects/`. A repo with no manifest still appears as a "Planning" placeholder.
+- **Catalog is collected, not authored here.** `landing/scripts/collect.mjs` enumerates the `aylith-labs` org via `@octokit/rest`, skips archived repos and any with the `aylith-meta` topic, fetches each `.aylith/project.md`, and writes the merged set into gitignored `landing/.generated/projects/`. A repo with no manifest still appears as an uncategorized placeholder.
 - **Snapshot fallback.** `src/lib/server/markdown.ts` reads `.generated/projects` when present, else the committed snapshot in `src/content/projects/` — so dev and tokenless builds work.
 - **Self-refreshing.** Deploy fires on push to `main`, a `catalog-refresh` `repository_dispatch` from any product repo, an hourly cron, or manual dispatch; builds and deploys to GitHub Pages.
 - Key dirs: `landing/src/routes/` (pages incl. `/projects`, `/projects/[slug]`, `/design`, `sitemap.xml`), `landing/src/lib/` (`actions/`, `brand/`, `components/`, `server/`, `stores/`), `landing/static/` (CNAME, favicons, brand avatars), `.aylith/project.schema.json` (manifest contract).

@@ -5,7 +5,6 @@ description: >-
   A bookmarks manager built for retrieval — save links with tags and context,
   then actually find them later instead of losing them to a forgotten folder.
 category: productivity
-status: building
 features:
   - Save links with tags and a note for context
   - Fast search so saved means findable

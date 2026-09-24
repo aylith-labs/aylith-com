@@ -5,7 +5,6 @@ description: >-
   Daily journaling built around momentum — streaks, a calendar view, and a
   frictionless entry so the habit sticks and the days add up.
 category: wellness
-status: building
 features:
   - 'One quick entry per day, no blank-page dread'
   - Streaks that make the habit visible

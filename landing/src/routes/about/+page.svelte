@@ -4,7 +4,7 @@
 
 <Seo
 	title="About — Aylith"
-	description="Aylith is an evolving software lab. Explore early betas, ongoing development and planned products with clear availability limits."
+	description="Aylith is an evolving software lab. Explore its products and each one's setup and access limits."
 />
 
 <section class="mx-auto max-w-3xl px-4 py-24 sm:px-6 sm:py-32 lg:px-8">
@@ -31,9 +31,9 @@
 		</p>
 		<p>
 			We use those patterns to choose what to build and verify a useful workflow. Our catalog
-			includes early betas, ongoing development and planned products, not a finished suite.
+			includes products with different access and setup requirements, not a finished suite.
 		</p>
-		<p>Product research and internal use guide the work; neither establishes customer adoption. Each product page separates its current stage from its intended capabilities.</p>
+		<p>Product research and internal use guide the work; neither establishes customer adoption. Each product page explains access and setup separately from its described capabilities.</p>
 	</div>
 
 	<p

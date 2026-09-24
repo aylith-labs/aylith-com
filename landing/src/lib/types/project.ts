@@ -8,15 +8,12 @@ export type ProjectCategory =
 	| 'testing'
 	| 'uncategorized';
 
-export type ProjectStatus = 'research' | 'planning' | 'building' | 'beta' | 'live';
-
 export type Project = {
 	slug: string;
 	name: string;
 	tagline: string;
 	description: string;
 	category: ProjectCategory;
-	status: ProjectStatus;
 	iconPath: string;
 	gradientFrom: string;
 	gradientTo: string;

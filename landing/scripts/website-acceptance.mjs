@@ -18,16 +18,16 @@ try {
 	server = await preview({ preview: { host: '127.0.0.1', port: 0, strictPort: true } });
 	const origin = `http://127.0.0.1:${server.httpServer.address().port}`;
 	receipt.origin = origin;
-	browser = await chromium.launch({ headless: true });
+	browser = await chromium.launch({ headless: true, ...(process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE ? { executablePath: process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE } : {}) });
 	for (const profile of [{ name: 'desktop', width: 1440, height: 1000, colorScheme: 'light' }, { name: 'mobile', width: 390, height: 844, colorScheme: 'dark' }]) {
-		const context = await browser.newContext({ viewport: { width: profile.width, height: profile.height }, colorScheme: profile.colorScheme, reducedMotion: 'reduce', recordVideo: { dir: path.join(output, 'raw-browser'), size: { width: profile.width, height: profile.height } } });
+		const context = await browser.newContext({ viewport: { width: profile.width, height: profile.height }, colorScheme: profile.colorScheme, reducedMotion: 'reduce', ...(process.env.PLAYWRIGHT_NO_VIDEO ? {} : { recordVideo: { dir: path.join(output, 'raw-browser'), size: { width: profile.width, height: profile.height } } }) });
 		const page = await context.newPage();
 		page.on('pageerror', (error) => receipt.pageErrors.push(error.message));
 		await page.goto(origin);
 		await page.getByRole('heading', { name: /Useful tools.*An evolving suite/ }).waitFor();
 		check(`${profile.name}: no shipped/launch-count promises`, !/what shipped|138\+|ship in days/i.test(await page.locator('main').innerText()));
 		const cards = page.getByTestId('public-showcase').locator('article');
-		check(`${profile.name}: two publicly documented beta paths`, await cards.count() === 2);
+		check(`${profile.name}: three publicly documented setup paths`, await cards.count() === 3);
 		check(`${profile.name}: restricted Videx not showcased`, !(await page.getByTestId('public-showcase').innerText()).includes('Videx'));
 		await page.getByRole('link', { name: 'Set up Tickets →' }).focus();
 		await page.keyboard.press('Enter');
@@ -50,17 +50,16 @@ try {
 		check(`${profile.name}: restricted access, no broken public CTA`, /Access is restricted/.test(await page.locator('main').innerText()) && await page.locator('main a[href*="github.com/aylith-labs/videx"]').count() === 0);
 		for (const slug of ['bract', 'compokit']) {
 			await page.goto(`${origin}/projects/${slug}`);
-			check(`${profile.name}: ${slug} remains planning`, await page.getByTestId('maturity').innerText() === 'Planning');
+			check(`${profile.name}: ${slug} has no stage claim`, !/\b(?:Planning|In Development|Beta|Live)\b/.test(await page.locator('main header').innerText()));
 			check(`${profile.name}: ${slug} numerical promises removed`, !/\$20|\$200|10x cheaper|60.75%|25.40%|passes PR review on the first try/.test(await page.locator('main').innerText()));
 		}
 		await page.goto(`${origin}/projects`);
-		await page.getByLabel('Stage', { exact: true }).selectOption('beta');
-		check(`${profile.name}: stage filter`, await page.locator('main h3').count() === 3);
+		check(`${profile.name}: no stage filter or stage overview`, await page.getByLabel('Stage', { exact: true }).count() === 0 && !/All stages|In Development/.test(await page.locator('main').innerText()));
 		await page.getByLabel('Search catalog').fill('Videx');
-		check(`${profile.name}: search within stage`, await page.locator('main h3').count() === 1);
+		check(`${profile.name}: catalog search`, await page.locator('main h3').count() === 1);
 		await page.getByLabel('Search catalog').fill('not-a-matching-project-xyz');
 		await page.getByRole('button', { name: 'Clear filter', exact: true }).click();
-		check(`${profile.name}: empty-state reset clears all filters`, await page.getByLabel('Stage', { exact: true }).inputValue() === 'all' && await page.locator('main h3').count() === 12);
+		check(`${profile.name}: empty-state reset clears search and category`, await page.locator('main h3').count() === 12);
 		const names = new Set();
 		for (;;) {
 			for (const name of await page.locator('main h3').allTextContents()) names.add(name.trim());
@@ -76,7 +75,7 @@ try {
 		await page.screenshot({ path: path.join(output, `${profile.name}-catalog.png`), fullPage: true });
 		check(`${profile.name}: no horizontal page overflow`, await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1));
 		await page.goto(origin);
-		await page.getByRole('heading', { name: 'Start with a beta' }).scrollIntoViewIfNeeded();
+		await page.getByRole('heading', { name: 'Start with public source setup' }).scrollIntoViewIfNeeded();
 		await page.screenshot({ path: path.join(output, `${profile.name}-home.png`), fullPage: true });
 		if (profile.name === 'mobile') {
 			await page.getByRole('button', { name: 'Toggle menu' }).click();

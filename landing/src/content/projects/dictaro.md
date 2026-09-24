@@ -5,7 +5,6 @@ description: >-
   Privacy-first AI voice dictation that transforms natural speech into polished,
   publication-ready text — without sending a word to the cloud.
 category: productivity
-status: planning
 features:
   - Local Whisper processing — zero cloud dependency
   - 'AI cleanup removes ums, stutters, and fixes grammar'

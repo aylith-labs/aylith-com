@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { Project } from '$lib/types/project';
-	import { statusLabels } from '$lib/catalog/availability';
+	import { hasPublicOnboarding } from '$lib/catalog/availability';
 	import { tilt } from '$lib/actions/tilt';
 	import { tokenize } from '$lib/search/ranking';
 
@@ -68,7 +68,7 @@
 			<svg class="size-6" style="color: {project.gradientFrom}" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
 				<path stroke-linecap="round" stroke-linejoin="round" d={project.iconPath} />
 			</svg>
-			<span class="text-xs text-surface-600 dark:text-warm-300">{statusLabels[project.status] ?? 'Stage unverified'}</span>
+			<span class="text-xs text-surface-600 dark:text-warm-300">{hasPublicOnboarding(project) ? 'Public source setup' : project.onboarding?.access === 'restricted' ? 'Restricted access' : 'Setup unverified'}</span>
 		</div>
 
 		<h3 class="text-base font-bold text-surface-900 dark:text-warm-50">

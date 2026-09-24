@@ -6,7 +6,6 @@ description: >-
   video from autonomous sessions and replays them on a scrubable timeline, so
   reviewing an overnight run is watching a recording, not reading git diffs.
 category: developer-tools
-status: building
 features:
   - 'Session browser with thumbnails — every agent run, recorded'
   - Scrubable replay timeline with swim lanes for parallel agents

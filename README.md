@@ -17,7 +17,7 @@ Founders, technical builders, and practitioners land here to answer one question
 | **Hero** | Animated tally-mark + "A Y L I T H" wordmark lockup that builds itself on load (twelve monthly animation variants). Fluid type, viewport-aware. |
 | **The loop** | The three-step method — Listen → Pattern → Ship — with scroll-reveal. |
 | **Portfolio** | Featured tools as large cards plus a compact list of the rest, accent-coloured per tool. |
-| **Projects catalog** (`/projects`) | The complete catalog — every studio tool as a card (name, tagline, one-line description, link to its detail page), collected from the org at build, with a status-mix overview and client-side category filtering (each category tab carries its count) across seven categories plus an "Unsorted" bucket for placeholders. Responsive, light + dark, no layout shift. |
+| **Projects catalog** (`/projects`) | The complete catalog — every studio tool as a card (name, tagline, one-line description, access information, link to its detail page), collected from the org at build, with client-side category filtering (each category tab carries its count) across seven categories plus an "Unsorted" bucket for placeholders. Responsive, light + dark, no layout shift. |
 | **Project detail** (`/projects/[slug]`) | Per-tool page rendered from Markdown: tagline, description, features, target user, long-form body. |
 | **About** (`/about`) | The lab's posture in three short paragraphs. |
 | **Design system** (`/design`) | Live brand reference — mark readings, wordmark variants, palette, motion controls, copy-to-clipboard tokens. |
@@ -116,7 +116,7 @@ aylith.com/
     │   │   │   └── layout/      # Navbar, Footer, SettingsMenu
     │   │   ├── server/markdown.ts # Loader: .generated (else snapshot) → Project[]
     │   │   ├── stores/         # theme.svelte.ts, motion.svelte.ts (runes-based)
-    │   │   └── types/project.ts # Project / category / status types
+    │   │   └── types/project.ts # Project / category types
     │   └── routes/
     │       ├── +layout.svelte  # Navbar, Footer, easter eggs
     │       ├── +layout.server.ts # Footer project index
@@ -125,7 +125,7 @@ aylith.com/
     │       ├── design/         # Live design system
     │       ├── projects/
     │       │   ├── +page.svelte        # Catalog + category filter
-    │       │   └── [slug]/+page.svelte # Detail (Markdown body / Planning placeholder + Source link)
+    │       │   └── [slug]/+page.svelte # Detail (Markdown body / uncategorized placeholder + Source link)
     │       └── sitemap.xml/    # Prerendered sitemap endpoint
     ├── static/                 # CNAME, favicons, brand avatars, robots.txt
     ├── svelte.config.js        # adapter-static

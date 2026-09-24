@@ -4,7 +4,6 @@ import {
 	DEFAULT_GRADIENT_TO,
 	DEFAULT_ICON,
 	PLACEHOLDER_CATEGORY,
-	PLACEHOLDER_STATUS
 } from '../src/lib/catalog/defaults.js';
 import {
 	firstParagraph,
@@ -19,7 +18,6 @@ name: Bract
 tagline: Ship telemetry without the platform tax
 description: A collector and dashboard you can run yourself.
 category: developer-tools
-status: beta
 features:
   - Collectors
   - Live logs
@@ -77,7 +75,6 @@ describe('projectFromManifest', () => {
 			name: 'Bract',
 			tagline: 'Ship telemetry without the platform tax',
 			category: 'developer-tools',
-			status: 'beta',
 			features: ['Collectors', 'Live logs'],
 			targetUser: 'Small teams',
 			featured: true,
@@ -87,7 +84,8 @@ describe('projectFromManifest', () => {
 			gradientTo: '#222222',
 			repoUrl: 'https://github.com/aylith-labs/bract'
 		});
-		expect(project.body).toBe('The long-form body.');
+			expect(project.body).toBe('The long-form body.');
+		expect(project).not.toHaveProperty('status');
 	});
 
 	it('fills defaults for a manifest that only declares a name', () => {
@@ -97,7 +95,6 @@ describe('projectFromManifest', () => {
 			tagline: '',
 			description: '',
 			category: PLACEHOLDER_CATEGORY,
-			status: PLACEHOLDER_STATUS,
 			features: [],
 			targetUser: '',
 			featured: false,
@@ -107,6 +104,7 @@ describe('projectFromManifest', () => {
 		});
 		expect(project.order).toBeUndefined();
 		expect(project.body).toBeUndefined();
+		expect(project).not.toHaveProperty('status');
 	});
 
 	it('ignores fields of the wrong type rather than publishing them', () => {
@@ -136,7 +134,7 @@ describe('projectFromManifest', () => {
 });
 
 describe('placeholderProject', () => {
-	it('builds a planning entry from repo metadata', () => {
+	it('builds an uncategorized entry from repo metadata', () => {
 		const project = placeholderProject(
 			{ name: 'entity-graph', description: '  Graphs for entities.  ', html_url: 'https://example.com/eg' },
 			'# Entity Graph\n\nMaps relationships.\n'
@@ -146,11 +144,11 @@ describe('placeholderProject', () => {
 			name: 'Entity Graph',
 			tagline: 'Graphs for entities.',
 			category: PLACEHOLDER_CATEGORY,
-			status: PLACEHOLDER_STATUS,
 			featured: false,
 			repoUrl: 'https://example.com/eg',
 			body: 'Maps relationships.'
 		});
+		expect(project).not.toHaveProperty('status');
 	});
 
 	it('tolerates a repo with no description and no readme', () => {
@@ -161,6 +159,17 @@ describe('placeholderProject', () => {
 });
 
 describe('toMarkdown', () => {
+	it('removes legacy maturity copy from collected public bodies while retaining access facts', () => {
+		for (const [slug, before, after] of [
+			['bract', 'This catalog entry is in planning; it is not a hosted-service offer.', 'This catalog entry is not a hosted-service offer.'],
+			['videx', 'Videx is a beta in a private repository, not a public self-service service.', 'Videx is in a private repository, not a public self-service service.'],
+			['tickets', '### Try the beta\n\nRead the quick start.', '### Set up Tickets locally\n\nRead the quick start.']
+		]) {
+			const project = projectFromManifest(slug, 'https://example.org', `---\nname: ${slug}\n---\n\n${before}`);
+			expect(project.body).toContain(after);
+			expect(toMarkdown(project)).not.toContain(before);
+		}
+	});
 	it('round-trips source-owned release references through collected YAML', () => {
 		const raw = FULL_MANIFEST.replace('featured: true', 'featured: true\nonboarding:\n  access: public-source\n  url: https://example.org/setup\n  releasesUrl: https://registry.npmjs.org/@aylith/inspekt-vite\n  prerequisites: [Local]\n  limitations: [Beta]');
 		const original = projectFromManifest('probe', 'https://example.org', raw);
@@ -183,6 +192,15 @@ describe('toMarkdown', () => {
 		const original = projectFromManifest('bract', 'https://github.com/aylith-labs/bract', FULL_MANIFEST);
 		const reparsed = projectFromManifest('bract', 'https://github.com/aylith-labs/bract', toMarkdown(original));
 		expect(reparsed).toEqual(original);
+		expect(toMarkdown(original)).not.toContain('status:');
+	});
+
+	it('ignores legacy maturity fields in a source manifest during collection', () => {
+		const raw = FULL_MANIFEST.replace('featured: true', 'status: beta\nstage: building\nfeatured: true');
+		const project = projectFromManifest('bract', 'https://example.org/bract', raw);
+		expect(project).not.toHaveProperty('status');
+		expect(project).not.toHaveProperty('stage');
+		expect(toMarkdown(project)).not.toMatch(/^status:|^stage:/m);
 	});
 
 	it('omits order when the project has none, so the loader applies its own fallback', () => {

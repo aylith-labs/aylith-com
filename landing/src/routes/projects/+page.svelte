@@ -2,17 +2,15 @@
 	import { goto } from '$app/navigation';
 	import ProjectCard from '$lib/components/home/ProjectCard.svelte';
 	import { reveal } from '$lib/actions/reveal';
-	import type { Project, ProjectStatus } from '$lib/types/project';
+	import type { Project } from '$lib/types/project';
 	import { rankProjects } from '$lib/search/ranking';
 	import Seo from '$lib/components/Seo.svelte';
-	import { statusLabels } from '$lib/catalog/availability';
 
 	let { data } = $props();
 	let projects: Project[] = $derived(data.projects);
 
 	let searchQuery = $state('');
 	let activeCategory = $state('all');
-	let activeStatus = $state('all');
 	let page = $state(1);
 	const pageSize = 12;
 
@@ -33,26 +31,17 @@
 		hasUnsorted ? [...baseCategories, { key: 'uncategorized', label: 'Unsorted' }] : baseCategories
 	);
 
-	// Status mix
-	const statusOrder: ProjectStatus[] = ['live', 'beta', 'building', 'planning', 'research'];
-	let statusCounts = $derived.by(() =>
-		statusOrder
-			.map((key) => ({ key, label: statusLabels[key], count: projects.filter((p) => p.status === key).length }))
-			.filter((s) => s.count > 0)
-	);
-
 	// Natural language ranked results
 	let rankedResults = $derived(rankProjects(projects, searchQuery));
 
 	// Category filter applied over ranked results
 	let filtered = $derived.by(() => {
 		const base = rankedResults.map((r) => r.project);
-		return base.filter((p) => (activeCategory === 'all' || p.category === activeCategory) &&
-			(activeStatus === 'all' || p.status === activeStatus));
+		return base.filter((p) => activeCategory === 'all' || p.category === activeCategory);
 	});
 	let visible = $derived(filtered.slice((page - 1) * pageSize, page * pageSize));
 	let pageCount = $derived(Math.max(1, Math.ceil(filtered.length / pageSize)));
-	$effect(() => { searchQuery; activeCategory; activeStatus; page = 1; });
+	$effect(() => { searchQuery; activeCategory; page = 1; });
 
 	// Dynamic counts per category reflecting search matches
 	let counts = $derived.by(() => {
@@ -76,7 +65,7 @@
 	function clearSearch() {
 		searchQuery = '';
 	}
-	function resetFilters() { searchQuery = ''; activeCategory = 'all'; activeStatus = 'all'; page = 1; }
+	function resetFilters() { searchQuery = ''; activeCategory = 'all'; page = 1; }
 </script>
 
 <Seo
@@ -91,8 +80,8 @@
 				All Projects
 			</h1>
 			<p class="mt-3 text-lg text-surface-500 dark:text-warm-300">
-				The complete catalog — {projects.length} entries, from early betas to proposed products.
-				A listing is not a usable release. Open a product for its stage, setup and access limits.
+				The complete catalog — {projects.length} entries. A listing does not establish public availability.
+				Open a product for setup instructions and access limits.
 			</p>
 		</div>
 
@@ -149,32 +138,6 @@
 			{/if}
 		</div>
 
-		<!-- Status mix -->
-		<div class="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2" use:reveal={{ delay: 50 }}>
-			{#each statusCounts as s (s.key)}
-				<span class="inline-flex items-center gap-1.5 text-xs text-surface-500 dark:text-warm-400">
-					<span
-						class="size-1.5 rounded-full"
-						class:bg-emerald-500={s.key === 'live'}
-						class:bg-sky-500={s.key === 'beta'}
-						class:bg-accent-500={s.key === 'building'}
-						class:bg-amber-500={s.key === 'planning'}
-						class:bg-surface-400={s.key === 'research'}
-					></span>
-					<span class="font-medium tabular-nums text-surface-700 dark:text-warm-200">{s.count}</span>
-					{s.label}
-				</span>
-			{/each}
-		</div>
-
-		<!-- Category filter -->
-		<div class="mt-6 flex items-center gap-3 text-sm text-surface-700 dark:text-warm-200">
-			<label for="catalog-stage">Stage</label>
-			<select id="catalog-stage" bind:value={activeStatus} class="rounded-xl border border-surface-300 bg-white p-3 dark:border-surface-700 dark:bg-surface-900">
-				<option value="all">All stages</option>
-				{#each statusOrder as status}<option value={status}>{statusLabels[status]}</option>{/each}
-			</select>
-		</div>
 		<div class="mt-8 flex flex-wrap gap-2" use:reveal={{ delay: 100 }}>
 			{#each categories as cat (cat.key)}
 				<button

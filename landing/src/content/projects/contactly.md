@@ -5,7 +5,6 @@ description: >-
   A lightweight personal CRM for the relationships that matter — keep track of
   people, notes, and follow-ups without the weight of a sales platform.
 category: productivity
-status: building
 features:
   - 'A simple record per person, not a sales pipeline'
   - Notes and context that travel with each contact

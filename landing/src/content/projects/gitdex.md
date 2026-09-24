@@ -5,7 +5,6 @@ description: >-
   A GitHub repository inventory that categorizes, scores, and tracks your repos
   across organizations — so you finally know what you have and what it is worth.
 category: developer-tools
-status: building
 features:
   - Inventory of every repo across your orgs
   - Automatic categorization by purpose and stack

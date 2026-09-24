@@ -5,7 +5,6 @@ description: >-
   A personal knowledge base for the things you want to keep and actually find
   again — notes, ideas, and references in one searchable, connected place.
 category: productivity
-status: building
 features:
   - 'Capture notes, ideas, and references in one place'
   - Connections between entries so knowledge links up

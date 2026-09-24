@@ -5,7 +5,6 @@ description: >-
   AI-powered document processing that extracts structured, usable data from any
   document — contracts, invoices, reports — in seconds, not hours.
 category: data-tools
-status: planning
 features:
   - 'Processes PDFs, images, Word docs, and scanned documents'
   - 'Extracts key clauses, dates, parties, and obligations'
