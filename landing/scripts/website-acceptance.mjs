@@ -50,7 +50,7 @@ try {
 		check(`${profile.name}: restricted access, no broken public CTA`, /Access is restricted/.test(await page.locator('main').innerText()) && await page.locator('main a[href*="github.com/aylith-labs/videx"]').count() === 0);
 		for (const slug of ['bract', 'compokit']) {
 			await page.goto(`${origin}/projects/${slug}`);
-			check(`${profile.name}: ${slug} has no stage claim`, !/\b(?:Planning|In Development|Beta|Live)\b/.test(await page.locator('main header').innerText()));
+			check(`${profile.name}: ${slug} has no stage badge`, !/\b(?:Planning|In Development|Beta|Live)\b/.test(await page.locator('main header').innerText()));
 			check(`${profile.name}: ${slug} numerical promises removed`, !/\$20|\$200|10x cheaper|60.75%|25.40%|passes PR review on the first try/.test(await page.locator('main').innerText()));
 		}
 		await page.goto(`${origin}/projects`);

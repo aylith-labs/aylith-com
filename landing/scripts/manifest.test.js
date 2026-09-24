@@ -159,16 +159,11 @@ describe('placeholderProject', () => {
 });
 
 describe('toMarkdown', () => {
-	it('removes legacy maturity copy from collected public bodies while retaining access facts', () => {
-		for (const [slug, before, after] of [
-			['bract', 'This catalog entry is in planning; it is not a hosted-service offer.', 'This catalog entry is not a hosted-service offer.'],
-			['videx', 'Videx is a beta in a private repository, not a public self-service service.', 'Videx is in a private repository, not a public self-service service.'],
-			['tickets', '### Try the beta\n\nRead the quick start.', '### Set up Tickets locally\n\nRead the quick start.']
-		]) {
-			const project = projectFromManifest(slug, 'https://example.org', `---\nname: ${slug}\n---\n\n${before}`);
-			expect(project.body).toContain(after);
-			expect(toMarkdown(project)).not.toContain(before);
-		}
+	it('preserves source-owned body copy through collection', () => {
+		const raw = '---\nname: Tickets\n---\n\n### Set up Tickets locally\n\nRead the quick start.';
+		const project = projectFromManifest('tickets', 'https://example.org', raw);
+		expect(project.body).toBe('### Set up Tickets locally\n\nRead the quick start.');
+		expect(toMarkdown(project)).toContain('### Set up Tickets locally');
 	});
 	it('round-trips source-owned release references through collected YAML', () => {
 		const raw = FULL_MANIFEST.replace('featured: true', 'featured: true\nonboarding:\n  access: public-source\n  url: https://example.org/setup\n  releasesUrl: https://registry.npmjs.org/@aylith/inspekt-vite\n  prerequisites: [Local]\n  limitations: [Beta]');

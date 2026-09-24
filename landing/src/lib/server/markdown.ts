@@ -2,7 +2,6 @@ import fs from 'node:fs';
 import path from 'node:path';
 import matter from 'gray-matter';
 import { marked } from 'marked';
-import { publicCatalogBody } from '$lib/catalog/body.js';
 import {
 	DEFAULT_GRADIENT_FROM,
 	DEFAULT_GRADIENT_TO, 
@@ -55,7 +54,7 @@ export function getProjects(): Project[] {
 			const raw = fs.readFileSync(path.join(contentDir, filename), 'utf-8');
 			const { data, content } = matter(raw);
 			const slug = filename.replace('.md', '');
-			const html = content.trim() ? renderProjectBody(publicCatalogBody(content)) : undefined;
+			const html = content.trim() ? renderProjectBody(content) : undefined;
 
 			return projectFromFrontmatter(data, slug, html);
 		})

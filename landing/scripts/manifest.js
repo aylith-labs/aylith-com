@@ -3,7 +3,6 @@
 // plain value-in, value-out transform.
 
 import matter from 'gray-matter';
-import { publicCatalogBody } from '../src/lib/catalog/body.js';
 import {
 	DEFAULT_GRADIENT_FROM,
 	DEFAULT_GRADIENT_TO,
@@ -75,7 +74,7 @@ export function projectFromManifest(slug, repoUrl, raw) {
 				? data.gradientTo
 				: DEFAULT_GRADIENT_TO,
 		repoUrl,
-		body: body ? publicCatalogBody(body) : undefined,
+		body: body || undefined,
 		onboarding: setup
 	};
 }
