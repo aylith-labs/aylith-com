@@ -7,6 +7,10 @@ tags:
 summary: Source milestone for the design-system picker, optional model-assisted prop inference, file-backed records, and a generated-component linter.
 ---
 
+<script>
+  import ThemedShot from '$lib/components/changelog/ThemedShot.svelte';
+</script>
+
 This June source milestone added a **design-system list and picker**, a
 freeform model route and image-URL path, and optional **model-assisted prop
 inference** for constrained generation. Scanned systems and projects can be
@@ -21,6 +25,52 @@ production readiness.
 
 The previous light/dark home stills are withdrawn from this entry because
 their visible “production-ready code” promise exceeds that evidence. A
-separate, dated study of the actual Svelte/Vue scanner may be linked after
-its source-run capture and media review are published; no replacement film
-or narration is claimed here.
+separate, dated study of the actual Svelte/Vue scanner appears below; it is
+not June milestone footage or a replacement film.
+
+
+## Current source-run scanner study · September 25, 2026
+
+These paired light/dark captures come from the **actual locally run Compokit
+API and web app** with isolated synthetic Svelte and Vue component libraries.
+They show a later source state, not the June milestone. The API readback found
+one component and two CSS tokens in each disposable library. The app's form
+and result views were captured through its local design-system workflow.
+No public scanner account, hosted generation service, model-quality result,
+or production target project is demonstrated.
+
+The [public Compokit source overview](https://aylith-labs.github.io/compokit/)
+is a static explanation of scan → keyword match → reviewable generation, not
+a hosted product app or an installation route.
+
+<ThemedShot
+  light="https://media.aylith.com/compokit/media/i17-svelte-vue-scan-2026-09-25-1894b3b/light-form.png"
+  dark="https://media.aylith.com/compokit/media/i17-svelte-vue-scan-2026-09-25-1894b3b/dark-form.png"
+  alt="Actual local Compokit design-system form prepared for a fictional Svelte source scan"
+  width={1280}
+  height={800}
+  caption="The local scanner form, captured in the app's own light and dark themes with disposable Svelte/Vue source directories."
+/>
+
+<ThemedShot
+  light="https://media.aylith.com/compokit/media/i17-svelte-vue-scan-2026-09-25-1894b3b/light-result.png"
+  dark="https://media.aylith.com/compokit/media/i17-svelte-vue-scan-2026-09-25-1894b3b/dark-result.png"
+  alt="Actual local Compokit result cards showing fictional Svelte and Vue libraries with one component and two tokens each"
+  width={1280}
+  height={800}
+  caption="The API and UI reported one component and two CSS tokens per synthetic library. This is a scanner result, not validated generated code."
+/>
+
+<ThemedShot
+  light="https://media.aylith.com/compokit/media/i17-svelte-vue-scan-2026-09-25-1894b3b/poster-light.png"
+  dark="https://media.aylith.com/compokit/media/i17-svelte-vue-scan-2026-09-25-1894b3b/poster-dark.png"
+  alt="Diagnostic Compokit poster study using actual local result screenshots, prominently labeled synthetic local scan"
+  width={1920}
+  height={1080}
+  caption="A paired diagnostic poster study built around the observed scanner result. It is not the final release cover or a narrated film."
+/>
+
+The synthetic fixture, captured pixels, API receipt and poster source are
+recorded in the media manifest. Paired real interaction footage, licensed
+Cartesia narration, final Remotion films, timed captions, release annotations
+and an approved final cover remain open.
