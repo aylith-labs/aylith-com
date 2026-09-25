@@ -6,6 +6,9 @@ tags:
   - fixed
 summary: Assessment and guided-exercise flows, coaching and journal detail routes, and limited crisis-language matching were added to the source app.
 ---
+<script>
+  import ThemedShot from '$lib/components/changelog/ThemedShot.svelte';
+</script>
 
 This source milestone added attachment and stress-response self-reflection flows,
 PHQ-9 and GAD-7 score displays, a guided CBT-style exercise library, and detail
@@ -19,6 +22,52 @@ human support. A prior generated weekly reflection may retain details from a
 journal entry after that entry is deleted; account-wide erasure is not implemented.
 
 The older paired landing stills showed marketing copy, not verified footage of
-the assessment, exercise, or coaching flows. They are withdrawn from this entry
-while real paired light/dark product captures, narrated videos, annotations,
-captions, and posters are produced and reviewed.
+the assessment, exercise, or coaching flows. They remain withdrawn.
+
+## Current source-run visual study · 2026-09-25
+
+The paired captures below show the actual local app with a synthetic sample
+account. A fictional mood and journal note were saved through the UI. The
+coaching view is an **empty conversation**; no AI-provider response was captured.
+These current screens illustrate the source app, not a contemporaneous record
+of the June milestone, a clinical outcome, or reliable crisis detection.
+
+<ThemedShot
+  light="https://media.aylith.com/selfbloom/media/i17-2026-09-25-7f1b12e/poster-draft-light.png"
+  dark="https://media.aylith.com/selfbloom/media/i17-2026-09-25-7f1b12e/poster-draft-dark.png"
+  alt="Annotated Selfbloom source-run study showing a saved synthetic mood and fictional journal note, labeled not clinical proof"
+  width={1600}
+  height={900}
+  caption="Annotated poster study from real mood and journal screens. Synthetic fixture; not clinical proof."
+/>
+
+<ThemedShot
+  light="https://media.aylith.com/selfbloom/media/i17-2026-09-25-7f1b12e/mood-light.png"
+  dark="https://media.aylith.com/selfbloom/media/i17-2026-09-25-7f1b12e/mood-dark.png"
+  alt="Selfbloom mood page with a saved 7/10 synthetic sample entry"
+  width={1365}
+  height={1375}
+  caption="Actual local mood page with one synthetic sample entry."
+/>
+
+<ThemedShot
+  light="https://media.aylith.com/selfbloom/media/i17-2026-09-25-7f1b12e/journal-light.png"
+  dark="https://media.aylith.com/selfbloom/media/i17-2026-09-25-7f1b12e/journal-dark.png"
+  alt="Selfbloom journal page with a saved fictional note in the synthetic sample account"
+  width={1365}
+  height={1118}
+  caption="Actual local journal page with a fictional saved note."
+/>
+
+<ThemedShot
+  light="https://media.aylith.com/selfbloom/media/i17-2026-09-25-7f1b12e/coaching-light.png"
+  dark="https://media.aylith.com/selfbloom/media/i17-2026-09-25-7f1b12e/coaching-dark.png"
+  alt="Selfbloom coaching page before an AI conversation, with only the initial greeting visible"
+  width={1365}
+  height={901}
+  caption="The coaching view before a conversation; no provider reply was tested or captured."
+/>
+
+Paired product videos, Cartesia narration, Remotion animation, timed captions,
+and a final film poster remain in production. These stills do not establish
+clinical validation or an AI-conversation result.
