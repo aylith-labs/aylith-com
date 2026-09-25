@@ -3,30 +3,16 @@ title: Hardware fit, GGUF metadata, and conversations
 date: '2026-06-16'
 tags:
   - added
-summary: A hardware-fit estimator, GGUF quant metadata enrichment, a GPU-layer toggle, and full conversation management with archive, rename, and delete.
-hero:
-  light: https://media.aylith.com/inglenook/media/landing-light.png
-  dark: https://media.aylith.com/inglenook/media/landing-dark.png
-  alt: 'Inglenook landing: a desktop app for running local AI models on your own hardware'
-  width: 2720
-  height: 1700
+summary: Source added hardware-fit estimates, GGUF metadata reading, GPU-layer settings, and conversation archive, rename, and delete controls. Native runtime verification remains open.
 ---
-<script>
-  import ThemedShot from '$lib/components/changelog/ThemedShot.svelte';
-</script>
+This source milestone added ways to estimate model fit and inspect GGUF metadata
+before deciding what to run. GPU-layer settings, conversation archive, rename,
+delete, and system-prompt persistence were also added to the desktop UI. These
+paths have not completed a native end-to-end test in this review; hardware-fit
+estimates are not a guarantee that a model will load or run well.
 
-This milestone was about knowing what your machine can run — and keeping your
-chats organized. The **hardware-fit estimator** and **GGUF quant metadata**
-enrichment tell you whether a model fits before you download it, and a
-**GPU-layer toggle** gives you control over offloading. Conversations gained
-an **archive** UI, **rename / delete**, and **system-prompt persistence**,
-with a proper generation-error state.
-
-<ThemedShot
-  light="https://media.aylith.com/inglenook/media/landing-light.png"
-  dark="https://media.aylith.com/inglenook/media/landing-dark.png"
-  alt="Inglenook landing: a desktop app for running local AI models on your own hardware"
-  width={2720}
-  height={1700}
-  caption="The Inglenook landing — your AI, your hardware, your rules."
-/>
+The earlier paired images showed an old marketing landing, not the native app.
+They visibly promised a working waitlist, zero network egress, and suitability
+for regulated work. We withdrew them because the current source makes outbound
+model-download requests and establishes no compliance certification. A real
+paired capture of the verified desktop workflow is still needed.
