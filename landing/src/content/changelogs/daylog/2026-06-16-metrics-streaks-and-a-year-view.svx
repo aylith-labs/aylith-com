@@ -13,6 +13,7 @@ hero:
 ---
 <script>
   import ThemedShot from '$lib/components/changelog/ThemedShot.svelte';
+  import ThemedClip from '$lib/components/changelog/ThemedClip.svelte';
 </script>
 
 Daylog grew from a plain journal into a full daily-tracking surface.
@@ -71,4 +72,22 @@ These newer paired stills are cropped from the **actual local Daylog web app** a
   caption="One observed check-in for a fictional habit; this does not show a longer streak."
 />
 
-The entry's Previous/Next links still have a Budapest date offset: on September 25, Previous points to September 23 and Next points back to September 25. The calendar's direct route worked; adjacent-day navigation is not demonstrated here. These are source-run stills, not a hosted multi-user app or a finished release film. Paired screen recordings, Cartesia narration, Remotion animation, timed captions, annotations, and a final poster remain open.
+<ThemedClip
+  light="https://media.aylith.com/daylog/media/i17-current-flow-2026-09-25-f092e08/current-flow-light.webm"
+  dark="https://media.aylith.com/daylog/media/i17-current-flow-2026-09-25-f092e08/current-flow-dark.webm"
+  alt="Silent edited Daylog browser-frame study showing the fictional September calendar, saved entry and one checked-in streak"
+  width={1280}
+  height={990}
+  caption="Real local browser frames in both themes, edited into five-second silent sequences. Time between actions is compressed; these are not uninterrupted real-time recordings or finished narrated films."
+/>
+
+<ThemedShot
+  light="https://media.aylith.com/daylog/media/i17-current-flow-2026-09-25-f092e08/poster-study-light.png"
+  dark="https://media.aylith.com/daylog/media/i17-current-flow-2026-09-25-f092e08/poster-study-dark.png"
+  alt="Diagnostic Daylog poster made from actual fictional entry, calendar and one-streak app captures, with a visible Budapest date-arrow bug warning"
+  width={1600}
+  height={900}
+  caption="A diagnostic source-run cover study made from these app captures. It labels fictional data and the known date-arrow defect; final release art is still open."
+/>
+
+The entry's Previous/Next links still have a Budapest date offset: on September 25, Previous points to September 23 and Next points back to September 25. The calendar's direct route worked; adjacent-day navigation is not demonstrated here. The current-flow media is from a local fictional fixture, not a hosted multi-user app. Licensed Cartesia narration, paired Remotion release films, timed captions, a final exceptional poster, and the date-navigation fix remain open.
