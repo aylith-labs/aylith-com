@@ -4,31 +4,21 @@ date: '2026-06-16'
 tags:
   - added
   - fixed
-summary: Validated assessments including PHQ-9 and GAD-7, a CBT library, coaching and journal detail routes, and deterministic crisis-safety detection.
-hero:
-  light: https://media.aylith.com/selfbloom/media/landing-light.png
-  dark: https://media.aylith.com/selfbloom/media/landing-dark.png
-  alt: 'Selfbloom landing: an AI wellness companion — understand yourself, grow every day'
-  width: 2720
-  height: 1700
+summary: Assessment and guided-exercise flows, coaching and journal detail routes, and limited crisis-language matching were added to the source app.
 ---
-<script>
-  import ThemedShot from '$lib/components/changelog/ThemedShot.svelte';
-</script>
 
-The clinical core arrived. **Validated assessments** — attachment/stress plus
-PHQ-9 and GAD-7 — landed with a weekly-summary UI, alongside a **CBT library**
-and **coaching / journal** detail routes. **Crisis safety** is deterministic:
-a crisis-keyword detector paired with crisis resources and helplines. The AI
-layer became **model-agnostic**, with secure cookies, an error page, and a
-`GET /health` endpoint for the aylith-infra connector. Navigation and a broken
-chart were fixed.
+This source milestone added attachment and stress-response self-reflection flows,
+PHQ-9 and GAD-7 score displays, a guided CBT-style exercise library, and detail
+routes for saved coaching sessions and journal entries. The app also added a
+weekly-reflection panel and selectable AI-provider configuration. These features
+were not clinically validated as a combined product or shown to improve health.
 
-<ThemedShot
-  light="https://media.aylith.com/selfbloom/media/landing-light.png"
-  dark="https://media.aylith.com/selfbloom/media/landing-dark.png"
-  alt="Selfbloom landing: an AI wellness companion"
-  width={2720}
-  height={1700}
-  caption="The Selfbloom landing — understand yourself and grow every day."
-/>
+A deterministic keyword matcher can surface crisis-resource links beside some
+coaching and journal responses. It cannot reliably detect every crisis or replace
+human support. A prior generated weekly reflection may retain details from a
+journal entry after that entry is deleted; account-wide erasure is not implemented.
+
+The older paired landing stills showed marketing copy, not verified footage of
+the assessment, exercise, or coaching flows. They are withdrawn from this entry
+while real paired light/dark product captures, narrated videos, annotations,
+captions, and posters are produced and reviewed.
