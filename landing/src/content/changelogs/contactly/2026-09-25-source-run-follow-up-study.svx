@@ -1,0 +1,90 @@
+---
+title: From contact context to a dated follow-up
+date: '2026-09-25'
+tags:
+  - docs
+summary: An actual local Contactly UI study follows a fictional contact through search, tags, an interaction note, and an in-app dated reminder in paired light and dark themes.
+hero:
+  light: https://media.aylith.com/contactly/media/i17-source-flow-2026-09-25-fa29bda/poster-study-light.png
+  dark: https://media.aylith.com/contactly/media/i17-source-flow-2026-09-25-fa29bda/poster-study-dark.png
+  alt: 'Annotated Contactly source-run poster with fictional Cedar Rowan detail and reminder edit controls, labeled no hosted app, owner auth, saved edit, or external alert'
+  width: 1600
+  height: 900
+---
+<script>
+  import ThemedShot from '$lib/components/changelog/ThemedShot.svelte';
+  import ThemedClip from '$lib/components/changelog/ThemedClip.svelte';
+</script>
+
+The [public Contactly overview](https://aylith-labs.github.io/contactly/) explains this source-run project. It is a **static information page**, not a hosted contact app, account, or reminder service. This September media study documents actual local product UI; it does not change the separate June source milestone.
+
+## One fictional person, five real UI states
+
+Contactly ran locally against disposable SQLite with three invented contacts and `.example.test` email addresses. The API and web app were bound to loopback. The light and dark captures below show unmodified product pixels. “Cedar Rowan,” the workshop note, and the October follow-up are **fictional fixture data**, not private contact records.
+
+<ThemedShot
+  light="https://media.aylith.com/contactly/media/i17-source-flow-2026-09-25-fa29bda/poster-study-light.png"
+  dark="https://media.aylith.com/contactly/media/i17-source-flow-2026-09-25-fa29bda/poster-study-dark.png"
+  alt="Annotated Contactly poster study combining actual local contact detail and reminder edit controls, with prominent fictional and access-limit labels"
+  width={1600}
+  height={900}
+  caption="A review-approved source-run poster study assembled from actual UI crops. The contact is fictional; edit Save was not submitted. This is not a final narrated-film cover."
+/>
+
+<ThemedShot
+  light="https://media.aylith.com/contactly/media/i17-source-flow-2026-09-25-fa29bda/search-light.png"
+  dark="https://media.aylith.com/contactly/media/i17-source-flow-2026-09-25-fa29bda/search-dark.png"
+  alt="Actual Contactly contact-list search for Rowan returning one fictional Cedar Rowan result"
+  width={1365}
+  height={900}
+  caption="Search by Rowan narrows the local fictional contact list to Cedar Rowan."
+/>
+
+<ThemedShot
+  light="https://media.aylith.com/contactly/media/i17-source-flow-2026-09-25-fa29bda/tag-light.png"
+  dark="https://media.aylith.com/contactly/media/i17-source-flow-2026-09-25-fa29bda/tag-dark.png"
+  alt="Actual Contactly workshop tag filter showing one fictional Cedar Rowan result"
+  width={1365}
+  height={900}
+  caption="The workshop tag filter is a separate real UI state, not a combined search-and-tag claim."
+/>
+
+<ThemedShot
+  light="https://media.aylith.com/contactly/media/i17-source-flow-2026-09-25-fa29bda/detail-light.png"
+  dark="https://media.aylith.com/contactly/media/i17-source-flow-2026-09-25-fa29bda/detail-dark.png"
+  alt="Actual Contactly detail for fictional Cedar Rowan with an example.test address, workshop note, and meeting interaction"
+  width={1365}
+  height={1054}
+  caption="The full contact detail carries the fictional workshop context and a saved meeting interaction."
+/>
+
+The next pair shows a **stored dated item inside the app**. It does not demonstrate an external notification. The October 2 future item currently displays the incorrect relative label “just now”; the captured UI is shown as observed, not as proof of a working countdown. Owner authentication is also absent from the current API.
+
+<ThemedShot
+  light="https://media.aylith.com/contactly/media/i17-source-flow-2026-09-25-fa29bda/reminder-light.png"
+  dark="https://media.aylith.com/contactly/media/i17-source-flow-2026-09-25-fa29bda/reminder-dark.png"
+  alt="Actual Contactly in-app reminder list for a fictional October 2 follow-up; future item visibly carries the incorrect just-now relative label"
+  width={1365}
+  height={900}
+  caption="A dated in-app follow-up exists in the disposable fixture. Its visible ‘just now’ badge for a future date is a known defect; no alert delivery is shown."
+/>
+
+<ThemedShot
+  light="https://media.aylith.com/contactly/media/i17-source-flow-2026-09-25-fa29bda/reminder-edit-light.png"
+  dark="https://media.aylith.com/contactly/media/i17-source-flow-2026-09-25-fa29bda/reminder-edit-dark.png"
+  alt="Actual Contactly reminder edit fields with populated fictional follow-up title and date, Save and Cancel controls; Save was not submitted"
+  width={1365}
+  height={900}
+  caption="In-place edit controls are visible. The capture did not submit Save or verify an edited record."
+/>
+
+<ThemedClip
+  light="https://media.aylith.com/contactly/media/i17-source-flow-2026-09-25-fa29bda/workflow-edited-light.webm"
+  dark="https://media.aylith.com/contactly/media/i17-source-flow-2026-09-25-fa29bda/workflow-edited-dark.webm"
+  alt="Silent edited actual local Contactly browser footage moving from fictional contact detail to an in-app dated reminder"
+  width={1364}
+  height={900}
+  caption="Short silent edits of actual local detail-to-reminder navigation, trimmed from raw captures. They do not show search, a saved edit, external delivery, or a hosted account; the future-date badge defect remains visible."
+/>
+
+The source-run evidence and exact hashes are recorded in `aylith-media`. This study is a truthful interim: authenticated ownership, the relative-date defect, Cartesia narration, Remotion light/dark release films, timed captions, and a final film cover remain open.
