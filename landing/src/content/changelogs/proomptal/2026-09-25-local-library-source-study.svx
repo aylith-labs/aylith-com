@@ -1,0 +1,81 @@
+---
+title: A saved prompt, found again
+date: '2026-09-25'
+tags:
+  - docs
+summary: Actual paired light and dark Proomptal UI shows a fictional local SQLite library, substring search, exact-body detail and copy; silent raw interaction footage remains diagnostic.
+hero:
+  light: https://media.aylith.com/proomptal/media/i17-source-library-2026-09-25-7e394b5/poster-light.png
+  dark: https://media.aylith.com/proomptal/media/i17-source-library-2026-09-25-7e394b5/poster-dark.png
+  alt: 'Annotated Proomptal source-run Library poster with three fictional saved prompt cards and prominent no-hosted-app, no-auth, no-install, no-substitution qualifiers'
+  width: 1600
+  height: 900
+---
+
+<script>
+  import ThemedShot from '$lib/components/changelog/ThemedShot.svelte';
+</script>
+
+The [public Proomptal overview](https://aylith-labs.github.io/proomptal/) is a **static source guide**, not a hosted prompt library, account or AI-tool installation. This separate September study shows the **actual local web app** running against disposable SQLite with three fictional writing and research prompts. It does not change the June source milestone or reuse its withdrawn empty-library stills.
+
+## From a saved card to an exact body
+
+The paired captures use the app's own light and dark themes. The local Bun API and Vite web UI were bound to loopback for the capture. Titles, bodies, tags and the literal topic placeholder are fictional fixture data; no private prompts, provider call or installed AI-tool target were used. The API has no account authentication, so source runs belong inside a trusted local boundary.
+
+<ThemedShot
+  light="https://media.aylith.com/proomptal/media/i17-source-library-2026-09-25-7e394b5/poster-light.png"
+  dark="https://media.aylith.com/proomptal/media/i17-source-library-2026-09-25-7e394b5/poster-dark.png"
+  alt="Diagnostic Proomptal poster with a crop of the real three-card fictional local Library and source-run access limits"
+  width={1600}
+  height={900}
+  caption="A reviewed annotated poster study built from real Library pixels. Its search and copy callouts have separate UI, CLI and clipboard receipts; it is not the final narrated-film cover."
+/>
+
+<ThemedShot
+  light="https://media.aylith.com/proomptal/media/i17-source-library-2026-09-25-7e394b5/entry-light.png"
+  dark="https://media.aylith.com/proomptal/media/i17-source-library-2026-09-25-7e394b5/entry-dark.png"
+  alt="Actual Proomptal source-run first viewport showing Craft, Find and Reuse above the saved Library cards"
+  width={1365}
+  height={900}
+  caption="The actual app's first viewport explains Craft → Find → Reuse. Saved cards sit below this fold; the next pair shows them."
+/>
+
+<ThemedShot
+  light="https://media.aylith.com/proomptal/media/i17-source-library-2026-09-25-7e394b5/library-light.png"
+  dark="https://media.aylith.com/proomptal/media/i17-source-library-2026-09-25-7e394b5/library-dark.png"
+  alt="Actual local Proomptal Library below the fold displaying all three fictional saved cards and Showing 3 of 3 prompt(s)"
+  width={1365}
+  height={900}
+  caption="A separate scroll on the same local app shows all three stored fictional cards and the real 3-of-3 count."
+/>
+
+<ThemedShot
+  light="https://media.aylith.com/proomptal/media/i17-source-library-2026-09-25-7e394b5/search-light.png"
+  dark="https://media.aylith.com/proomptal/media/i17-source-library-2026-09-25-7e394b5/search-dark.png"
+  alt="Actual Proomptal substring search for clarity returning the fictional Clarify the next draft prompt"
+  width={1365}
+  height={900}
+  caption="Searching for ‘clarity’ returned the stored fictional prompt. The source matches substrings in prompt fields, not semantic similarity."
+/>
+
+<ThemedShot
+  light="https://media.aylith.com/proomptal/media/i17-source-library-2026-09-25-7e394b5/detail-light.png"
+  dark="https://media.aylith.com/proomptal/media/i17-source-library-2026-09-25-7e394b5/detail-dark.png"
+  alt="Actual Proomptal detail displaying the fictional stored body, tags and literal topic placeholder"
+  width={1365}
+  height={900}
+  caption="The detail view shows the exact saved body and detected topic placeholder name. The app does not substitute a value."
+/>
+
+<ThemedShot
+  light="https://media.aylith.com/proomptal/media/i17-source-library-2026-09-25-7e394b5/copied-light.png"
+  dark="https://media.aylith.com/proomptal/media/i17-source-library-2026-09-25-7e394b5/copied-dark.png"
+  alt="Actual Proomptal Copied confirmation after copying the fictional prompt body without variable substitution"
+  width={1365}
+  height={900}
+  caption="The app entered its Copied state; browser clipboard readback matched the stored body byte for byte in both themes."
+/>
+
+The [light-theme raw interaction video](https://media.aylith.com/proomptal/media/i17-source-library-2026-09-25-7e394b5/raw-light.webm) and [dark-theme raw interaction video](https://media.aylith.com/proomptal/media/i17-source-library-2026-09-25-7e394b5/raw-dark.webm) are short **silent actual browser recordings** of entry → search → detail → copy. They begin on the first-view hero, not the populated cards; the dark raw clip includes a brief real loading frame and compression. The paired Library stills separately prove the saved-card state. These raw videos are diagnostic footage, not polished, narrated or captioned release films.
+
+The same fictional SQLite fixture was listed, searched and shown by the Bun CLI; its exact text output, browser/API receipts and all media hashes are preserved with the media source. No packaged AI-tool installation, prompt revision history, semantic search, cross-device sync or hosted account is demonstrated. Cartesia narration, Remotion light/dark final films, timed captions and a final approved cover remain open.
