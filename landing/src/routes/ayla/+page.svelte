@@ -5,6 +5,7 @@
 	import Assistant from '$lib/ask/Assistant.svelte';
 	import VoiceConsole from '$lib/ask/VoiceConsole.svelte';
 	import { resolveAiUrl } from '$lib/ask/config';
+	import { browserStorage, rememberView } from '$lib/view-preference';
 
 	const apiUrl = resolveAiUrl();
 	let initialQuery = $state('');
@@ -14,6 +15,7 @@
 	let voiceMode = $state(false);
 
 	onMount(() => {
+		if (window.self === window.top) rememberView('ayla', browserStorage());
 		initialQuery = new URLSearchParams(window.location.search).get('q') ?? '';
 		const controller = new AbortController();
 		fetch(`${apiUrl}/api/voice/capabilities`, { signal: controller.signal })
@@ -38,7 +40,7 @@
 <section class="relative flex h-full flex-col overflow-hidden bg-surface-50 text-surface-900 dark:bg-surface-950 dark:text-warm-50">
 	<div aria-hidden="true" class="pointer-events-none absolute right-[-10rem] top-[-12rem] size-[34rem] rounded-full bg-accent-100/50 blur-3xl dark:bg-accent-900/20"></div>
 	<header class="relative z-10 flex items-center justify-between gap-4 px-5 py-5 sm:px-8">
-		<a href="/" aria-label="Aylith classic home" class="inline-flex items-center gap-2 text-sm font-semibold tracking-[0.12em]"><Mark class="h-7 w-auto" /> AYLITH</a>
+		<a href="/?view=classic" aria-label="Aylith classic home" class="inline-flex items-center gap-2 text-sm font-semibold tracking-[0.12em]"><Mark class="h-7 w-auto" /> AYLITH</a>
 		<div class="flex items-center gap-4 text-sm">
 			<button onclick={() => (showPaths = !showPaths)} aria-expanded={showPaths} aria-controls="ayla-paths" class="text-surface-600 hover:text-surface-900 dark:text-warm-300 dark:hover:text-warm-50">{showPaths ? 'Hide paths' : 'Explore'}</button>
 			<a href="/workspace" class="rounded-full border border-surface-300 px-4 py-2 font-medium hover:bg-surface-100 dark:border-surface-700 dark:hover:bg-surface-800">Open workspace ↗</a>
@@ -46,7 +48,7 @@
 	</header>
 	{#if showPaths}
 		<nav id="ayla-paths" aria-label="Explore Aylith" class="relative z-10 mx-5 flex flex-wrap gap-3 rounded-2xl border border-surface-200 bg-white/90 p-4 text-sm shadow-sm dark:border-surface-800 dark:bg-surface-900/90 sm:mx-8">
-			<a href="/" class="font-medium text-accent-700 hover:underline dark:text-accent-400">Classic homepage</a>
+			<a href="/?view=classic" class="font-medium text-accent-700 hover:underline dark:text-accent-400">Classic homepage</a>
 			<a href="/projects" class="font-medium text-accent-700 hover:underline dark:text-accent-400">Projects</a>
 			<a href="/about" class="font-medium text-accent-700 hover:underline dark:text-accent-400">About</a>
 		</nav>

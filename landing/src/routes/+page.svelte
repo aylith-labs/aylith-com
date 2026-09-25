@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { afterNavigate, goto } from '$app/navigation';
 	import { reveal } from '$lib/actions/reveal';
 	import Mark from '$lib/components/brand/Mark.svelte';
 	import Wordmark from '$lib/components/brand/Wordmark.svelte';
@@ -9,6 +10,12 @@
 	import { hasPublicOnboarding } from '$lib/catalog/availability';
 	import type { Project } from '$lib/types/project';
 	import Seo from '$lib/components/Seo.svelte';
+	import { browserStorage, rootEntry } from '$lib/view-preference';
+
+	afterNavigate(({ type }) => {
+		const destination = rootEntry(type, window.location.search, window.self !== window.top, browserStorage());
+		if (destination) void goto(destination, { replaceState: true, noScroll: true });
+	});
 
 	const wordmarkVariant = getMonthlyVariant();
 	let heroMark = $state<{ replay: (force?: boolean) => void } | undefined>();
