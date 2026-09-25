@@ -39,3 +39,36 @@ Daylog grew from a plain journal into a full daily-tracking surface.
   height={1800}
   caption="Habit cards show current and best runs; history opens from each card."
 />
+
+## Current source-run flow · 2026-09-25
+
+These newer paired stills are cropped from the **actual local Daylog web app** at source `f092e08`, using a disposable SQLite database and fictional entry and habit. They show a later interface state, not the June milestone: the optional writing prompt is visible as a suggestion, while the saved entry contains separately entered words. The September 25 calendar mark reopened that entry, and the fictional habit was checked in once.
+
+<ThemedShot
+  light="https://media.aylith.com/daylog/media/i17-current-flow-2026-09-25-f092e08/entry-light.png"
+  dark="https://media.aylith.com/daylog/media/i17-current-flow-2026-09-25-f092e08/entry-dark.png"
+  alt="Actual Daylog entry editor with fictional saved title and note, mood, energy and focus ratings, and an optional writing prompt"
+  width={900}
+  height={1100}
+  caption="Current entry editor with fictional data. The prompt is a suggestion, not saved entry text."
+/>
+
+<ThemedShot
+  light="https://media.aylith.com/daylog/media/i17-current-flow-2026-09-25-f092e08/calendar-light.png"
+  dark="https://media.aylith.com/daylog/media/i17-current-flow-2026-09-25-f092e08/calendar-dark.png"
+  alt="Actual Daylog September 2026 month calendar with a mark on the fictional saved entry date"
+  width={900}
+  height={650}
+  caption="The September 25 mark opened the saved fictional entry in this local run."
+/>
+
+<ThemedShot
+  light="https://media.aylith.com/daylog/media/i17-current-flow-2026-09-25-f092e08/streak-light.png"
+  dark="https://media.aylith.com/daylog/media/i17-current-flow-2026-09-25-f092e08/streak-dark.png"
+  alt="Actual Daylog streak card for a fictional Write a line habit after one check-in, showing one current and one best day"
+  width={900}
+  height={650}
+  caption="One observed check-in for a fictional habit; this does not show a longer streak."
+/>
+
+The entry's Previous/Next links still have a Budapest date offset: on September 25, Previous points to September 23 and Next points back to September 25. The calendar's direct route worked; adjacent-day navigation is not demonstrated here. These are source-run stills, not a hosted multi-user app or a finished release film. Paired screen recordings, Cartesia narration, Remotion animation, timed captions, annotations, and a final poster remain open.
