@@ -1,0 +1,74 @@
+name: Refresh AI catalog on VPS
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ai-catalog-refresh
+  cancel-in-progress: false
+
+jobs:
+  collect-and-recreate:
+    runs-on: [self-hosted, hostinger]
+    timeout-minutes: 20
+    defaults:
+      run:
+        shell: bash
+        working-directory: /srv/aylith/catalog/landing
+    steps:
+      - name: Update the site collector clone
+        run: |
+          set -euo pipefail
+          test -d /srv/aylith/catalog/.git
+          git -C /srv/aylith/catalog pull --ff-only origin main
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      - name: Install locked collector dependencies
+        run: |
+          set -euo pipefail
+          npm ci --no-audit --no-fund
+
+      - name: Collect pinned product manifests
+        env:
+          CATALOG_GITHUB_TOKEN: ${{ secrets.CATALOG_GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          : "${CATALOG_GITHUB_TOKEN:?CATALOG_GITHUB_TOKEN is required for private manifests}"
+          npm run collect
+
+      - name: Verify Dashcam source receipt and exact bytes
+        run: |
+          set -euo pipefail
+          node --input-type=module <<'NODE'
+          import { createHash } from 'node:crypto';
+          import { readFileSync } from 'node:fs';
+          const dir = '.generated/projects';
+          const receipts = JSON.parse(readFileSync(`${dir}/catalog-provenance.json`, 'utf8'));
+          const receipt = receipts.dashcam;
+          if (!receipt || !/^[0-9a-f]{40}$/.test(receipt.sourceCommit)) {
+            throw new Error('Dashcam has no pinned canonical source commit');
+          }
+          const age = Date.now() - Date.parse(receipt.collectedAt);
+          if (!Number.isFinite(age) || age < 0 || age > 7 * 24 * 60 * 60 * 1000) {
+            throw new Error('Dashcam collection receipt is stale or invalid');
+          }
+          const body = readFileSync(`${dir}/dashcam.md`);
+          const actual = createHash('sha256').update(body).digest('hex');
+          if (actual !== receipt.sha256) {
+            throw new Error('Dashcam collection receipt does not match exact Markdown bytes');
+          }
+          console.log('Dashcam canonical source receipt verified; collected bytes match.');
+          NODE
+
+      - name: Recreate AI API against the swapped catalog directory
+        run: |
+          set -euo pipefail
+          cd /srv/aylith/ai
+          docker compose -f docker-compose.yaml -f docker-compose.vps.yml up -d --force-recreate --no-deps api
+          docker exec aylith-ai sh -lc 'test -s /catalog/dashcam.md && test -s /catalog/catalog-provenance.json'
