@@ -1,0 +1,41 @@
+---
+title: Clearer download buttons and a refreshed live preview
+date: '2026-09-25'
+tags:
+  - fixed
+  - changed
+summary: Download buttons keep readable contrast through hover and focus, and the real Angular preview runs on updated dependencies.
+---
+<script>
+  import ThemedShot from '$lib/components/changelog/ThemedShot.svelte';
+</script>
+
+The **Get Torbie** button now keeps cream text on a darker copper background in both themes.
+Its text contrast stays at least **6.31:1**, including the hover and keyboard-focus transitions.
+
+<ThemedShot
+  light="https://media.aylith.com/torbie/media/website-contrast-20260925-light.png"
+  dark="https://media.aylith.com/torbie/media/website-contrast-20260925-dark.png"
+  alt="Torbie's website with a focused download button and the interactive Claude Code terminal preview"
+  width={2720}
+  height={1800}
+/>
+
+The live preview keeps its terminal sessions, plugins, split panes and full-screen views after
+a dependency refresh. Language switching, theme changes, navigation recovery and guide motion
+are covered by browser checks.
+
+<details>
+<summary>Dependency and desktop compatibility details</summary>
+
+The desktop app, built-in plugins, web frontend and website dependencies were updated together.
+TypeScript 7 runs standalone checks; Angular and its tooling still require the TypeScript 6
+JavaScript compiler API. Electron 44 uses a clipboard bridge to preserve Torbie's synchronous
+plugin methods. Future builds require macOS 13+ and support x64 and ARM64; existing v1.0.0
+downloads remain available, including the unsigned Windows builds.
+
+This update does not publish a new desktop installer. See the
+[dependency migration notes](https://github.com/aylith-labs/torbie/blob/main/docs/dependency-upgrades.md)
+for the compiler constraints and native build changes.
+
+</details>
