@@ -6,6 +6,9 @@ tags:
   - changed
 summary: Watch, fix, and ci CLI paths plus coverage-report reading and convention-aware test drafting landed in the source prototype.
 ---
+<script>
+  import ThemedShot from '$lib/components/changelog/ThemedShot.svelte';
+</script>
 
 This source milestone added working **`watch`**, **`fix`**, and **`ci`** command
 paths. Generation can use an existing Istanbul coverage report to select files
@@ -20,5 +23,41 @@ This private source prototype has no verified public package or hosted access.
 
 The older paired light/dark landing stills showed marketing claims, a waitlist,
 and sample passing-test/coverage numbers, not recorded CLI output. They are
-withdrawn from this entry while real paired product captures, narrated films,
-annotations, captions, and posters are produced and verified.
+withdrawn from this entry.
+
+## Current source-run CLI study · 2026-09-25
+
+The paired transcript cards below render **actual Specwatch CLI output** from a
+disposable TypeScript fixture, with local file paths shortened. A deterministic
+loopback Responses-API stub supplied the model response: this was **not Ollama
+or a real model**. The cards are designed evidence renders, not raw terminal
+screenshots or a contemporaneous capture of the June milestone.
+
+`gen --dry-run --no-validate` exited successfully and left an existing
+hand-written test byte-identical. Normal `gen --no-validate` then replaced that
+test; validation was skipped, so the run does not establish test quality. A
+watched source edit triggered regeneration. Separately, `ci --coverage` exited
+successfully with no coverage report, confirming the missing-report gate remains
+open rather than proving any coverage improvement.
+
+<ThemedShot
+  light="https://media.aylith.com/specwatch/media/i17-2026-09-25-d99bbdb/transcript-light.png"
+  dark="https://media.aylith.com/specwatch/media/i17-2026-09-25-d99bbdb/transcript-dark.png"
+  alt="Designed Specwatch CLI transcript cards for dry-run and normal generation against a synthetic fixture with simulated model response"
+  width={1365}
+  height={768}
+  caption="Source-backed CLI output with shortened local paths: dry-run preserved the existing test; normal generation replaced it. Synthetic fixture, simulated model."
+/>
+
+<ThemedShot
+  light="https://media.aylith.com/specwatch/media/i17-2026-09-25-d99bbdb/poster-light.png"
+  dark="https://media.aylith.com/specwatch/media/i17-2026-09-25-d99bbdb/poster-dark.png"
+  alt="Annotated Preview before generation poster candidate with a labeled synthetic fixture, shortened CLI excerpt, unchanged dry-run hash, and observed test replacement"
+  width={1600}
+  height={900}
+  caption="Annotated poster study from the source-run CLI evidence. It does not prove real-model quality or improved coverage."
+/>
+
+Paired raw terminal recordings and final films in both themes, Cartesia
+narration, Remotion animation, timed captions, and a final release poster
+remain unproduced. These studies are not a public package or hosted app demo.
