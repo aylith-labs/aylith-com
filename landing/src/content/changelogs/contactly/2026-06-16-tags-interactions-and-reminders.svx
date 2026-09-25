@@ -3,30 +3,14 @@ title: Tags, interactions, and reminders
 date: '2026-06-16'
 tags:
   - added
-summary: Full-CRUD reminders with in-place editing, a tag editor with tag filters on the contacts list, per-contact interaction logging, and a contact edit route with pagination and Zod validation.
-hero:
-  light: https://media.aylith.com/contactly/media/home-light.png
-  dark: https://media.aylith.com/contactly/media/home-dark.png
-  alt: 'Contactly contacts list: search, tag filters, and contact cards with avatar, company, and last-contacted time'
-  width: 2720
-  height: 1800
+summary: In-app dated reminders with editing, tag filters, interaction logging, contact editing, pagination, and write validation.
 ---
-<script>
-  import ThemedShot from '$lib/components/changelog/ThemedShot.svelte';
-</script>
 
-This milestone rounded Contactly out into a real personal CRM.
+This source milestone expanded Contactly's local contact workflow. It did not add an authenticated owner boundary or external reminder notifications.
 
-- **Reminders** — full CRUD with in-place editing; never drop a follow-up.
-- **Tags** — a tag editor and tag-filter UI on the contacts list.
-- **Interactions** — log, edit, and delete interactions per contact.
-- **Contact edit route**, contacts pagination, and Zod validation.
+- **Reminders** — create, edit, complete, reopen, and delete dated items in the app.
+- **Tags** — edit a contact's tags and filter the contacts list by tag.
+- **Interactions** — log, edit, and delete a contact's calls, emails, meetings, and notes.
+- **Contact management** — edit a contact, page through the list, and validate API writes with Zod.
 
-<ThemedShot
-  light="https://media.aylith.com/contactly/media/reminders-light.png"
-  dark="https://media.aylith.com/contactly/media/reminders-dark.png"
-  alt="Contactly reminders view"
-  width={2720}
-  height={1800}
-  caption="Reminders with in-place editing."
-/>
+The previous paired stills are withdrawn from this entry. The reminders image showed an empty state, not editing; its capture fixture and release provenance were not verified. New light and dark product captures and narrated films remain to be made from an isolated synthetic fixture.
