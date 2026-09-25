@@ -1,0 +1,79 @@
+---
+title: A bookmark workflow you can inspect
+date: '2026-09-25'
+tags:
+  - docs
+summary: Real light and dark source-run captures show saving context, finding a fictional bookmark, and organizing collections; the public product page explains current access and limits.
+hero:
+  light: https://media.aylith.com/linkstash/media/i17-2026-09-25-d7abd9a/poster-draft-light.png
+  dark: https://media.aylith.com/linkstash/media/i17-2026-09-25-d7abd9a/poster-draft-dark.png
+  alt: 'Annotated Linkstash poster study with a real filtered bookmark card, labeled synthetic data and fictional example links'
+  width: 1600
+  height: 900
+---
+<script>
+  import ThemedShot from '$lib/components/changelog/ThemedShot.svelte';
+  import ThemedClip from '$lib/components/changelog/ThemedClip.svelte';
+</script>
+
+The [public Linkstash product page](https://aylith-labs.github.io/linkstash/) now explains the source-run workflow and its limits. It is a static page, **not a hosted bookmark account**. The app itself remains a trusted, single-operator prototype without built-in authentication.
+
+## Current source-run capture
+
+These paired light and dark images come from the **actual locally running Linkstash web app**, with fictional `.example.test` bookmarks and disposable collections. One bookmark was saved through the app form; the rest of the fictional fixture was populated through its API. The poster is an annotated study assembled from real UI pixels, not evidence of a customer library.
+
+<ThemedShot
+  light="https://media.aylith.com/linkstash/media/i17-2026-09-25-d7abd9a/poster-draft-light.png"
+  dark="https://media.aylith.com/linkstash/media/i17-2026-09-25-d7abd9a/poster-draft-dark.png"
+  alt="Linkstash annotated source-run poster showing a fictional saved link and the search result it becomes"
+  width={1600}
+  height={900}
+  caption="A source-run poster study. Synthetic bookmarks and fictional example links are labeled in both themes."
+/>
+
+<ThemedShot
+  light="https://media.aylith.com/linkstash/media/i17-2026-09-25-d7abd9a/home-light.png"
+  dark="https://media.aylith.com/linkstash/media/i17-2026-09-25-d7abd9a/home-dark.png"
+  alt="Actual Linkstash bookmark list containing fictional saved links"
+  width={1060}
+  height={515}
+  caption="The source-run bookmark list, with disposable fictional records."
+/>
+
+<ThemedShot
+  light="https://media.aylith.com/linkstash/media/i17-2026-09-25-d7abd9a/search-light.png"
+  dark="https://media.aylith.com/linkstash/media/i17-2026-09-25-d7abd9a/search-dark.png"
+  alt="Actual Linkstash search narrowed to a fictional Cedar bookmark and its saved description"
+  width={1060}
+  height={515}
+  caption="Searching the saved title, URL, and description surfaces the fictional Cedar bookmark."
+/>
+
+<ThemedShot
+  light="https://media.aylith.com/linkstash/media/i17-2026-09-25-d7abd9a/collections-light.png"
+  dark="https://media.aylith.com/linkstash/media/i17-2026-09-25-d7abd9a/collections-dark.png"
+  alt="Actual Linkstash collections index with fictional named collections"
+  width={1079}
+  height={524}
+  caption="Named collections organize the disposable fixture without changing the bookmark records."
+/>
+
+<ThemedShot
+  light="https://media.aylith.com/linkstash/media/i17-2026-09-25-d7abd9a/collection-light.png"
+  dark="https://media.aylith.com/linkstash/media/i17-2026-09-25-d7abd9a/collection-dark.png"
+  alt="Actual Linkstash collection detail showing fictional bookmarked links"
+  width={1060}
+  height={515}
+  caption="A collection detail in the same disposable source-run library."
+/>
+
+<ThemedClip
+  light="https://media.aylith.com/linkstash/media/i17-2026-09-25-d7abd9a/search-interaction-light.webm"
+  dark="https://media.aylith.com/linkstash/media/i17-2026-09-25-d7abd9a/search-interaction-dark.webm"
+  alt="Silent edited Linkstash source-frame sequence narrowing search to a fictional bookmark"
+  width={1060}
+  height={516}
+  caption="Silent, time-compressed sequences of real browser frames in both themes. They are not uninterrupted real-time recordings or final narrated release films."
+/>
+
+The ordinary list currently loads only the first 50 results, the add-to-collection picker loads the first 100 candidates, and import skips duplicate URLs. Licensed Cartesia narration, Remotion light and dark release films, timed captions, and final film-poster approval remain open. These short source recordings have no audio.
