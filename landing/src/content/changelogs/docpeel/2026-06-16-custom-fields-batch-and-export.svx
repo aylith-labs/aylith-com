@@ -3,32 +3,17 @@ title: Custom fields, batch, and export
 date: '2026-06-16'
 tags:
   - added
-summary: Custom field definitions with validation and confidence-based review flagging, batch upload and re-process, and export to CSV, JSON, or Excel.
-hero:
-  light: https://media.aylith.com/docpeel/media/landing-light.png
-  dark: https://media.aylith.com/docpeel/media/landing-dark.png
-  alt: 'Docpeel landing: upload any document, get structured data back'
-  width: 2720
-  height: 1700
+summary: Custom field definitions, confidence-based review flags, batch upload, re-process, and JSON/CSV/XLSX export in the source app.
 ---
-<script>
-  import ThemedShot from '$lib/components/changelog/ThemedShot.svelte';
-</script>
 
-Extraction became configurable and reviewable. **Custom field definitions**
-now drive extraction, backed by **field validation** and
-**confidence-based review-flagging** so low-confidence values get a human
-look. **Batch upload**, a **re-process** action, and document delete handle
-volume, and results **export** to CSV, JSON, or Excel. The extraction layer
-is now **model-agnostic** (provider/model-neutral), and a real **waitlist
-form** plus a minimal `GET /health` endpoint for the aylith-infra connector
-round out the release.
+The source app added **custom field definitions**, **validation** and
+**confidence-based review flags** for extracted values. It also added batch
+upload, a re-process action, document delete, and export to CSV, JSON and Excel.
+Provider selection was abstracted in the extraction layer.
 
-<ThemedShot
-  light="https://media.aylith.com/docpeel/media/landing-light.png"
-  dark="https://media.aylith.com/docpeel/media/landing-dark.png"
-  alt="Docpeel landing: upload any document, get structured data back"
-  width={2720}
-  height={1700}
-  caption="The Docpeel landing — upload any document, get structured data."
-/>
+The accompanying marketing page described early access, but its form only
+sent an application when a separate endpoint was configured. No connected
+public signup or hosted extraction is established by this release. The former
+landing screenshot was withdrawn here because it displayed unverified speed,
+pricing and access claims. Matched light/dark captures of the actual app,
+with narrated films and captions, remain a release-media task.
