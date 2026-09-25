@@ -7,6 +7,11 @@ tags:
 summary: Source added a media library with upload, dynamic content blocks, sanitized server-rendered Markdown, and cookie-based sign-in.
 ---
 
+<script>
+  import ThemedShot from '$lib/components/changelog/ThemedShot.svelte';
+  import ThemedClip from '$lib/components/changelog/ThemedClip.svelte';
+</script>
+
 This source milestone expanded Brainstash's local authoring workflow.
 
 - **Media library** — a page for uploaded media, with working upload.
@@ -22,3 +27,47 @@ Their example data, dates and view counters have no documented release fixture;
 one category still even reads “0 categories total” above four visible rows.
 They cannot establish the current product state. Fresh matched light/dark
 captures and narrated films of a verified local workflow remain release work.
+
+## Current source-run study · September 25, 2026
+
+These newer paired captures are from the **actual locally run Brainstash app**, using a disposable SQLite database and a fictional account. They show a later source state, not footage from the June milestone. A fictional reference was saved, edited, found by a title/content search for `parser`, and opened on its History page. The saved note's source uses a reserved `.example.test` address. No private note, uploaded media, hosted account or production database appears.
+
+The [public Brainstash source overview](https://aylith-labs.github.io/brainstash/) explains this workflow and its setup boundary. It is a static page, not a hosted knowledge base or sign-in service.
+
+<ThemedShot
+  light="https://media.aylith.com/brainstash/media/i17-source-run-2026-09-25-4b30771/entry-light.png"
+  dark="https://media.aylith.com/brainstash/media/i17-source-run-2026-09-25-4b30771/entry-dark.png"
+  alt="Actual local Brainstash entry with a fictional cache note, a reserved example.test source and edited content"
+  width={1365}
+  height={900}
+  caption="A fictional saved reference in the local app, after its content was edited. This is product UI, not the illustrated public landing card."
+/>
+
+<ThemedShot
+  light="https://media.aylith.com/brainstash/media/i17-source-run-2026-09-25-4b30771/search-light.png"
+  dark="https://media.aylith.com/brainstash/media/i17-source-run-2026-09-25-4b30771/search-dark.png"
+  alt="Actual local Brainstash title and content search returning one parser match in the fictional note"
+  width={1365}
+  height={900}
+  caption="The `parser` query returned one highlighted match from the edited fictional note. This does not demonstrate complete filtered pagination."
+/>
+
+<ThemedShot
+  light="https://media.aylith.com/brainstash/media/i17-source-run-2026-09-25-4b30771/history-light.png"
+  dark="https://media.aylith.com/brainstash/media/i17-source-run-2026-09-25-4b30771/history-dark.png"
+  alt="Actual local Brainstash History page listing Version 1 for the fictional entry, with its snapshot collapsed"
+  width={1365}
+  height={900}
+  caption="The History page lists Version 1. Its snapshot is collapsed here; this capture does not prove the prior content or a completed restore."
+/>
+
+<ThemedClip
+  light="https://media.aylith.com/brainstash/media/i17-source-run-2026-09-25-4b30771/workflow-light.webm"
+  dark="https://media.aylith.com/brainstash/media/i17-source-run-2026-09-25-4b30771/workflow-dark.webm"
+  alt="Silent local Brainstash browser recording of a fictional account opening its entry, searching parser and viewing a collapsed Version 1 history row"
+  width={1364}
+  height={900}
+  caption="Silent source-run browser recordings of the fictional local workflow. The dark clip's blank startup was trimmed; durations differ. These are raw studies, not synchronized narrated release films."
+/>
+
+Uploaded media is currently served by ID without authentication, so these captures do not establish private-media handling. Search filters apply after FTS pagination, and restoring an entry was not exercised in this study. Licensed Cartesia narration, paired Remotion films, timed captions, release annotations and an exceptional approved poster remain open.
