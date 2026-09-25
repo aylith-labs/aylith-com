@@ -1,0 +1,67 @@
+---
+title: Flagged clipboard items and MCP reads
+date: '2026-09-24'
+tags:
+  - changed
+  - fixed
+summary: Flagged items are omitted from Clipwell MCP recent/search results and refused by MCP direct-text reads; trusted local REST picker clients retain access.
+---
+<script>
+  import ThemedShot from '$lib/components/changelog/ThemedShot.svelte';
+  import ThemedClip from '$lib/components/changelog/ThemedClip.svelte';
+</script>
+
+This dated [source update](https://github.com/aylith-labs/clipwell/commit/d14aa3abc02139b1d68c77ab4f33adf22bd4a3f2)
+narrows what Clipwell's MCP tools can read. Recent items and search omit a
+flagged row, including an alias match; direct text reads refuse it. The local
+REST view remains available to trusted picker clients so the item can still be
+managed. This does not secure every local API caller or an unflagged item.
+
+## Source-run web-picker study · 2026-09-25
+
+These paired captures come from the **actual browser-served `/app` web picker**
+and .NET daemon, using seven fictional rows in an isolated database with
+clipboard watching disabled. They do not depict the native Windows picker or
+any real clipboard contents. One fictional row was marked sensitive through
+the product API; the picker shows it masked. The poster's MCP explanation is
+source-backed, not a fabricated MCP response.
+
+<ThemedShot
+  light="https://media.aylith.com/clipwell/media/i17-2026-09-25-db2d650/poster-draft-light.png"
+  dark="https://media.aylith.com/clipwell/media/i17-2026-09-25-db2d650/poster-draft-dark.png"
+  alt="Annotated Clipwell web-picker source study showing a masked synthetic row and stating the MCP boundary"
+  width={1600}
+  height={900}
+  caption="A source-run poster study, composed from the real web picker. The fixture is fictional; the MCP result is described from source, not mocked on screen."
+/>
+
+<ThemedShot
+  light="https://media.aylith.com/clipwell/media/i17-2026-09-25-db2d650/picker-overview-light.png"
+  dark="https://media.aylith.com/clipwell/media/i17-2026-09-25-db2d650/picker-overview-dark.png"
+  alt="Actual Clipwell web picker with seven fictional items and one visibly masked sensitive row"
+  width={1024}
+  height={800}
+  caption="The trusted browser picker still shows the flagged sample row, masked among seven fictional items."
+/>
+
+<ThemedShot
+  light="https://media.aylith.com/clipwell/media/i17-2026-09-25-db2d650/picker-sensitive-search-light.png"
+  dark="https://media.aylith.com/clipwell/media/i17-2026-09-25-db2d650/picker-sensitive-search-dark.png"
+  alt="Clipwell web-picker search narrowed to the masked fictional sensitive item"
+  width={1024}
+  height={800}
+  caption="A local picker search still locates the flagged sample item while hiding its text. MCP list/search apply a different, source-backed omission rule."
+/>
+
+<ThemedClip
+  light="https://media.aylith.com/clipwell/media/i17-2026-09-25-db2d650/picker-search-light.webm"
+  dark="https://media.aylith.com/clipwell/media/i17-2026-09-25-db2d650/picker-search-dark.webm"
+  alt="Silent Clipwell web-picker recording typing a synthetic query until only the masked item remains"
+  width={1024}
+  height={800}
+  caption="Real, silent web-picker source footage in both themes. It shows local filtering, not an MCP response or a finished narrated release film."
+/>
+
+Licensed Cartesia narration, Remotion light/dark release films, timed captions,
+and final film-poster approval remain open. The short source recordings above
+have no audio and are not presented as the finished changelog film.
