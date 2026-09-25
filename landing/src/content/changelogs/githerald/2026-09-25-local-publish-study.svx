@@ -1,0 +1,78 @@
+---
+title: A draft becomes a local public changelog
+date: '2026-09-25'
+tags:
+  - docs
+summary: Paired real GitHerald UI captures follow a hand-authored fictional draft through review, an explicit local publish action, and the resulting public changelog route.
+hero:
+  light: https://media.aylith.com/githerald/media/i17-source-run-2026-09-25-5f65a80/poster-study-light.png
+  dark: https://media.aylith.com/githerald/media/i17-source-run-2026-09-25-5f65a80/poster-study-dark.png
+  alt: 'Annotated GitHerald source-run poster combining the actual local Published state and public changelog with prominent fictional fixture, no GitHub OAuth, and no LLM labels'
+  width: 1600
+  height: 900
+---
+<script>
+  import ThemedShot from '$lib/components/changelog/ThemedShot.svelte';
+</script>
+
+The [public GitHerald overview](https://aylith-labs.github.io/githerald/) explains the product boundary. It is a **static information page**, not a hosted account, OAuth connection, generation service, or changelog host. The separate June entry records the source publish feature and keeps its old marketing stills withdrawn. This September study shows the **actual locally run app UI** with a disposable SQLite database and synthetic session.
+
+## A fictional draft, reviewed and published locally
+
+The repository `fixture-studio/newsroom-demo`, two source identities, PR #12, release note, and displayed dates are **hand-authored fictional fixture data**, not observed provider events. The source activity links are unavailable, not verified GitHub references. No GitHub OAuth, GitHub API, LLM generation, customer data, or deployed GitHerald app was exercised. The visible **Publish changelog** action did run against this disposable database and created the row shown on the local public route; the published row was not preseeded. Blog and social copy were still drafts, not posted or scheduled.
+
+<ThemedShot
+  light="https://media.aylith.com/githerald/media/i17-source-run-2026-09-25-5f65a80/poster-study-light.png"
+  dark="https://media.aylith.com/githerald/media/i17-source-run-2026-09-25-5f65a80/poster-study-dark.png"
+  alt="Annotated diagnostic poster composed from actual local GitHerald Published status and public changelog screenshots, with fictional/no-provider qualifiers"
+  width={1600}
+  height={900}
+  caption="An independently reviewed diagnostic poster study. The two embedded UI crops are real source-run pixels; framing, arrow and labels were added for explanation. This is not a final narrated-film cover."
+/>
+
+<ThemedShot
+  light="https://media.aylith.com/githerald/media/i17-source-run-2026-09-25-5f65a80/raw/githerald-dashboard-light.jpg"
+  dark="https://media.aylith.com/githerald/media/i17-source-run-2026-09-25-5f65a80/raw/githerald-dashboard-dark.jpg"
+  alt="Actual local GitHerald dashboard with the fictional newsroom-demo repository and one draft generation"
+  width={1060}
+  height={515}
+  caption="The dashboard comes from a synthetic session and disposable local store. The repository is fictional and has no GitHub connection."
+/>
+
+<ThemedShot
+  light="https://media.aylith.com/githerald/media/i17-source-run-2026-09-25-5f65a80/raw/githerald-review-light.jpg"
+  dark="https://media.aylith.com/githerald/media/i17-source-run-2026-09-25-5f65a80/raw/githerald-review-dark.jpg"
+  alt="Actual GitHerald draft review with expanded source activity listing two fictional commits and one fictional merged PR with links unavailable"
+  width={1060}
+  height={515}
+  caption="Review exposes the seeded source identities and marks their links unavailable; they are not evidence of a GitHub fetch."
+/>
+
+<ThemedShot
+  light="https://media.aylith.com/githerald/media/i17-source-run-2026-09-25-5f65a80/raw/githerald-draft-light.jpg"
+  dark="https://media.aylith.com/githerald/media/i17-source-run-2026-09-25-5f65a80/raw/githerald-draft-dark.jpg"
+  alt="Actual GitHerald draft body and Markdown, HTML and JSON export controls; draft text explicitly says it was hand-authored for a visual fixture"
+  width={1060}
+  height={515}
+  caption="The hand-authored changelog body is shown in the real draft view. Export controls are visible; this capture did not verify a downloaded export file."
+/>
+
+<ThemedShot
+  light="https://media.aylith.com/githerald/media/i17-source-run-2026-09-25-5f65a80/raw/githerald-published-light.jpg"
+  dark="https://media.aylith.com/githerald/media/i17-source-run-2026-09-25-5f65a80/raw/githerald-published-dark.jpg"
+  alt="Actual local GitHerald review page after clicking Publish changelog, showing Published status and a view-live-page link"
+  width={1060}
+  height={515}
+  caption="The actual Publish changelog button changed the disposable generation to Published and exposed a local public-page link."
+/>
+
+<ThemedShot
+  light="https://media.aylith.com/githerald/media/i17-source-run-2026-09-25-5f65a80/raw/githerald-public-light.jpg"
+  dark="https://media.aylith.com/githerald/media/i17-source-run-2026-09-25-5f65a80/raw/githerald-public-dark.jpg"
+  alt="Actual local public GitHerald changelog route displaying fictional release v0.2.0 and explicit hand-authored fixture disclosure"
+  width={1060}
+  height={515}
+  caption="The local public route rendered the row created by that publish action. The URL was loopback, not a hosted customer changelog."
+/>
+
+The source-run stills and poster are independently reviewed and all 19 hosted media assets matched their versioned manifest by HTTP status, bytes and SHA-256. The current GitHub reader still has first-page limits and a PR end-date gap; this fictional capture does not validate provider retrieval or date-range fidelity. Actual paired motion footage, Cartesia narration, Remotion release films, timed captions, and a final film cover remain open.
