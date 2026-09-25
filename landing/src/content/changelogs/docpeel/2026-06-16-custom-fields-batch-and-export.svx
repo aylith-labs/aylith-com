@@ -17,3 +17,14 @@ public signup or hosted extraction is established by this release. The former
 landing screenshot was withdrawn here because it displayed unverified speed,
 pricing and access claims. Matched light/dark captures of the actual app,
 with narrated films and captions, remain a release-media task.
+
+## Current evaluation note · 2026-09-25
+
+This June source update is not a hosted processing release. Evaluating the app
+requires repository access, Supabase Auth/database/private Storage with the
+app's migrations, a model provider key, and a long-lived process for the current
+background pipeline. No public Docpeel processing origin, completed provider
+run, or speed benchmark has been verified for this entry. The separate static
+landing's illustrated invoice is synthetic design, not a product capture.
+Matched light/dark screenshots and films will be linked only after an actual
+synthetic-document run, visual review, and public byte/hash verification.
