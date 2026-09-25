@@ -11,6 +11,7 @@
 		placeholder?: string;
 		suggestions?: string[];
 		initialQuery?: string;
+		showIntro?: boolean;
 	};
 
 	let {
@@ -23,7 +24,8 @@
 			'Which products are live versus still building?',
 			'How do the tools connect to each other?'
 		],
-		initialQuery = ''
+		initialQuery = '',
+		showIntro = true
 	}: Props = $props();
 
 	const chat = new Chat({
@@ -96,19 +98,21 @@
 		const last = chat.messages.at(-1);
 		void chat.messages.length;
 		void (last ? textOf(last) : '');
-		scrollToEnd();
+		if (last) scrollToEnd();
 	});
 </script>
 
 <div class="flex h-full flex-col">
 	<div bind:this={scroller} class="flex-1 space-y-5 overflow-y-auto px-1 py-4">
 		{#if chat.messages.length === 0}
-			<div class="mx-auto max-w-2xl pt-6 text-center">
-				<p class="text-surface-500 dark:text-surface-400">
-					Ask about any tool in the suite, what fits a need, how the tools connect, or — once
-					you're signed in — your own data across apps.
-				</p>
-				<div class="mt-6 grid gap-2 sm:grid-cols-2">
+			<div class="mx-auto max-w-2xl text-center {showIntro ? 'pt-6' : 'pt-0'}">
+				{#if showIntro}
+					<p class="text-surface-500 dark:text-surface-400">
+						Ask about any tool in the suite, what fits a need, how the tools connect, or — once
+						you're signed in — your own data across apps.
+					</p>
+				{/if}
+				<div class="grid gap-2 sm:grid-cols-2 {showIntro ? 'mt-6' : ''}">
 					{#each suggestions as suggestion (suggestion)}
 						<button
 							onclick={() => send(suggestion)}

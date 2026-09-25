@@ -13,6 +13,8 @@
 		{ href: '/', label: 'Home' },
 		{ href: '/projects', label: 'Projects' },
 		{ href: '/ask', label: 'Ask' },
+		{ href: '/workspace', label: 'Workspace' },
+		{ href: '/ayla', label: 'Ayla' },
 		{ href: '/about', label: 'About' }
 	] as const;
 
@@ -35,6 +37,7 @@
 					{#each navLinks as link (link.href)}
 						<a
 							href={link.href}
+							target={link.href === '/workspace' || link.href === '/ayla' ? '_top' : undefined}
 							class="rounded-lg px-3 py-1.5 text-sm font-medium transition-colors {isActive(link.href)
 								? 'bg-accent-100 text-accent-700 dark:bg-accent-900/40 dark:text-accent-300'
 								: 'text-surface-600 hover:bg-surface-100 hover:text-surface-900 dark:text-surface-400 dark:hover:bg-surface-800 dark:hover:text-surface-100'}"
@@ -72,6 +75,7 @@
 			{#each navLinks as link (link.href)}
 				<a
 					href={link.href}
+					target={link.href === '/workspace' || link.href === '/ayla' ? '_top' : undefined}
 					onclick={() => (mobileMenuOpen = false)}
 					class="block rounded-lg px-3 py-2 text-sm font-medium transition-colors {isActive(link.href)
 						? 'bg-accent-100 text-accent-700 dark:bg-accent-900/40 dark:text-accent-300'

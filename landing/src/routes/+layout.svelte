@@ -1,6 +1,7 @@
 <script lang="ts">
 	import '../app.css';
 	import { browser } from '$app/environment';
+	import { page } from '$app/state';
 	import { onMount } from 'svelte';
 	import Navbar from '$lib/components/layout/Navbar.svelte';
 	import Footer from '$lib/components/layout/Footer.svelte';
@@ -58,12 +59,16 @@
 	<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
 </svelte:head>
 
-<div class="flex min-h-screen flex-col">
-	<Navbar />
+<div class="flex flex-col {page.url.pathname === '/workspace' || page.url.pathname === '/ayla' ? 'h-svh overflow-hidden' : 'min-h-screen'}">
+	{#if page.url.pathname !== '/workspace' && page.url.pathname !== '/ayla'}
+		<Navbar />
+	{/if}
 
-	<main class="flex-1">
+	<main class="min-h-0 flex-1">
 		{@render children()}
 	</main>
 
-	<Footer projects={data.navProjects} />
+	{#if page.url.pathname !== '/workspace' && page.url.pathname !== '/ayla'}
+		<Footer projects={data.navProjects} />
+	{/if}
 </div>
