@@ -59,7 +59,7 @@ jobs:
           cp "$stage/projects/"* projects/
           git add projects
           git ls-files | python3 -c 'import re,sys; paths=sys.stdin.read().splitlines(); assert paths and all(re.fullmatch(r"projects/(?:[a-z0-9-]+\.md|catalog-provenance\.json)", p) for p in paths), paths'
-          git diff --cached --check
+          # Preserve canonical Markdown bytes, including source whitespace.
           git commit -m "catalog: pinned collection from run $GITHUB_RUN_ID"
           git push origin HEAD:refs/heads/catalog-generated
           echo "catalog_commit=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
