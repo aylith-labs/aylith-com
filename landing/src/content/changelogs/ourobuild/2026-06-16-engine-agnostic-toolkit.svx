@@ -1,36 +1,36 @@
 ---
-title: Engine-agnostic toolkit
+title: Agent-workflow scaffolding and PRD issue preview
 date: '2026-06-16'
 tags:
   - added
   - changed
-summary: An engine-agnostic core with config schema and CLI init scaffolding, MCP and GitHub helpers, a changelog dashboard agent fleet, and provider-agnostic cost estimation.
-hero:
-  light: https://media.aylith.com/ourobuild/media/hero.png
-  dark: https://media.aylith.com/ourobuild/media/hero.png
-  alt: 'ourobuild landing page'
-  width: 2720
-  height: 1700
+summary: A CLI foundation that writes workflow starter files and previews GitHub issue proposals from PRD roadmap items; generated workflows require separate setup and execution.
 ---
-<script>
-  import ThemedShot from '$lib/components/changelog/ThemedShot.svelte';
-</script>
 
-Ourobuild became a real toolkit this milestone, decoupled from any specific build engine.
+Ourobuild's early source established configuration, agent-workflow starter files,
+MCP settings, skills, and a CLI for an existing repository. `init` writes those
+artifacts into a target project. `run --layer 2 --dry-run` is intended to parse
+pending PRD roadmap checklist items into **issue proposals without a GitHub
+write**; running Layer 2 without `--dry-run` can create issues with configured
+GitHub credentials. Other `run` layers print guidance about the generated
+workflows. They do not execute a local autonomous build loop.
 
-- **Landing page.**
-- **Engine-agnostic core** — a config schema and CLI `init` scaffolding from single-source templates.
-- **CLI** — generates `.mcp.json` from MCP helpers (with a search-provider prompt), renders a subagent fleet in the `changelog --html` dashboard, and re-exports the public config API.
-- **PR-side helpers** — GitHub + MCP helpers, a dashboard agent fleet, and a skill generator.
-- **Observability** — provider-agnostic, USD-first cost estimation.
+The current source also includes setup diagnostics and changelog/dashboard
+helpers. Their presence does not establish that a generated workflow compiled,
+ran, merged code, captured a release, or enforced a budget. The seven-stage
+ring on the standalone landing is a design map rather than a completed
+execution trace.
 
-The PRD, docs, and templates were modernized around the engine-agnostic stack.
+*Source-run evaluation, 25 September 2026:* against current source `4ee6ba6`,
+`init --engine codex --model local-fixture --search searxng` wrote starter
+files in a disposable Git project. The immediately following Layer 2 dry run
+could not load the generated config because it imports bare `ourobuild`, which
+was not installed in that target project by the documented source-checkout
+quick start. `doctor` reported 6/9 checks, including that config failure.
+No external agent, GitHub issue creation, or credential-backed run was tested;
+the dry-run onboarding path therefore remains unverified end to end.
 
-<ThemedShot
-  light="https://media.aylith.com/ourobuild/media/hero.png"
-  dark="https://media.aylith.com/ourobuild/media/hero.png"
-  alt="ourobuild landing page"
-  width={2720}
-  height={1700}
-  caption="The ourobuild landing — the self-building serpent."
-/>
+The former shared light/dark hero and inline image pictured the **landing
+page**, not paired product output, and were withdrawn. Real current CLI
+transcripts, paired captures, annotated motion, narration, and a release
+poster still need their own verified media study.
