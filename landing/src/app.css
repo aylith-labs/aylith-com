@@ -136,6 +136,40 @@ h1, h2, h3, h4, h5, h6 {
 	outline-offset: 2px;
 }
 
+.ayla-presence {
+	background: radial-gradient(circle at 35% 30%, var(--color-warm-50), var(--color-accent-100) 46%, var(--color-accent-300) 100%);
+	box-shadow: 0 0 0 1px var(--color-accent-200), 0 24px 90px var(--color-accent-200);
+	animation: ayla-breathe 7s ease-in-out infinite;
+}
+
+.ayla-presence::before {
+	content: '';
+	position: absolute;
+	inset: -18%;
+	border: 1px solid var(--color-accent-300);
+	border-radius: 50%;
+	opacity: .45;
+}
+
+.ayla-presence-core {
+	background: radial-gradient(circle at 35% 30%, var(--color-warm-50), var(--color-accent-400) 55%, var(--color-accent-700));
+	box-shadow: 0 0 34px var(--color-accent-400);
+}
+
+.dark .ayla-presence {
+	background: radial-gradient(circle at 35% 30%, var(--color-accent-500), var(--color-accent-800) 50%, var(--color-surface-900));
+	box-shadow: 0 0 0 1px var(--color-accent-800), 0 20px 100px var(--color-accent-900);
+}
+
+.dark .ayla-presence-core {
+	background: radial-gradient(circle at 35% 30%, var(--color-warm-50), var(--color-accent-500) 45%, var(--color-accent-900));
+	box-shadow: 0 0 40px var(--color-accent-500);
+}
+
+@keyframes ayla-breathe {
+	50% { transform: scale(1.045); }
+}
+
 /* Motion gating is driven by html[data-motion] (set before paint in app.html and kept
    current by the motion store), so the design system can override the system setting for
    preview. The media query only governs the no-JS / pre-script case, where the attribute

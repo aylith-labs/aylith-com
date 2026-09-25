@@ -12,6 +12,7 @@
 		suggestions?: string[];
 		initialQuery?: string;
 		showIntro?: boolean;
+		immersive?: boolean;
 	};
 
 	let {
@@ -25,7 +26,8 @@
 			'How do the tools connect to each other?'
 		],
 		initialQuery = '',
-		showIntro = true
+		showIntro = true,
+		immersive = false
 	}: Props = $props();
 
 	const chat = new Chat({
@@ -105,13 +107,22 @@
 <div class="flex h-full flex-col">
 	<div bind:this={scroller} class="flex-1 space-y-5 overflow-y-auto px-1 py-4">
 		{#if chat.messages.length === 0}
-			<div class="mx-auto max-w-2xl text-center {showIntro ? 'pt-6' : 'pt-0'}">
+			<div class="mx-auto max-w-2xl text-center {immersive ? 'flex min-h-full flex-col items-center justify-center pb-8' : showIntro ? 'pt-6' : 'pt-0'}">
+				{#if immersive}
+					<div class="ayla-presence relative mb-8 flex size-36 items-center justify-center rounded-full sm:size-44" aria-hidden="true">
+						<div class="ayla-presence-core size-16 rounded-full sm:size-20"></div>
+					</div>
+					<p class="text-xs font-semibold uppercase tracking-[0.24em] text-accent-700 dark:text-accent-300">Ayla · the studio assistant</p>
+					<h2 class="mt-4 text-4xl font-medium tracking-tight text-surface-900 dark:text-warm-50 sm:text-6xl">Where shall we begin?</h2>
+					<p class="mt-4 max-w-md text-sm leading-relaxed text-surface-600 dark:text-warm-300 sm:text-base">Ask about an Aylith tool, a project, or how the suite fits together. I’ll bring the relevant details into view.</p>
+				{/if}
 				{#if showIntro}
 					<p class="text-surface-500 dark:text-surface-400">
 						Ask about any tool in the suite, what fits a need, how the tools connect, or — once
 						you're signed in — your own data across apps.
 					</p>
 				{/if}
+				{#if suggestions.length > 0}
 				<div class="grid gap-2 sm:grid-cols-2 {showIntro ? 'mt-6' : ''}">
 					{#each suggestions as suggestion (suggestion)}
 						<button
@@ -122,6 +133,7 @@
 						</button>
 					{/each}
 				</div>
+				{/if}
 			</div>
 		{/if}
 
@@ -177,9 +189,10 @@
 		{/if}
 	</div>
 
-	<div class="border-t border-surface-200 bg-white/60 px-1 pt-3 dark:border-surface-800 dark:bg-surface-950/60">
+	<div class="{immersive ? 'px-1 pt-3' : 'border-t border-surface-200 bg-white/60 px-1 pt-3 dark:border-surface-800 dark:bg-surface-950/60'}">
 		<div class="flex items-end gap-2 rounded-2xl border border-surface-200 bg-surface-50 px-3 py-2 focus-within:border-accent-400 dark:border-surface-800 dark:bg-surface-900">
 			<textarea
+				aria-label={immersive ? 'Ask Ayla a question' : placeholder}
 				bind:value={input}
 				onkeydown={onKeydown}
 				rows="1"

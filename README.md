@@ -24,6 +24,8 @@ Founders, technical builders, and practitioners land here to answer one question
 | **SEO & social** | Per-page `<title>`/description, canonical URLs, Open Graph + Twitter cards, `og:image`, `apple-touch-icon`, `theme-color`, a generated `sitemap.xml` (static routes + every collected project slug), and `robots.txt`. |
 | **404 / error** | On-brand error page. |
 | **Settings menu** | Theme (system / light / dark) and motion (system / reduced / full) preferences, persisted. |
+| **Ayla** (`/ayla`) | A quiet full-screen entry to the studio assistant. The text composer is present from the start; navigation opens on request. Voice controls appear only when the separate AI gateway reports a compatible enabled capability. |
+| **Workspace** (`/workspace`) | A tabbed way to open the classic site, projects, and assistant. The last chosen full-page view is remembered; an explicit classic link returns to `/`. |
 
 Brand details: a Konami-code easter egg and a styled console signature live in the root layout.
 
@@ -50,6 +52,7 @@ Brand details: a Konami-code easter egg and a styled console signature live in t
 - **Theme & motion before paint.** A tiny inline script in `app.html` resolves theme and motion preferences from `localStorage` + system queries before first paint, so nothing flashes. Reactive stores (`theme.svelte.ts`, `motion.svelte.ts`) keep them current after hydration.
 - **Motion is gated.** Reveal / tilt / draw / count-up actions (`src/lib/actions/`) all honour `prefers-reduced-motion` and the user's motion preference via `html[data-motion]`.
 - **Brand as code.** The tally-mark and wordmark are Svelte components with a monthly-rotating wordmark variant; the design system route renders them live.
+- **Ayla is client-driven.** The static `/ayla` page talks to the separate `ai.aylith.com` API. The gateway holds any Cartesia credential; when its voice capability is disabled, Ayla shows the text interface without a microphone control. The presence animation follows the site's motion preference, and navigation stays hidden until requested.
 
 ## Quick Start
 
