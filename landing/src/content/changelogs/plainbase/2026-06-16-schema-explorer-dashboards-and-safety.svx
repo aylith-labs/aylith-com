@@ -3,32 +3,24 @@ title: Schema explorer, dashboards, and safety
 date: '2026-06-16'
 tags:
   - added
-summary: A schema explorer with AI descriptions, shareable dashboards with CSV/PNG export, sessions and profiles, and server-side read-only SQL enforcement.
-hero:
-  light: https://media.aylith.com/plainbase/media/landing-light.png
-  dark: https://media.aylith.com/plainbase/media/landing-dark.png
-  alt: 'Plainbase landing: your database, in plain English — a natural-language question turned into read-only SQL and a result'
-  width: 2720
-  height: 1700
+summary: Source-level schema exploration, dashboard sharing, CSV/chart export, sessions, and a static SQL guard with a PostgreSQL read-only transaction.
 ---
-<script>
-  import ThemedShot from '$lib/components/changelog/ThemedShot.svelte';
-</script>
 
-Plainbase grew from a query box into a workspace. A **schema explorer** with
-AI descriptions and suggestions landed, along with **dashboards** you can
-create, pin, share, drag-reorder, and export to CSV or PNG. **Sessions and
-profile** saving arrived with a connection test route. On the safety side,
-**read-only SQL enforcement** — a server-side `sql-guard` — guarantees
-generated queries can never mutate data, and the AI layer is now
-**model-agnostic**, with a `GET /api/health` endpoint for the aylith-infra
-connector.
+This source milestone expanded the PostgreSQL prototype from a query page into
+a workspace. The schema explorer added table metadata and AI descriptions and
+suggestions. Dashboards gained pinned queries, ordering, a public bearer-token
+link, and CSV result/chart PNG export paths. Sessions, profile editing, a
+connection test route, selectable AI-provider configuration, and a health route
+were also added.
 
-<ThemedShot
-  light="https://media.aylith.com/plainbase/media/landing-light.png"
-  dark="https://media.aylith.com/plainbase/media/landing-dark.png"
-  alt="Plainbase landing: your database, in plain English"
-  width={2720}
-  height={1700}
-  caption="The Plainbase landing — ask in plain English, see the SQL alongside the answer."
-/>
+A static SQL guard and PostgreSQL `READ ONLY` transaction restrict execution;
+they do not guarantee query safety or answer accuracy. Anyone holding a shared
+dashboard token can rerun its pinned queries without signing in, and results
+can change. The prototype needs bounded-result, connection-transport, and
+share-permission review before use with sensitive data.
+
+The former paired images showed an older marketing landing, not a captured
+query or dashboard workflow. They visibly advertised a waitlist, MySQL support,
+performance and success metrics without verification, and a false claim that
+data never leaves the database. Those stills are withdrawn. Real paired
+light/dark product captures and narrated release films remain to be made.
