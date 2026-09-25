@@ -1,0 +1,217 @@
+{
+  "wisdone": {
+    "sourceCommit": "15de17e1dcc66848faad1248c7efcc94aa1a44bf",
+    "sha256": "541cd341172156293f74683d69f79b24215417e63e711b13d4ba5c51b8f1c691",
+    "collectedAt": "2026-09-25T00:58:00.533Z"
+  },
+  "videx": {
+    "sourceCommit": "da9bde96197c37a52667f50984902d4cbf205ba9",
+    "sha256": "2c5382f6583c16713992a44bf0db027dee13f273a42b71ee60e6e24566c0c505",
+    "collectedAt": "2026-09-25T00:58:00.533Z"
+  },
+  "stith": {
+    "sourceCommit": "2c75361de2621b43d1f9cae0c3d91ffe5a1cf80a",
+    "sha256": "bd4ba9366950814459bd90157ba2068766de3abf87049ae7bf1eb8fed7642936",
+    "collectedAt": "2026-09-25T00:58:00.533Z"
+  },
+  "knowmine": {
+    "sourceCommit": "378e174562203937449739e3643917babd832bf6",
+    "sha256": "c77684ab1fed01f68d9f1a59858c3cd10468ea6511cac2324d1cc7b86728a2d5",
+    "collectedAt": "2026-09-25T00:58:00.533Z"
+  },
+  "gitdex": {
+    "sourceCommit": "0293e08318b5957ec4913451dea3d57ed68be053",
+    "sha256": "870d8d7430fc4d79f9fa88308449945e53f11e2af5c9b2832a44957495ce6d2c",
+    "collectedAt": "2026-09-25T00:58:00.533Z"
+  },
+  "brainstash": {
+    "sourceCommit": "d9bb58442f8c5ebfa49b2e619c36b37c416fd3b7",
+    "sha256": "433db25f17762205bdcf15665459bb2c68d476be59ef45f77ea61e48d99756cf",
+    "collectedAt": "2026-09-25T00:58:00.533Z"
+  },
+  "agentry": {
+    "sourceCommit": "5dfe61d83d7eec87b94d17f6330163e0235e4a0e",
+    "sha256": "5c7198fbfff14462dadea52b3ddc370029ecf2a65d71e459c86758430603d0f8",
+    "collectedAt": "2026-09-25T00:58:00.533Z"
+  },
+  "shiptron": {
+    "sourceCommit": "368ad90db43126831dc33c84443b3e6ad7b56211",
+    "sha256": "88ca87e3f7cf939ade1fd8d0a59fed45a2d41088e1a62147a403c46a4cd1c4a1",
+    "collectedAt": "2026-09-25T00:58:00.533Z"
+  },
+  "compokit": {
+    "sourceCommit": "c2d51af3386005801d0de0f5e4118eb70f83c78c",
+    "sha256": "ce307ecef32131b56d98b09331a8d036e54c5045369035c60faab33768a14e21",
+    "collectedAt": "2026-09-25T00:58:00.533Z"
+  },
+  "bract": {
+    "sourceCommit": "cf756524733bbfae11e9e74b28c1413180592004",
+    "sha256": "45e8e902c84976b777756b39128072636af36bdabf43dda6ed71ba622406a066",
+    "collectedAt": "2026-09-25T00:58:00.533Z"
+  },
+  "githerald": {
+    "sourceCommit": "17f0ee34e69bf34d0ed54796cd98f090b41dbc05",
+    "sha256": "b2b958cdfd992c5730b848add8b8d20b8c81ee79b09905269661f48ece49710c",
+    "collectedAt": "2026-09-25T00:58:00.533Z"
+  },
+  "specwatch": {
+    "sourceCommit": "f51de03a0c87bba1e7438705311aeb66cc0cb1a5",
+    "sha256": "9a371adad64aa0f9a6cf85424a06f3c0af430775a9dcd5fd4adc079660a24b15",
+    "collectedAt": "2026-09-25T00:58:00.533Z"
+  },
+  "plainbase": {
+    "sourceCommit": "d3052f4c1084992c264cdba2936a6dc368948233",
+    "sha256": "06ca78e4eaf87b9c71d1ae3d32ad17fdaec3479613092aa8aa433685fa7bc5a6",
+    "collectedAt": "2026-09-25T00:58:00.533Z"
+  },
+  "inglenook": {
+    "sourceCommit": "404166d7506d9081b1ed7ad9913aebc50e62743d",
+    "sha256": "53c23c114b27aa3f9929e480a7c2dd35172c19ed3a16948d3ef2a4887ed27c08",
+    "collectedAt": "2026-09-25T00:58:00.533Z"
+  },
+  "dictaro": {
+    "sourceCommit": "75eea6162e8fd3fad665217f808e750095defc7c",
+    "sha256": "970fc88b4b3a7174b3e8b8c393713e141d1397ca410a3cbc09a1fe2c9dbf047d",
+    "collectedAt": "2026-09-25T00:58:00.533Z"
+  },
+  "selfbloom": {
+    "sourceCommit": "0852c9f3be1181686a1b24486ceebf81674fee24",
+    "sha256": "f620f27112284f3e3cda1067591afdfa232c6991c48554dac9bfedcbaf09f1ae",
+    "collectedAt": "2026-09-25T00:58:00.533Z"
+  },
+  "docpeel": {
+    "sourceCommit": "74ac5e6b1d193bf323465a20c7a31385fd5d6713",
+    "sha256": "d7eb75d7ef948714533747ec9d7e9fcec43b41441a442f92003877830578e8c2",
+    "collectedAt": "2026-09-25T00:58:00.533Z"
+  },
+  "linkstash": {
+    "sourceCommit": "05119cff968e9b2e92e8733e938c41823dde3b30",
+    "sha256": "e9708ea37da063d3b8a9deb552c9179ac069e1ab68ae61b115e989f62a76966e",
+    "collectedAt": "2026-09-25T00:58:00.533Z"
+  },
+  "daylog": {
+    "sourceCommit": "69282697b8147d1c5fb5ec4f3b5312d3be47f2eb",
+    "sha256": "95ff145d2f98e8851b6c67dbb5299f3a960d87a9cd6da56092d08b57dd98371e",
+    "collectedAt": "2026-09-25T00:58:00.533Z"
+  },
+  "contactly": {
+    "sourceCommit": "99f66126d1d2718f5ab73ba11e05efbb33043edf",
+    "sha256": "3f06420c4cce947530ebec3fb975a2f6502745cf14654cbdbbfeaaac1f9c1df2",
+    "collectedAt": "2026-09-25T00:58:00.533Z"
+  },
+  "ourobuild": {
+    "sourceCommit": "2b0d6c2711d5756e74861c3aed30a3efddee9deb",
+    "sha256": "048e878bc5e86e58937537f8f4cb545978107964ed951f63812c5240dcbab555",
+    "collectedAt": "2026-09-25T00:58:00.533Z"
+  },
+  "apiflip": {
+    "sourceCommit": "d77236d0384bc773b720541609c5492f743568a0",
+    "sha256": "b9e2efeb705620a75c882a520ba192065dfa2cb4082d1f114899d6479873fd8e",
+    "collectedAt": "2026-09-25T00:58:00.533Z"
+  },
+  "cohesa": {
+    "sourceCommit": "d98e4e9fc023f35f77a43ef5771b6d3044f7fb8a",
+    "sha256": "b517bc76c25c96c2f0b11711edb0c4bad1bf4422b6e50cc27c343de60f6c1de6",
+    "collectedAt": "2026-09-25T00:58:00.533Z"
+  },
+  "dataferry": {
+    "sourceCommit": "5c88f05875b3e5fd84fa32dcbb2eb9204a80552f",
+    "sha256": "1fbb5aee369c7493e8474b027e4cdda1280e922d04fa06baf5d27f6c64153718",
+    "collectedAt": "2026-09-25T00:58:00.533Z"
+  },
+  "augur": {
+    "sourceCommit": "0b50c183cd9c4f6874ab96a50e7cfae076d56cd9",
+    "sha256": "4e8b6cdada88a98af6ce815c83c32adb8f9c27db4ec789f0df89fe36965e8870",
+    "collectedAt": "2026-09-25T00:58:00.533Z"
+  },
+  "clipwell": {
+    "sourceCommit": "033880061a10d9ecd33fd2b08916f04ce042e6d9",
+    "sha256": "bd426f610b9c1badb0f421d655b008ad6579c88be4666b411fb60fd38344c7f4",
+    "collectedAt": "2026-09-25T00:58:00.533Z"
+  },
+  "proomptal": {
+    "sourceCommit": "968cb33adb144bc244e264cdc79f3e0c8330f687",
+    "sha256": "ecb445a2a9f30ae6530c0d9022b68f49d66be763cef6934173e21a6f89ae73bf",
+    "collectedAt": "2026-09-25T00:58:00.533Z"
+  },
+  "dashcam": {
+    "sourceCommit": "c573d9fa077fc8e0e56a89463031bae8e1d3c2ea",
+    "sha256": "3574dd107843dc70cd6aabcb0825bc5064eece3e40aff62f521e96d932716996",
+    "collectedAt": "2026-09-25T00:58:00.533Z"
+  },
+  "rig": {
+    "sourceCommit": "0952924f657cce1f1723da5c945d859f50d5f494",
+    "sha256": "a02bcf1ad1e9b669333d12d114d86651bb1a18643523e4f00eabb32bfa3f4ea8",
+    "collectedAt": "2026-09-25T00:58:00.533Z"
+  },
+  "tickets": {
+    "sourceCommit": "4b28ee4ee847123313d91e071fafbb86f55d9257",
+    "sha256": "375b97c6296055671bfa2004c987a31ead2debff159e8d36190cabf6b87a8002",
+    "collectedAt": "2026-09-25T00:58:00.533Z"
+  },
+  "inspekt": {
+    "sourceCommit": "8a08801aa0f60401936c730a2bfaaa6ee74d7fbe",
+    "sha256": "6982966b535507680b93258bf4859d10e588f4dc845b40021970695b4a319fdf",
+    "collectedAt": "2026-09-25T00:58:00.533Z"
+  },
+  "reelery": {
+    "sourceCommit": "9bf2e893428f4cceaeb67ea3ba79fd65e7573d36",
+    "sha256": "efa6ea1d0cd8dedbf88aa39d5a9bb48206981680b7b9bb3bd183d53a03bca6ef",
+    "collectedAt": "2026-09-25T00:58:00.533Z"
+  },
+  "tokenflow": {
+    "sourceCommit": "1b382b87b7ee03d99e3acf3e82ca124b99f46955",
+    "sha256": "73c04a3cd4d9511aba2950fc000e58d4e3e4f25337f548de7e64a7e2d4f5cc4e",
+    "collectedAt": "2026-09-25T00:58:00.533Z"
+  },
+  "hale": {
+    "sourceCommit": "2a1cf689a7a79b0a508f328444480d4bc8a1cd3e",
+    "sha256": "cbd127ac8a2c31ea9be486fe13d0467f62c6566c53e301024a7f73cae4d6848a",
+    "collectedAt": "2026-09-25T00:58:00.533Z"
+  },
+  "tuilith": {
+    "sourceCommit": "8588b9854101f68df86c53eb209caa2461460d0a",
+    "sha256": "85606637ecc558c5305e30a1d2c158a7eaedd8a3b79048adb50131413fc501c0",
+    "collectedAt": "2026-09-25T00:58:00.533Z"
+  },
+  "shefrd": {
+    "sourceCommit": "6491897d5a5f85cfd08c474640abf2f857745e6e",
+    "sha256": "0ef57c31d1aa7b4ddafcac8cb8bf05f893d46e9a1f9523b5edffdc8ab589d889",
+    "collectedAt": "2026-09-25T00:58:00.533Z"
+  },
+  "simherd": {
+    "sourceCommit": "661b6891c34312aed1947acc0e2a8844011dcc6b",
+    "sha256": "74ce7a303bd7c2830a1723c13fd797106016a4a945fec72f93d4a8d1f8b14bda",
+    "collectedAt": "2026-09-25T00:58:00.533Z"
+  },
+  "shefros": {
+    "sourceCommit": "ea1680865eb129b59026df12f5abea6c1849317e",
+    "sha256": "fcec206b80a98ca52579ed1825373882305fff893343b12fbd49eb4adf76d677",
+    "collectedAt": "2026-09-25T00:58:00.533Z"
+  },
+  "herdr-stith": {
+    "sourceCommit": "4cf2b9ee6a701c167a24295dd16deace6aa56a4e",
+    "sha256": "4cd9ed07864ccaf4c9b92df95ecf4ab820dc7d0abeb08618730064be3898a39a",
+    "collectedAt": "2026-09-25T00:58:00.533Z"
+  },
+  "torbie": {
+    "sourceCommit": "ecd3b29bcdb854603d2aba23940f296f7178c7ef",
+    "sha256": "8317aa765a7226f318b6b4d1bcd3677e6d60d1276e25485d72f2c23a5efae471",
+    "collectedAt": "2026-09-25T00:58:00.533Z"
+  },
+  "lintel": {
+    "sourceCommit": "ae5e3a6d497ade1d64d3e218e66f27c5f0f4701c",
+    "sha256": "1916e18e066248676d616fe2dec02c33ff893e4ad99fee2626c74d20807b6431",
+    "collectedAt": "2026-09-25T00:58:00.533Z"
+  },
+  "bindlume": {
+    "sourceCommit": "cb7a5cf3a842868b2748f85361eb2af8140090ea",
+    "sha256": "8844cf78bca41000732229920f445e76fd4d9f4b2a650eca113f98c803c1f81f",
+    "collectedAt": "2026-09-25T00:58:00.533Z"
+  },
+  "whittle": {
+    "sourceCommit": "0d69148df34d136cf04ead9e9e2fe6feef7c8820",
+    "sha256": "5109886d44fce0a5c3f7ddb7e3613e799f4f2da299ed5c0f544daebfc8ee09a6",
+    "collectedAt": "2026-09-25T00:58:00.533Z"
+  }
+}
