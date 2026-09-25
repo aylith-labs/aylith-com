@@ -4,42 +4,15 @@ date: '2026-06-16'
 tags:
   - added
   - fixed
-summary: Versioned agents with snapshot history, curated awesome lists, FTS5 full-text search over prompts, and a hub surfacing activity across sibling apps.
-hero:
-  light: https://media.aylith.com/agentry/media/prompts-light.png
-  dark: https://media.aylith.com/agentry/media/prompts-dark.png
-  alt: "Agentry's Prompts library: a sidebar, a search bar, and prompt cards showing tags, ratings, and usage counts"
-  width: 2720
-  height: 1800
+summary: Agent definition snapshots, curated resource lists, FTS5 prompt search, and source-backed hub and collection views.
 ---
-<script>
-  import ThemedShot from '$lib/components/changelog/ThemedShot.svelte';
-</script>
 
-Agentry grew from a prompt library into a full workbench.
+Agentry grew from a prompt library into a broader workbench in source.
 
-- **Agent versioning & history** — agents are versioned with a snapshot history, plus a dedicated agent detail page.
-- **Awesome lists** — curate "awesome" collections of AI resources (full CRUD).
-- **Full-text search (FTS5)** over prompts, with drizzle migrations for the schema.
-- **Collection-item resolution UI** — resolve and manage items inside collections.
-- **Hub** — surfaces activity across connected sibling apps (Wisdone, Brainstash, Knowmine, and more).
+- **Agent definition history** records snapshots when a system prompt, tools, or model configuration changes. The agent detail view can compare and restore earlier definitions. Prompt content does not have this version history.
+- **Awesome lists** provide create, edit, archive, and delete actions for curated AI resources.
+- **Prompt search** uses a SQLite FTS5 index, with a `LIKE` fallback when the index is unavailable. The dedicated full-text endpoint returns published public prompts, while the library list has its own filters for the author's items.
+- **Collections** group prompts, agents and awesome items and resolve references for display. Item-level visibility checks for cross-linked nonpublic records remain a separate repair.
+- **Hub** exposes a registry, summary and activity views for configured connected apps; a particular sibling integration is not verified by this entry.
 
-Broken tags, categories, and search API wiring was repaired along the way.
-
-<ThemedShot
-  light="https://media.aylith.com/agentry/media/agents-light.png"
-  dark="https://media.aylith.com/agentry/media/agents-dark.png"
-  alt="Agentry's Agents page: cards for each agent with its description, version, and author"
-  width={2720}
-  height={1800}
-  caption="Agents — each with its own system prompt, tools, version, and history."
-/>
-
-<ThemedShot
-  light="https://media.aylith.com/agentry/media/hub-light.png"
-  dark="https://media.aylith.com/agentry/media/hub-dark.png"
-  alt="Agentry's Hub showing connected sibling apps"
-  width={2720}
-  height={1800}
-  caption="The Hub — activity across connected sibling apps, in one place."
-/>
+Earlier paired UI stills were withdrawn from this entry because their example cards, counters and activity cannot be tied to a documented release capture or fixture. Current product screenshots and narrated light/dark films remain release-media work.
