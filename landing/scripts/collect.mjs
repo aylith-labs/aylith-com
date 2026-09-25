@@ -20,13 +20,14 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { Octokit } from '@octokit/rest';
 import { EXCLUDE_TOPIC, ORG, SELF_REPO } from '../src/lib/catalog/defaults.js';
-import { placeholderProject, projectFromManifest, toMarkdown } from './manifest.js';
+import { manifestReceipt, placeholderProject, projectFromManifest, toMarkdown } from './manifest.js';
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const outDir = path.resolve(scriptDir, '../.generated/projects');
 // Written first, swapped into place only on success — a mid-run failure then
 // leaves any prior output untouched and the build falls back to the snapshot.
 const tmpDir = path.resolve(scriptDir, '../.generated/projects.tmp');
+const previousDir = path.resolve(scriptDir, '../.generated/projects.previous');
 const snapshotDir = path.resolve(scriptDir, '../src/content/projects');
 const MANIFEST_PATH = '.aylith/project.md';
 
@@ -57,11 +58,11 @@ function ghRead(endpoint, paginate = false) {
 	return JSON.parse(result.stdout);
 }
 
-/** Fetch the raw text of a file at the repo's default branch, or null if missing. */
-async function fetchFile(repo, filePath) {
+/** Fetch a file from the pinned default-branch revision, or null if missing. */
+async function fetchFile(repo, filePath, sourceCommit) {
 	try {
-		const data = useGh ? ghRead(`repos/${ORG}/${repo}/contents/${filePath}`)
-			: (await octokit.repos.getContent({ owner: ORG, repo, path: filePath })).data;
+		const data = useGh ? ghRead(`repos/${ORG}/${repo}/contents/${filePath}?ref=${sourceCommit}`)
+			: (await octokit.repos.getContent({ owner: ORG, repo, path: filePath, ref: sourceCommit })).data;
 		if (data === null) return null;
 		if (Array.isArray(data) || data.type !== 'file' || typeof data.content !== 'string') return null;
 		return Buffer.from(data.content, data.encoding === 'base64' ? 'base64' : 'utf-8').toString(
@@ -71,6 +72,18 @@ async function fetchFile(repo, filePath) {
 		if (error.status === 404) return null;
 		throw error;
 	}
+}
+
+/** Resolve the exact default-branch revision before reading any file from it. */
+async function defaultBranchCommit(repo) {
+	const branch = useGh
+		? ghRead(`repos/${ORG}/${repo.name}/branches/${encodeURIComponent(repo.default_branch)}`)
+		: (await octokit.repos.getBranch({ owner: ORG, repo: repo.name, branch: repo.default_branch })).data;
+	const sourceCommit = branch?.commit?.sha;
+	if (typeof sourceCommit !== 'string' || !/^[a-f0-9]{40}$/i.test(sourceCommit)) {
+		throw new Error(`No pinned default-branch commit for ${repo.name}`);
+	}
+	return sourceCommit;
 }
 
 /** Slugs present in the committed snapshot — the set the live site currently shows. */
@@ -119,13 +132,18 @@ async function main() {
 
 	let fromManifest = 0;
 	let placeholders = 0;
+	const collectedAt = new Date().toISOString();
+	const provenance = {};
 
 	for (const repo of included) {
-		const manifest = await fetchFile(repo.name, MANIFEST_PATH);
+		const sourceCommit = await defaultBranchCommit(repo);
+		const manifest = await fetchFile(repo.name, MANIFEST_PATH, sourceCommit);
 		let project;
+		let verifiedManifest = false;
 		if (manifest) {
 			try {
 				project = projectFromManifest(repo.name, repo.html_url, manifest);
+				verifiedManifest = true;
 				fromManifest += 1;
 				console.log(`[collect]   ✓ ${repo.name} (manifest)`);
 			} catch (error) {
@@ -135,17 +153,29 @@ async function main() {
 			}
 		}
 		if (!project) {
-			const readme = await fetchFile(repo.name, 'README.md');
+			const readme = await fetchFile(repo.name, 'README.md', sourceCommit);
 			project = placeholderProject(repo, readme);
 			placeholders += 1;
 			console.log(`[collect]   · ${repo.name} (placeholder)`);
 		}
-		fs.writeFileSync(path.join(tmpDir, `${repo.name}.md`), toMarkdown(project), 'utf-8');
+		const markdown = toMarkdown(project);
+		fs.writeFileSync(path.join(tmpDir, `${repo.name}.md`), markdown, 'utf-8');
+		if (verifiedManifest) provenance[repo.name] = manifestReceipt(sourceCommit, markdown, collectedAt);
 	}
+	fs.writeFileSync(path.join(tmpDir, 'catalog-provenance.json'), `${JSON.stringify(provenance, null, 2)}\n`, 'utf-8');
 
-	// Atomic swap: only replace the live dir once every repo has been written.
-	fs.rmSync(outDir, { recursive: true, force: true });
-	fs.renameSync(tmpDir, outDir);
+	// Replace the complete Markdown + receipt set together, retaining the old set
+	// for rollback if the final rename fails. Readers fail closed during the gap.
+	if (!fs.existsSync(outDir) && fs.existsSync(previousDir)) fs.renameSync(previousDir, outDir);
+	else fs.rmSync(previousDir, { recursive: true, force: true });
+	if (fs.existsSync(outDir)) fs.renameSync(outDir, previousDir);
+	try {
+		fs.renameSync(tmpDir, outDir);
+	} catch (error) {
+		if (fs.existsSync(previousDir)) fs.renameSync(previousDir, outDir);
+		throw error;
+	}
+	fs.rmSync(previousDir, { recursive: true, force: true });
 
 	reportDroppedProjects(included.map((repo) => repo.name));
 

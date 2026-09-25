@@ -2,6 +2,7 @@
 // reaching GitHub. collect.mjs keeps the network and filesystem; everything here is a
 // plain value-in, value-out transform.
 
+import { createHash } from 'node:crypto';
 import matter from 'gray-matter';
 import {
 	DEFAULT_GRADIENT_FROM,
@@ -118,4 +119,13 @@ export function toMarkdown(project) {
 	if (project.order !== undefined) frontmatter.order = project.order;
 	if (project.onboarding !== undefined) frontmatter.onboarding = project.onboarding;
 	return matter.stringify(project.body ? `\n${project.body}\n` : '', frontmatter);
+}
+
+/** Bind the exact collected UTF-8 bytes to the source revision used to fetch them. */
+export function manifestReceipt(sourceCommit, markdown, collectedAt) {
+	return {
+		sourceCommit,
+		sha256: createHash('sha256').update(Buffer.from(markdown, 'utf8')).digest('hex'),
+		collectedAt
+	};
 }

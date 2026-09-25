@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { describe, expect, it } from 'vitest';
 import {
 	DEFAULT_GRADIENT_FROM,
@@ -7,6 +8,7 @@ import {
 } from '../src/lib/catalog/defaults.js';
 import {
 	firstParagraph,
+	manifestReceipt,
 	placeholderProject,
 	projectFromManifest,
 	titleCase,
@@ -40,6 +42,23 @@ describe('titleCase', () => {
 		['a--b', 'A B']
 	])('turns %p into %p', (slug, expected) => {
 		expect(titleCase(slug)).toBe(expected);
+	});
+});
+
+describe('manifestReceipt', () => {
+	it('binds a pinned source commit to the exact collected Markdown bytes', () => {
+		const markdown = toMarkdown(projectFromManifest('bract', 'https://example.org/bract', FULL_MANIFEST));
+		const sourceCommit = 'a'.repeat(40);
+		const collectedAt = '2026-09-25T00:00:00.000Z';
+		expect(manifestReceipt(sourceCommit, markdown, collectedAt)).toEqual({
+			sourceCommit,
+			sha256: createHash('sha256').update(Buffer.from(markdown, 'utf8')).digest('hex'),
+			collectedAt
+		});
+		expect(manifestReceipt(sourceCommit, `${markdown}\n`, collectedAt).sha256).not.toBe(
+			manifestReceipt(sourceCommit, markdown, collectedAt).sha256
+		);
+		expect(markdown).not.toContain('sourceCommit');
 	});
 });
 
