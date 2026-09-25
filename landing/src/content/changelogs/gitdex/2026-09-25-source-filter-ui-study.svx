@@ -1,0 +1,70 @@
+---
+title: A closer look at source filtering
+date: '2026-09-25'
+tags:
+  - docs
+summary: Paired light and dark captures show Gitdex's real Inventory source filter against a clearly fictional loopback fixture; the public landing explains the source-run setup.
+hero:
+  light: https://media.aylith.com/gitdex/media/i17-source-filter-2026-09-25-1bb5a9b/poster-study-light.png
+  dark: https://media.aylith.com/gitdex/media/i17-source-filter-2026-09-25-1bb5a9b/poster-study-dark.png
+  alt: 'Annotated Gitdex Inventory poster study with a fictional organization filter and explicit synthetic-fixture label'
+  width: 1600
+  height: 900
+---
+<script>
+  import ThemedShot from '$lib/components/changelog/ThemedShot.svelte';
+  import ThemedClip from '$lib/components/changelog/ThemedClip.svelte';
+</script>
+
+The [public Gitdex product page](https://aylith-labs.github.io/gitdex/) explains how to run Gitdex from source. It is a static landing page, **not a hosted inventory or a place to enter a GitHub token**.
+
+## Actual frontend, fictional data
+
+These light and dark captures come from Gitdex's unmodified Solid frontend running locally against a disposable loopback API. The two owners, four repositories, `.example.test` links, health scores, and staleness values are **synthetic fixtures**. No valid GitHub token was used, and the capture did not contact GitHub or exercise provider discovery and sync. The filter UI is real; the records in it are not.
+
+<ThemedShot
+  light="https://media.aylith.com/gitdex/media/i17-source-filter-2026-09-25-1bb5a9b/poster-study-light.png"
+  dark="https://media.aylith.com/gitdex/media/i17-source-filter-2026-09-25-1bb5a9b/poster-study-dark.png"
+  alt="Annotated Gitdex Inventory study with fictional lab repositories and visible synthetic, no-GitHub-sync labels"
+  width={1600}
+  height={900}
+  caption="An annotated poster study assembled from real filtered Inventory pixels. Its repository and health data are fictional; final cover approval is still open."
+/>
+
+<ThemedShot
+  light="https://media.aylith.com/gitdex/media/i17-source-filter-2026-09-25-1bb5a9b/dashboard-light.png"
+  dark="https://media.aylith.com/gitdex/media/i17-source-filter-2026-09-25-1bb5a9b/dashboard-dark.png"
+  alt="Gitdex Dashboard rendering two fictional repositories from a local fixture API"
+  width={1365}
+  height={900}
+  caption="The real Dashboard rendered with fictional sources and fixture-supplied figures. This is not evidence of a successful GitHub sync."
+/>
+
+<ThemedShot
+  light="https://media.aylith.com/gitdex/media/i17-source-filter-2026-09-25-1bb5a9b/inventory-all-light.png"
+  dark="https://media.aylith.com/gitdex/media/i17-source-filter-2026-09-25-1bb5a9b/inventory-all-dark.png"
+  alt="Gitdex Inventory showing two fictional personal repositories before selecting an organization source"
+  width={1365}
+  height={900}
+  caption="Before choosing a source: the Inventory shows the fixture's two personal rows."
+/>
+
+<ThemedShot
+  light="https://media.aylith.com/gitdex/media/i17-source-filter-2026-09-25-1bb5a9b/inventory-source-light.png"
+  dark="https://media.aylith.com/gitdex/media/i17-source-filter-2026-09-25-1bb5a9b/inventory-source-dark.png"
+  alt="Gitdex Inventory source filter set to fictional-lab with two fictional organization repositories"
+  width={1365}
+  height={900}
+  caption="After choosing organization: fictional-lab, the real frontend displays its two fixture rows."
+/>
+
+<ThemedClip
+  light="https://media.aylith.com/gitdex/media/i17-source-filter-2026-09-25-1bb5a9b/source-filter-light.webm"
+  dark="https://media.aylith.com/gitdex/media/i17-source-filter-2026-09-25-1bb5a9b/source-filter-dark.webm"
+  alt="Silent edited browser-frame sequence changing Gitdex's source filter between fictional owners"
+  width={1365}
+  height={900}
+  caption="A five-second, silent edited sequence of actual browser frames in each theme, not uninterrupted real-time footage or a final narrated release film."
+/>
+
+Provider identity across repository rename or transfer and incomplete sync metadata remain product work. Cartesia narration, Remotion light and dark release films, timed captions, and final poster approval are still open.
