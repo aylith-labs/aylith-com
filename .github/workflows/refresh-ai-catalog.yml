@@ -54,7 +54,6 @@ jobs:
             git rm -r --ignore-unmatch projects >/dev/null
           else
             git switch --orphan catalog-generated
-            git rm -r --cached . >/dev/null
           fi
           mkdir -p projects
           cp "$stage/projects/"* projects/
