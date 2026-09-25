@@ -16,7 +16,7 @@ from a single-provider tool into a multi-provider, bring-your-own-key analyzer.
 - **Multi-provider AI** — choose hosted (Anthropic, OpenAI, OpenRouter) or local (Ollama, LM Studio, llama.cpp) models, or mix both.
 - **BYOK key vault** — a WebCrypto-encrypted vault keeps provider keys in your browser; the server takes the key per request, with test-connection and log redaction.
 - **First-run setup wizard** + expanded Firebase auth; a re-openable, discoverable wizard and a tabbed settings redesign with per-provider cards.
-- **Token economics** — every analysis reports its token usage and dollar cost.
+- **Token economics** — when a provider reports usage, augur shows those token counts and estimates analysis cost from configured model prices. Missing usage or price is shown as unavailable.
 - **Real internationalization** — i18next-aligned i18n with translated analysis results, CLDR pluralization, and added languages (including Ukrainian and Hungarian).
 
 A **minimal-premium redesign** — a distinctive type system and a calm, precise
@@ -31,3 +31,5 @@ styling, and the startup theme flash was fixed.
   height={1664}
   caption="The first-run setup wizard — hosted models, local models, or both."
 />
+
+These recorded stills show the provider setup choice, not a completed analysis or a comparison across models.
