@@ -1,40 +1,33 @@
-name: Refresh AI catalog on VPS
+name: Publish pinned AI catalog
 
 on:
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
-  group: ai-catalog-refresh
+  group: ai-catalog-publish
   cancel-in-progress: false
 
 jobs:
-  collect-and-recreate:
-    runs-on: [self-hosted, hostinger]
+  collect-and-publish:
+    runs-on: ubuntu-latest
     timeout-minutes: 20
-    defaults:
-      run:
-        shell: bash
-        working-directory: /srv/aylith/catalog/landing
     steps:
-      - name: Update the site collector clone
-        run: |
-          set -euo pipefail
-          test -d /srv/aylith/catalog/.git
-          git -C /srv/aylith/catalog pull --ff-only origin main
-
+      - uses: actions/checkout@v7
       - uses: actions/setup-node@v7
         with:
           node-version: 22
+          cache: npm
+          cache-dependency-path: landing/package-lock.json
 
       - name: Install locked collector dependencies
-        run: |
-          set -euo pipefail
-          npm ci --no-audit --no-fund
+        working-directory: landing
+        run: npm ci --no-audit --no-fund
 
       - name: Collect pinned product manifests
+        working-directory: landing
         env:
           CATALOG_GITHUB_TOKEN: ${{ secrets.CATALOG_GITHUB_TOKEN }}
         run: |
@@ -42,33 +35,37 @@ jobs:
           : "${CATALOG_GITHUB_TOKEN:?CATALOG_GITHUB_TOKEN is required for private manifests}"
           npm run collect
 
-      - name: Verify Dashcam source receipt and exact bytes
-        run: |
-          set -euo pipefail
-          node --input-type=module <<'NODE'
-          import { createHash } from 'node:crypto';
-          import { readFileSync } from 'node:fs';
-          const dir = '.generated/projects';
-          const receipts = JSON.parse(readFileSync(`${dir}/catalog-provenance.json`, 'utf8'));
-          const receipt = receipts.dashcam;
-          if (!receipt || !/^[0-9a-f]{40}$/.test(receipt.sourceCommit)) {
-            throw new Error('Dashcam has no pinned canonical source commit');
-          }
-          const age = Date.now() - Date.parse(receipt.collectedAt);
-          if (!Number.isFinite(age) || age < 0 || age > 7 * 24 * 60 * 60 * 1000) {
-            throw new Error('Dashcam collection receipt is stale or invalid');
-          }
-          const body = readFileSync(`${dir}/dashcam.md`);
-          const actual = createHash('sha256').update(body).digest('hex');
-          if (actual !== receipt.sha256) {
-            throw new Error('Dashcam collection receipt does not match exact Markdown bytes');
-          }
-          console.log('Dashcam canonical source receipt verified; collected bytes match.');
-          NODE
+      - name: Check public fields, secret patterns, and exact-byte receipts
+        working-directory: landing
+        run: node scripts/check-public-catalog.mjs
 
-      - name: Recreate AI API against the swapped catalog directory
+      - name: Publish only generated catalog files to an immutable commit
+        id: publish
         run: |
           set -euo pipefail
-          cd /srv/aylith/ai
-          docker compose -f docker-compose.yaml -f docker-compose.vps.yml up -d --force-recreate --no-deps api
-          docker exec aylith-ai sh -lc 'test -s /catalog/dashcam.md && test -s /catalog/catalog-provenance.json'
+          stage="$RUNNER_TEMP/catalog-generated"
+          mkdir -p "$stage/projects"
+          cp landing/.generated/projects/*.md landing/.generated/projects/catalog-provenance.json "$stage/projects/"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          if git ls-remote --exit-code --heads origin catalog-generated >/dev/null; then
+            git fetch origin catalog-generated
+            git switch -C catalog-generated FETCH_HEAD
+            git rm -r --ignore-unmatch projects >/dev/null
+          else
+            git switch --orphan catalog-generated
+            git rm -r --cached . >/dev/null
+          fi
+          mkdir -p projects
+          cp "$stage/projects/"* projects/
+          git add projects
+          git ls-files | python3 -c 'import re,sys; paths=sys.stdin.read().splitlines(); assert paths and all(re.fullmatch(r"projects/(?:[a-z0-9-]+\.md|catalog-provenance\.json)", p) for p in paths), paths'
+          git diff --cached --check
+          git commit -m "catalog: pinned collection from run $GITHUB_RUN_ID"
+          git push origin HEAD:refs/heads/catalog-generated
+          echo "catalog_commit=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Record the pinned catalog commit
+        env:
+          CATALOG_COMMIT: ${{ steps.publish.outputs.catalog_commit }}
+        run: echo "Catalog commit $CATALOG_COMMIT is ready for verified AI host import." >> "$GITHUB_STEP_SUMMARY"
