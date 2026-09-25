@@ -4,10 +4,12 @@ date: '2026-02-01'
 tags:
   - added
   - changed
-summary: The initial Knowmine app lands, with AI-powered scanning and an inventory organized by locations, categories, and tags.
+summary: The initial Knowmine source app lands with scan suggestions and an inventory organized by locations, categories, and tags.
 ---
 
-The initial Knowmine app: **AI-powered scanning**, an inventory with locations,
-categories, and tags, session auth, and a Bun + SvelteKit + Drizzle/LibSQL
-monorepo. The toolchain migrated to **tsgo**, dependencies were upgraded to
-latest, and docs were rebranded from Proomptal to Aylith.
+The initial Knowmine source app offered photo, barcode, and receipt suggestions
+for review, plus saved inventory organized by locations, categories, and tags.
+A suggestion was not an automatically saved item. The source included session
+auth and a Bun + SvelteKit + Drizzle/LibSQL monorepo. The toolchain later
+migrated to **tsgo**, dependencies were upgraded, and docs were rebranded from
+Proomptal to Aylith.
