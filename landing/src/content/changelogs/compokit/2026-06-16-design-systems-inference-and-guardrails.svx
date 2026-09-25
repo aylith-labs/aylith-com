@@ -9,7 +9,6 @@ summary: Source milestone for the design-system picker, optional model-assisted 
 
 <script>
   import ThemedShot from '$lib/components/changelog/ThemedShot.svelte';
-  import ThemedClip from '$lib/components/changelog/ThemedClip.svelte';
 </script>
 
 This June source milestone added a **design-system list and picker**, a
@@ -71,18 +70,26 @@ a hosted product app or an installation route.
   caption="A paired diagnostic poster study built around the observed scanner result. It is not the final release cover or a narrated film."
 />
 
-<ThemedClip
-  light="https://media.aylith.com/compokit/media/i17-svelte-vue-scan-2026-09-25-1894b3b/motion/light-study.mp4"
-  dark="https://media.aylith.com/compokit/media/i17-svelte-vue-scan-2026-09-25-1894b3b/motion/dark-study.mp4"
-  alt="Silent edited local Compokit scanner study showing fictional Svelte and Vue library results in the actual light and dark app"
-  width={1600}
-  height={1000}
-  caption="Actual local app interaction in both themes, trimmed to a matched 6.20-second silent study. Persistent labels identify the synthetic fixture and absence of a model run. This is not a hosted scan or the final narrated release film."
-/>
+<div class="mx-auto max-w-sm">
+  <ThemedShot
+    light="https://media.aylith.com/compokit/media/i17-svelte-vue-scan-2026-09-25-1894b3b/motion/light-study-thumb.png"
+    dark="https://media.aylith.com/compokit/media/i17-svelte-vue-scan-2026-09-25-1894b3b/motion/dark-study-thumb.png"
+    alt="Labeled thumbnail from the silent fictional local Compokit scanner study, with synthetic and no-model qualifiers"
+    width={384}
+    height={240}
+    caption="A labeled frame from the paired silent studies; open either video below to watch the actual local UI."
+  />
+</div>
+
+The paired **6.20-second silent local scanner studies** can be opened directly:
+[light theme video](https://media.aylith.com/compokit/media/i17-svelte-vue-scan-2026-09-25-1894b3b/motion/light-study.mp4)
+and [dark theme video](https://media.aylith.com/compokit/media/i17-svelte-vue-scan-2026-09-25-1894b3b/motion/dark-study.mp4).
+They are trimmed actual app interactions with persistent **SYNTHETIC LOCAL**
+and **NO MODEL RUN** labels, not a hosted scan or final narrated release film.
 
 The synthetic fixture, captured pixels, API receipt and poster source are
-recorded in the media manifest. The player shows observed form-to-result UI,
-not generated code or a model-quality result. Its source recordings and
+recorded in the media manifest. The videos show observed form-to-result UI,
+not generated code or a model-quality result. The source recordings and
 trim/timing provenance are preserved; the raw dark tail had a visual defect,
 so the matched public edits stop before it. Licensed Cartesia narration, final
 Remotion films, timed captions, release annotations and an approved final cover
