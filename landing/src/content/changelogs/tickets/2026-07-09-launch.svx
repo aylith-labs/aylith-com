@@ -3,7 +3,7 @@ title: 'Tickets: file it, hand it to your agent'
 date: '2026-07-09'
 tags:
   - added
-summary: A pluggable personal issue tracker that opens a terminal running your coding agent on any ticket — with a web UI, a terminal TUI, AI enrichment, and git-backed history.
+summary: A local issue tracker with browser and terminal views, a configurable coding-agent handoff, and optional Git-backed history.
 hero:
   light: https://media.aylith.com/tickets/media/central-light.png
   dark: https://media.aylith.com/tickets/media/central-dark.png
@@ -15,11 +15,11 @@ hero:
   import ThemedShot from '$lib/components/changelog/ThemedShot.svelte';
 </script>
 
-**Tickets** is the first release: a local-first issue tracker that turns "I
-should fix that" into agent work. File a ticket in the browser or a terminal,
-then hand it off — the ticket can copy a composed prompt or **open your terminal
-running `claude` on it**, in the right repo, with a prompt you didn't have to
-write.
+**Tickets** 0.1.3 is the first published release: a local-first issue tracker
+for turning "I should fix that" into a saved task. File a ticket in its local
+browser UI or terminal TUI, then copy a composed prompt. With a supported local
+terminal and coding agent configured, a ticket can also open that agent on the
+task in the selected repo.
 
 <ThemedShot
   light="https://media.aylith.com/tickets/media/central-light.png"
@@ -27,31 +27,34 @@ write.
   alt="The central UI lists tickets across every registered project, with status chips and a per-ticket action menu."
   width={1280}
   height={556}
-  caption="One board across every plugged-in project — filter to one with /project."
+  caption="Archived central-UI capture. Filter the board to one project with /project; this image does not establish which release binary produced it."
 />
 
 ## What shipped
 
 - **Three surfaces, one daemon.** A browser UI (all projects at once, or one), a
   terminal **TUI** across every project, and framework-agnostic web components you
-  can embed in any app — all over a single local, auth-less REST + SSE API.
-- **Real terminal handoff.** A ticket's action opens *your* terminal — Windows
-  Terminal, Tabby, or whatever you configure — running your agent on the ticket,
-  not a headless runner. The ticket flips to in-progress automatically.
-- **AI enrichment with undo.** Sharpen a hurried title and description with one
-  key. History is just git — every edit is a commit on a per-project orphan
-  branch, so undo is real and your main branch stays clean.
-- **Evidence built in.** Before/after images and video attach to each ticket and
-  publish to media.aylith.com, so the fix is documented, not just done.
+  can embed in a web app — all over a single local, auth-less REST + SSE API.
+- **Configurable terminal handoff.** With your terminal, shell, and coding agent
+  set up, a ticket action starts that agent on the composed task in the selected
+  repo. The daemon is local and has no user authentication.
+- **Optional enrichment and Git history.** AI enrichment needs a configured
+  provider or CLI. The default Git store commits edits on an orphan branch and
+  supports revision-backed undo. Plain folder storage does not have Git history
+  or that undo path.
+- **Configurable evidence.** Before/after images and video can attach to a
+  ticket when a media repository and publisher are configured. Installation
+  alone does not grant hosted media publishing.
 
 ## Install
 
-Standalone binaries, no runtime required:
-
-```
-curl -fsSL https://raw.githubusercontent.com/aylith-labs/tickets/main/install.sh | bash
-```
-
-Or `mise use -g "ubi:aylith-labs/tickets[exe=tickets]"`, or one npm package
-with everything: `npm i -g @aylith/tickets`. Then `tickets init` in a repo,
-`tickets serve`, and `tickets tui`.
+For the 0.1.3 browser UI, download the matching standalone binary from the
+[pinned v0.1.3 release](https://github.com/aylith-labs/tickets/releases/tag/v0.1.3).
+Linux and macOS have architecture-specific assets; Windows x64 has a separate
+`.exe` asset. The `main/install.sh` convenience installer follows the latest
+release and is not pinned to 0.1.3. The published 0.1.3 npm
+archives include libraries and CLIs but omit the browser app assets, so npm is
+not an equivalent browser installation for this release. The default Git-backed
+`tickets init` path requires Git 2.42 or later; `tickets init --adapter folder`
+avoids that requirement but has no Git revision history. After setup, run
+`tickets serve` for the local browser UI or `tickets tui` for the terminal view.
