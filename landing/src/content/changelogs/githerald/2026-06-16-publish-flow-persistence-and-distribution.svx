@@ -5,30 +5,19 @@ tags:
   - added
   - changed
 summary: Publish flow with public changelog rendering and export, SQLite persistence, an RSS feed, an embeddable widget, and semver inference from conventional commits.
-hero:
-  light: https://media.aylith.com/githerald/media/landing-light.png
-  dark: https://media.aylith.com/githerald/media/landing-dark.png
-  alt: 'Githerald landing: from git push to published announcement, a newspaper-style git activity bulletin'
-  width: 2720
-  height: 1700
 ---
-<script>
-  import ThemedShot from '$lib/components/changelog/ThemedShot.svelte';
-</script>
 
-Githerald learned to publish. The new **publish flow** renders a public
-changelog and supports **export**, backed by a **SQLite-persistent store**,
-an **RSS feed**, and an **embeddable changelog widget**. **Semver inference**
-now derives versions from conventional commits, and a minimal `GET /health`
-endpoint plugs into the aylith-infra connector. The AI layer became
-**provider-agnostic**, modernized to structured outputs with updated default
-models.
+GitHerald added an explicit **changelog publish action**. A signed-in user can
+review a generated draft, then publish its changelog to the configured app's
+public page. Blog and social copy remain drafts for manual copy or export;
+this release did not add direct posting or scheduling.
 
-<ThemedShot
-  light="https://media.aylith.com/githerald/media/landing-light.png"
-  dark="https://media.aylith.com/githerald/media/landing-dark.png"
-  alt="Githerald landing: from git push to published announcement"
-  width={2720}
-  height={1700}
-  caption="The Githerald landing — a newspaper-style git activity bulletin, automated."
-/>
+The release also added a SQLite-backed store, Markdown/HTML/JSON export, an RSS
+feed, an embeddable changelog view, conventional-commit version inference, and
+a minimal `GET /health` endpoint. The AI provider can be selected through
+configuration.
+
+The previous paired landing images were archived from this entry because they
+advertised an unconnected waitlist, pricing, editing, and publishing behavior
+that this product release did not provide. Product UI screenshots and films
+for this release still need to be captured and verified.
