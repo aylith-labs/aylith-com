@@ -4,29 +4,21 @@ date: '2026-06-16'
 tags:
   - added
   - changed
-summary: Real watch, fix, and ci commands, coverage-gap targeting for test generation, convention learning, and dependency-graph-aware regeneration.
-hero:
-  light: https://media.aylith.com/specwatch/media/landing-light.png
-  dark: https://media.aylith.com/specwatch/media/landing-dark.png
-  alt: Specwatch landing page
-  width: 2720
-  height: 1700
+summary: Watch, fix, and ci CLI paths plus coverage-report reading and convention-aware test drafting landed in the source prototype.
 ---
-<script>
-  import ThemedShot from '$lib/components/changelog/ThemedShot.svelte';
-</script>
 
-The CLI grew up this milestone. The **`watch` and `fix` commands** — previously
-stubs — became real, joined by a new **`ci` command**. Test generation now uses
-**coverage-gap targeting**, and the engine picked up **convention learning**
-and **dependency-graph-aware regeneration**. The AI layer was made
-**model/provider-agnostic**.
+This source milestone added working **`watch`**, **`fix`**, and **`ci`** command
+paths. Generation can use an existing Istanbul coverage report to select files
+below a statement threshold; it also reads project test conventions and tracks
+source dependencies. Ollama remains the local default, with optional configured
+cloud model providers.
 
-<ThemedShot
-  light="https://media.aylith.com/specwatch/media/landing-light.png"
-  dark="https://media.aylith.com/specwatch/media/landing-dark.png"
-  alt="Specwatch landing page"
-  width={2720}
-  height={1700}
-  caption="The Specwatch landing — a local-first AI testing CLI."
-/>
+Generated files need review. Normal generation, watch, and fix can replace
+existing sibling tests. The `ci --coverage` check currently can pass if the
+coverage report is missing, so its success is not proof of improved coverage.
+This private source prototype has no verified public package or hosted access.
+
+The older paired light/dark landing stills showed marketing claims, a waitlist,
+and sample passing-test/coverage numbers, not recorded CLI output. They are
+withdrawn from this entry while real paired product captures, narrated films,
+annotations, captions, and posters are produced and verified.
