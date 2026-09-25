@@ -1,34 +1,19 @@
 ---
-title: Migration engine and agents
+title: Migration planning foundations
 date: '2026-06-16'
 tags:
   - added
-  - changed
-summary: A transformation execution engine, an agentic discovery-to-validation pipeline, and dry-run migration previews, with the agent core made provider-agnostic.
-hero:
-  light: https://media.aylith.com/dataferry/media/landing-light.png
-  dark: https://media.aylith.com/dataferry/media/landing-dark.png
-  alt: 'Dataferry landing page'
-  width: 2720
-  height: 1700
+summary: Early schema, mapping, and sample-preview foundations for planning a migration. Live app-to-app execution is still under development.
 ---
-<script>
-  import ThemedShot from '$lib/components/changelog/ThemedShot.svelte';
-</script>
+Dataferry's early work established a migration draft, catalog-backed schemas,
+proposed field mappings, and deterministic transforms for **sample records**.
+The preview lets an operator inspect a proposed shape before any destination
+write.
 
-The migration path is now end-to-end. A **transformation execution engine**
-(`@dataferry/transform`) does the heavy lifting, driven by an **agentic
-pipeline** — discovery, a coordinator, batch processing, and workers, watched
-over by monitor and validator agents. A **dry-run migration preview** and a
-migration detail page let you inspect a run before committing, with mappings,
-execute, cancel, and template-use all wired to queues. The agent core was also
-made **provider-agnostic** via LiteLLM.
+AI mapping suggestions depend on a configured worker and model. The sample
+preview does not connect to a source or destination app. Live extraction,
+loading, destination verification, and resumable execution remain future work.
 
-<ThemedShot
-  light="https://media.aylith.com/dataferry/media/landing-light.png"
-  dark="https://media.aylith.com/dataferry/media/landing-dark.png"
-  alt="Dataferry landing page"
-  width={2720}
-  height={1700}
-  caption="Dataferry — agentic data migration, provider-agnostic at the AI layer."
-/>
+*Editorial correction, 25 September 2026:* the original note described an
+end-to-end migration path and queue-backed execution. Those claims exceeded
+the verified product. This note now records the narrower planning capability.

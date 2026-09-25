@@ -1,0 +1,65 @@
+---
+title: Return to the exact capture
+date: '2026-09-25'
+tags:
+  - added
+  - fixed
+summary: Session review can open a capture URL at its recorded point, including after reload, and explains when a capture is unavailable.
+hero:
+  light: https://media.aylith.com/dashcam/media/exact-capture-2026-09-25-c573d9f/detail-light.png
+  dark: https://media.aylith.com/dashcam/media/exact-capture-2026-09-25-c573d9f/detail-dark.png
+  alt: 'Dashcam session detail with a selected capture reference and its visible preview'
+  width: 1440
+  height: 900
+---
+<script>
+  import ThemedShot from '$lib/components/changelog/ThemedShot.svelte';
+</script>
+
+An exact capture reference now leads back to the corresponding point in a
+Dashcam session. The selected capture remains visible when its URL is reloaded,
+and a missing or cross-session reference gets an explicit unavailable state.
+Closing the preview returns to the session without leaving a stale selection.
+
+<ThemedShot
+  light="https://media.aylith.com/dashcam/media/exact-capture-2026-09-25-c573d9f/detail-light.png"
+  dark="https://media.aylith.com/dashcam/media/exact-capture-2026-09-25-c573d9f/detail-dark.png"
+  alt="Session detail showing the exact selected capture and preview"
+  width={1440}
+  height={900}
+  caption="A capture reference selects a visible point in the session. This is an isolated synthetic session, captured from the implemented Dashcam UI."
+/>
+
+### Watch the return path
+
+The light and dark films show the same implemented flow with on-screen
+annotations. Choose the version that matches your reading theme and press play;
+the films are paused by default so narration remains available. Both include
+English captions and an embedded subtitle track.
+
+<div class="not-prose my-8 overflow-hidden rounded-2xl border border-surface-200 bg-surface-50 p-2 shadow-sm dark:border-surface-700 dark:bg-surface-900">
+  <video class="block w-full rounded-xl dark:hidden" controls preload="metadata" playsinline width="1280" height="720" aria-label="Exact capture links release film, light theme" poster="https://media.aylith.com/dashcam/media/exact-capture-2026-09-25-c573d9f/poster-light.png">
+    <source src="https://media.aylith.com/dashcam/media/exact-capture-2026-09-25-c573d9f/release-light.mp4" type="video/mp4" />
+    <track kind="captions" src="https://media.aylith.com/dashcam/media/exact-capture-2026-09-25-c573d9f/captions.vtt" srclang="en" label="English" default />
+  </video>
+  <video class="hidden w-full rounded-xl dark:block" controls preload="metadata" playsinline width="1280" height="720" aria-label="Exact capture links release film, dark theme" poster="https://media.aylith.com/dashcam/media/exact-capture-2026-09-25-c573d9f/poster-dark.png">
+    <source src="https://media.aylith.com/dashcam/media/exact-capture-2026-09-25-c573d9f/release-dark.mp4" type="video/mp4" />
+    <track kind="captions" src="https://media.aylith.com/dashcam/media/exact-capture-2026-09-25-c573d9f/captions.vtt" srclang="en" label="English" default />
+  </video>
+</div>
+
+<ThemedShot
+  light="https://media.aylith.com/dashcam/media/exact-capture-2026-09-25-c573d9f/unavailable-light.png"
+  dark="https://media.aylith.com/dashcam/media/exact-capture-2026-09-25-c573d9f/unavailable-dark.png"
+  alt="Dashcam showing an unavailable capture reference instead of an unrelated session capture"
+  width={1440}
+  height={900}
+  caption="A reference that is missing or belongs to another session stays unavailable."
+/>
+
+The films use Cartesia Sonic 3.6 narration (Clive — Measured Expert),
+Remotion animation, and editorial caption timing. The shown session is a
+**synthetic fixture**, not a customer recording. Screenshots come from the
+product UI in both themes; the illustrations and annotations explain the
+release behavior. Capture recording remains conditional on a configured
+Playwright browser, and general video recording is still deferred.
