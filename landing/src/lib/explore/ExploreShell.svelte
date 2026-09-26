@@ -22,7 +22,7 @@
 		transport: new DefaultChatTransport({
 			api: `${apiUrl}/api/chat`,
 			prepareSendMessagesRequest: ({ messages, body }) => ({
-				body: { ...body, messages, pageContext: currentContext(), clientCapabilities: { projectNavigation: true } }
+				body: { ...body, messages, pageContext: currentContext(), clientCapabilities: { projectNavigation: true, experienceNavigation: true } }
 			})
 		})
 	});
@@ -170,7 +170,7 @@
 				const key = `${message.id}:${index}`;
 				if (seenActions.has(key)) return;
 				const tool = part as { type?: string; state?: string; output?: unknown };
-				if (tool.type !== 'tool-openProject' || tool.state !== 'output-available') return;
+				if (!['tool-openProject', 'tool-openExperience'].includes(tool.type ?? '') || tool.state !== 'output-available') return;
 				seenActions.add(key);
 				const target = resolveAylaAction(tool.output, projects.map((item) => item.slug));
 				if (target) {

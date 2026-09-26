@@ -11,6 +11,14 @@ describe('Ayla navigation action', () => {
 			.toBe('/explore/daylog/website');
 	});
 
+	it('opens only the named site experience, preserving explicit Classic intent', () => {
+		expect(resolveAylaAction({ type: 'open_experience', experience: 'explore' }, catalog)).toBe('/explore');
+		expect(resolveAylaAction({ type: 'open_experience', experience: 'classic' }, catalog)).toBe('/?view=classic');
+		expect(resolveAylaAction({ type: 'open_experience', experience: 'ayla' }, catalog)).toBe('/ayla');
+		expect(resolveAylaAction({ type: 'open_experience', experience: 'https://evil.test' }, catalog)).toBeNull();
+		expect(resolveAylaAction({ type: 'open_experience', experience: '../classic' }, catalog)).toBeNull();
+	});
+
 	it('rejects unknown projects, paths, and arbitrary URLs', () => {
 		expect(resolveAylaAction({ type: 'open_project', slug: '../ask', view: 'overview' }, catalog)).toBeNull();
 		expect(resolveAylaAction({ type: 'open_project', slug: 'bract', view: 'https://example.org' }, catalog)).toBeNull();

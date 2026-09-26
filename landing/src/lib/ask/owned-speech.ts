@@ -137,7 +137,7 @@ export class OwnedSpeech {
 			const silent = turn.input.createGain(); silent.gain.value = 0;
 			source.connect(capture); capture.connect(silent).connect(turn.input.destination);
 			turn.recording = true;
-			this.send(turn, 'mic.start', { language: this.language, context: visibleVoiceContext(this.callbacks.context()), clientCapabilities: { projectNavigation: true } });
+			this.send(turn, 'mic.start', { language: this.language, context: visibleVoiceContext(this.callbacks.context()), clientCapabilities: { projectNavigation: true, experienceNavigation: true } });
 			turn.timer = setTimeout(() => { void this.finish(); }, Math.max(1, available.maxRecordingSeconds) * 1000);
 			this.callbacks.onState?.('listening');
 		} catch (cause) {
