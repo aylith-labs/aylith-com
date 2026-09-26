@@ -211,7 +211,7 @@
 				onkeydown={onKeydown}
 				rows="1"
 				{placeholder}
-				class="max-h-40 flex-1 resize-none bg-transparent py-1 text-[0.95rem] text-surface-900 placeholder:text-surface-400 focus:outline-none dark:text-warm-100"
+				class="max-h-40 min-w-0 flex-1 resize-none bg-transparent py-1 text-[0.95rem] text-surface-900 placeholder:text-surface-400 focus:outline-none dark:text-warm-100"
 			></textarea>
 			{#if isBusy}
 				<button

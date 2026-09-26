@@ -373,7 +373,7 @@
 					</div>
 				{/if}
 				{#if ready}
-					<Assistant {apiUrl} pageContext={currentContext} session={chat} immersive showIntro={false} showHistory={historyOpen} showSpeak={isAyla || activeVoice !== ''} speakAvailable={voiceReady} speechActive={activeVoice !== ''} speakLabel={voiceActionLabel} onSpeak={() => { void toggleVoice(); }} onStopVoice={stopAllVoice} onBeforeSend={stopAllVoice} suggestions={[]} placeholder="Ask Ayla…" />
+					<Assistant {apiUrl} pageContext={currentContext} session={chat} immersive showIntro={false} showHistory={historyOpen} showSpeak speakAvailable={voiceReady} speechActive={activeVoice !== ''} speakLabel={voiceActionLabel} onSpeak={() => { void toggleVoice(); }} onStopVoice={stopAllVoice} onBeforeSend={stopAllVoice} suggestions={[]} placeholder="Ask Ayla…" />
 				{:else}
 					<p class="p-4 text-sm text-surface-500">Opening this device’s conversation…</p>
 				{/if}
