@@ -30,6 +30,12 @@ describe('site view preference', () => {
 		expect(readView(storage)).toBe('ayla');
 	});
 
+	it('restores Explore from the root while explicit project links keep their route', () => {
+		const storage = memoryStorage('explore');
+		expect(rootEntry('enter', '', false, storage)).toBe('/explore');
+		expect(rootEntry('popstate', '', false, storage)).toBeNull();
+	});
+
 	it('uses an explicit classic link and browser history without redirect loops', () => {
 		const storage = memoryStorage('workspace');
 		expect(rootEntry('enter', '?view=classic', false, storage)).toBeNull();

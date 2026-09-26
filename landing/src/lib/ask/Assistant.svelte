@@ -13,6 +13,9 @@
 		initialQuery?: string;
 		showIntro?: boolean;
 		immersive?: boolean;
+		session?: Chat<UIMessage>;
+		showHistory?: boolean;
+		showSpeak?: boolean;
 	};
 
 	let {
@@ -27,17 +30,22 @@
 		],
 		initialQuery = '',
 		showIntro = true,
-		immersive = false
+		immersive = false,
+		session,
+		showHistory = true,
+		showSpeak = false
 	}: Props = $props();
 
-	const chat = new Chat({
+	// Session/endpoint are fixed for this mounted composer; the Explore shell owns
+	// the shared session across its route changes.
+	const chat = (() => session ?? new Chat({
 		transport: new DefaultChatTransport({
 			api: `${apiUrl}/api/chat`,
 			prepareSendMessagesRequest: ({ messages, body }) => ({
 				body: { ...body, messages, pageContext: pageContext() }
 			})
 		})
-	});
+	}))();
 
 	// `fetch` reports an unreachable host as the bare string "Failed to fetch", which tells a
 	// reader nothing about which host or why. Name the gateway the page could not reach.
@@ -107,15 +115,7 @@
 <div class="flex h-full flex-col">
 	<div bind:this={scroller} class="flex-1 space-y-5 overflow-y-auto px-1 py-4">
 		{#if chat.messages.length === 0}
-			<div class="mx-auto max-w-2xl text-center {immersive ? 'flex min-h-full flex-col items-center justify-center pb-8' : showIntro ? 'pt-6' : 'pt-0'}">
-				{#if immersive}
-					<div class="ayla-presence relative mb-8 flex size-36 items-center justify-center rounded-full sm:size-44" aria-hidden="true">
-						<div class="ayla-presence-core size-16 rounded-full sm:size-20"></div>
-					</div>
-					<p class="text-xs font-semibold uppercase tracking-[0.24em] text-accent-700 dark:text-accent-300">Ayla · the studio assistant</p>
-					<h2 class="mt-4 text-4xl font-medium tracking-tight text-surface-900 dark:text-warm-50 sm:text-6xl">Where shall we begin?</h2>
-					<p class="mt-4 max-w-md text-sm leading-relaxed text-surface-600 dark:text-warm-300 sm:text-base">Ask about an Aylith tool, a project, or how the suite fits together. I’ll bring the relevant details into view.</p>
-				{/if}
+			<div class="mx-auto max-w-2xl text-center {showIntro ? 'pt-6' : 'pt-0'}">
 				{#if showIntro}
 					<p class="text-surface-500 dark:text-surface-400">
 						Ask about any tool in the suite, what fits a need, how the tools connect, or — once
@@ -137,7 +137,7 @@
 			</div>
 		{/if}
 
-		{#each chat.messages as message (message.id)}
+		{#each (showHistory ? chat.messages : chat.messages.slice(-1)) as message (message.id)}
 			{@const tools = toolsOf(message)}
 			{@const body = textOf(message)}
 			<div class="flex {message.role === 'user' ? 'justify-end' : 'justify-start'}">
@@ -191,6 +191,7 @@
 
 	<div class="{immersive ? 'px-1 pt-3' : 'border-t border-surface-200 bg-white/60 px-1 pt-3 dark:border-surface-800 dark:bg-surface-950/60'}">
 		<div class="flex items-end gap-2 rounded-2xl border border-surface-200 bg-surface-50 px-3 py-2 focus-within:border-accent-400 dark:border-surface-800 dark:bg-surface-900">
+			{#if showSpeak}<button disabled aria-label="Speak to Ayla unavailable in this preview" title="Microphone unavailable in this preview" class="flex size-8 shrink-0 items-center justify-center self-center rounded-full border border-surface-200 text-surface-400 dark:border-surface-700"><svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3m-4 0h8"/></svg></button>{/if}
 			<textarea
 				aria-label={immersive ? 'Ask Ayla a question' : placeholder}
 				bind:value={input}
@@ -220,8 +221,8 @@
 				</button>
 			{/if}
 		</div>
-		<p class="px-2 py-1.5 text-center text-[0.7rem] text-surface-400">
+		{#if !immersive}<p class="px-2 py-1.5 text-center text-[0.7rem] text-surface-400">
 			Answers are grounded in the Aylith catalog and the shared entity graph. Verify anything important.
-		</p>
+		</p>{/if}
 	</div>
 </div>

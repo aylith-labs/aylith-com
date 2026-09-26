@@ -136,39 +136,43 @@ h1, h2, h3, h4, h5, h6 {
 	outline-offset: 2px;
 }
 
-.ayla-presence {
-	background: radial-gradient(circle at 35% 30%, var(--color-warm-50), var(--color-accent-100) 46%, var(--color-accent-300) 100%);
-	box-shadow: 0 0 0 1px var(--color-accent-200), 0 24px 90px var(--color-accent-200);
-	animation: ayla-breathe 7s ease-in-out infinite;
+.ayla-aperture {
+	position: relative;
+	width: min(44vw, 280px);
+	height: 142px;
+	filter: drop-shadow(0 18px 32px var(--color-accent-200));
 }
-
-.ayla-presence::before {
+.ayla-aperture::before,
+.ayla-aperture::after,
+.ayla-aperture span {
 	content: '';
 	position: absolute;
-	inset: -18%;
-	border: 1px solid var(--color-accent-300);
-	border-radius: 50%;
-	opacity: .45;
+	inset: 8% 0;
+	border-radius: 54% 46% 62% 38% / 58% 38% 62% 42%;
+	transform: rotate(-16deg) skewX(-12deg);
+	animation: aperture-arrive 1.4s cubic-bezier(.17,.67,.18,1) both;
 }
-
-.ayla-presence-core {
-	background: radial-gradient(circle at 35% 30%, var(--color-warm-50), var(--color-accent-400) 55%, var(--color-accent-700));
-	box-shadow: 0 0 34px var(--color-accent-400);
+.ayla-aperture::before {
+	background: linear-gradient(118deg, transparent 4%, var(--color-accent-300) 22%, var(--color-warm-50) 46%, var(--color-accent-500) 72%, transparent 95%);
+	box-shadow: inset 0 -18px 24px -20px var(--color-accent-700), 0 6px 28px -8px var(--color-accent-300);
 }
-
-.dark .ayla-presence {
-	background: radial-gradient(circle at 35% 30%, var(--color-accent-500), var(--color-accent-800) 50%, var(--color-surface-900));
-	box-shadow: 0 0 0 1px var(--color-accent-800), 0 20px 100px var(--color-accent-900);
+.ayla-aperture::after {
+	inset: 29% 11%;
+	background: var(--color-surface-50);
+	filter: blur(8px);
 }
-
-.dark .ayla-presence-core {
-	background: radial-gradient(circle at 35% 30%, var(--color-warm-50), var(--color-accent-500) 45%, var(--color-accent-900));
-	box-shadow: 0 0 40px var(--color-accent-500);
+.ayla-aperture span {
+	inset: 33% 13%;
+	background: linear-gradient(90deg, transparent, var(--color-warm-50), transparent);
+	filter: blur(13px);
 }
-
-@keyframes ayla-breathe {
-	50% { transform: scale(1.045); }
-}
+.dark .ayla-aperture { filter: drop-shadow(0 12px 30px var(--color-accent-900)); }
+.dark .ayla-aperture::after { background: var(--color-surface-950); }
+@keyframes aperture-arrive { from { opacity: 0; transform: translateY(12px) rotate(-20deg) skewX(-12deg) scale(.92); } to { opacity: 1; transform: rotate(-16deg) skewX(-12deg); } }
+.ayla-dock-light { width: 1.4rem; height: 1.4rem; flex: none; border-radius: 58% 42% 61% 39%; transform: rotate(-22deg); background: linear-gradient(135deg,var(--color-accent-300),var(--color-warm-50) 52%,var(--color-accent-600)); box-shadow: 0 0 14px var(--color-accent-300); }
+.ayla-aperture-cut { fill: var(--color-surface-50); }
+.dark .ayla-aperture-cut { fill: var(--color-surface-950); }
+.dark #explore-content { color-scheme: dark; scrollbar-color: var(--color-surface-700) var(--color-surface-950); }
 
 /* Motion gating is driven by html[data-motion] (set before paint in app.html and kept
    current by the motion store), so the design system can override the system setting for

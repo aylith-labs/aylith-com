@@ -5,6 +5,7 @@
 	import { onMount } from 'svelte';
 	import Navbar from '$lib/components/layout/Navbar.svelte';
 	import Footer from '$lib/components/layout/Footer.svelte';
+	import ExploreShell from '$lib/explore/ExploreShell.svelte';
 	import { motion } from '$lib/stores/motion.svelte';
 	import { theme } from '$lib/stores/theme.svelte';
 
@@ -59,8 +60,11 @@
 	<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
 </svelte:head>
 
-<div class="flex flex-col {page.url.pathname === '/workspace' || page.url.pathname === '/ayla' ? 'h-svh overflow-hidden' : 'min-h-screen'}">
-	{#if page.url.pathname !== '/workspace' && page.url.pathname !== '/ayla'}
+{#if page.url.pathname === '/ayla' || page.url.pathname.startsWith('/explore')}
+	<ExploreShell projects={data.navProjects}>{@render children()}</ExploreShell>
+{:else}
+<div class="flex flex-col {page.url.pathname === '/workspace' ? 'h-svh overflow-hidden' : 'min-h-screen'}">
+	{#if page.url.pathname !== '/workspace'}
 		<Navbar />
 	{/if}
 
@@ -68,7 +72,8 @@
 		{@render children()}
 	</main>
 
-	{#if page.url.pathname !== '/workspace' && page.url.pathname !== '/ayla'}
+	{#if page.url.pathname !== '/workspace'}
 		<Footer projects={data.navProjects} />
 	{/if}
 </div>
+{/if}
