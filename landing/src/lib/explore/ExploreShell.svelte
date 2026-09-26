@@ -211,10 +211,14 @@
 			return;
 		}
 		if (event.key !== 'Tab' || !conversationOpen || !conversationPanel) return;
-		const items = Array.from(conversationPanel.querySelectorAll<HTMLElement>('button:not(:disabled), textarea, a[href], select'));
+		const items = Array.from(conversationPanel.querySelectorAll<HTMLElement>('button:not(:disabled), a[href], input:not(:disabled), textarea:not(:disabled), select:not(:disabled), [tabindex]:not([tabindex="-1"])'))
+			.filter((item) => item.tabIndex >= 0 && item.getClientRects().length > 0 && !item.closest('[inert]'));
 		if (!items.length) return;
 		const first = items[0], last = items.at(-1);
-		if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+		if (document.activeElement === conversationPanel || !conversationPanel.contains(document.activeElement)) {
+			event.preventDefault();
+			(event.shiftKey ? last : first)?.focus();
+		} else if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
 		else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
 	}
 
@@ -312,7 +316,7 @@
 <svelte:window onkeydown={onShellKeydown} />
 
 <div class="flex h-svh min-h-0 flex-col overflow-hidden bg-surface-50 text-surface-900 dark:bg-surface-950 dark:text-warm-50">
-	<header class="flex min-h-16 shrink-0 items-center justify-between gap-3 border-b border-surface-200/70 px-4 dark:border-surface-800 sm:px-7">
+	<header inert={conversationOpen && !isAyla} class="flex min-h-16 shrink-0 items-center justify-between gap-3 border-b border-surface-200/70 px-4 dark:border-surface-800 sm:px-7">
 		<a href="/ayla" class="inline-flex items-center gap-2 font-semibold tracking-[0.13em]" aria-label="Ayla home"><Mark class="h-7 w-auto" /> AYLITH</a>
 		<div class="flex items-center gap-1"><ViewSwitcher /><SettingsMenu /></div>
 	</header>
@@ -321,7 +325,7 @@
 			<main bind:this={exploreMain} inert={conversationOpen} class="min-h-0 min-w-0 flex-1 bg-white dark:bg-surface-950 {isWebsite ? 'overflow-hidden pb-14' : 'overflow-y-auto'}" id="explore-content">
 				{@render children()}
 			</main>
-			<div class="pointer-events-none absolute inset-x-0 bottom-0 z-20 flex justify-center px-4 pb-[max(1rem,env(safe-area-inset-bottom))] {isWebsite ? '' : 'bg-gradient-to-t from-white via-white/95 to-transparent pt-10 dark:from-surface-950 dark:via-surface-950/95'}">
+			<div inert={conversationOpen} class="pointer-events-none absolute inset-x-0 bottom-0 z-20 flex justify-center px-4 pb-[max(1rem,env(safe-area-inset-bottom))] {isWebsite ? '' : 'bg-gradient-to-t from-white via-white/95 to-transparent pt-10 dark:from-surface-950 dark:via-surface-950/95'}">
 				<div class="pointer-events-auto flex items-center gap-2 rounded-full border border-surface-200 bg-white p-2 shadow-[0_14px_50px_-18px_rgba(83,54,37,.4)] dark:border-surface-700 dark:bg-surface-900 {isWebsite ? 'ml-auto' : 'w-full max-w-xl'}">
 					<span class="ayla-dock-light ml-2" aria-hidden="true"></span>
 					<button bind:this={dockTrigger} onclick={() => conversationOpen = true} aria-expanded={conversationOpen} aria-controls="ayla-conversation" class="min-w-0 flex-1 truncate px-2 py-2 text-left text-sm text-surface-600 dark:text-warm-300">Ask Ayla</button>
@@ -331,7 +335,7 @@
 			</div>
 		{/if}
 		{#if isAyla || conversationOpen}
-			{#if !isAyla}<button class="absolute inset-0 z-20 bg-surface-950/30 backdrop-blur-[2px]" aria-label="Close Ayla conversation" onclick={closeConversation}></button>{/if}
+			{#if !isAyla}<button class="absolute inset-0 z-20 bg-surface-950/30 backdrop-blur-[2px]" tabindex="-1" aria-hidden="true" onclick={closeConversation}></button>{/if}
 		<section bind:this={conversationPanel} id="ayla-conversation" role={isAyla ? 'main' : 'dialog'} aria-modal={isAyla ? undefined : 'true'} tabindex="-1" aria-label="Ayla conversation" class="z-30 flex min-h-0 min-w-0 flex-col overflow-hidden px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:px-6 {isAyla ? 'relative mx-auto w-full max-w-6xl flex-1' : 'absolute inset-y-0 right-0 w-full max-w-[32rem] border-l border-surface-200 bg-white shadow-2xl dark:border-surface-800 dark:bg-surface-950'}">
 			<div class="pointer-events-none absolute inset-x-0 top-0 h-32 bg-[radial-gradient(ellipse_at_28%_0%,var(--color-accent-100),transparent_68%)] dark:bg-[radial-gradient(ellipse_at_28%_0%,var(--color-accent-900),transparent_68%)]" aria-hidden="true"></div>
 			<div class="relative flex shrink-0 flex-wrap items-center justify-between gap-1 py-3 text-xs sm:flex-nowrap">
