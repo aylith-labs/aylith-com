@@ -11,6 +11,7 @@
 	import Assistant from '$lib/ask/Assistant.svelte';
 	import { resolveAiUrl } from '$lib/ask/config';
 	import { clearConversation, loadConversation, saveConversation } from '$lib/ask/history';
+	import { BrowserSpeech, type SpeechSnapshot } from '$lib/ask/browser-speech';
 	import { resolveAylaAction } from './navigation';
 	import { browserStorage, rememberView } from '$lib/view-preference';
 
@@ -31,6 +32,17 @@
 	let historyOpen = $state(false);
 	let conversationOpen = $state(false);
 	let voiceSettings = $state(false);
+	let speech: BrowserSpeech | undefined;
+	let speechSnapshot = $state<SpeechSnapshot>({ locale: '', recognition: 'unavailable', localVoices: [] });
+	let speechState = $state<'idle' | 'listening' | 'speaking' | 'error'>('idle');
+	let speechError = $state('');
+	let localeInput = $state('');
+	let selectedVoice = $state('');
+	let voiceTurn = $state(false);
+	let spokenAssistantId = '';
+	let speechBaseAssistantId = '';
+	let installing = $state(false);
+	let pageVisible = $state(true);
 	let isAyla = $derived(page.url.pathname === '/ayla');
 	let isWebsite = $derived(/^\/explore\/[a-z0-9-]+\/website\/?$/.test(page.url.pathname));
 	let exploreMain: HTMLElement | undefined = $state();
@@ -56,6 +68,21 @@
 
 	onMount(() => {
 		let active = true;
+		speech = new BrowserSpeech((text) => {
+			if (!active || !text.trim()) return;
+			speechBaseAssistantId = [...chat.messages].reverse().find((message) => message.role === 'assistant')?.id ?? '';
+			voiceTurn = true;
+			speechError = '';
+			void chat.sendMessage({ text });
+		});
+		speech.onState = (state, detail) => { speechState = state; if (detail) speechError = detail; };
+		localeInput = speech.locale;
+		const refreshSpeech = () => { void speech?.probe().then((snapshot) => { if (active) speechSnapshot = snapshot; }); };
+		refreshSpeech();
+		const visibility = () => { pageVisible = document.visibilityState === 'visible'; };
+		visibility();
+		document.addEventListener('visibilitychange', visibility);
+		globalThis.speechSynthesis?.addEventListener('voiceschanged', refreshSpeech);
 		const epoch = ++loadEpoch;
 		void loadConversation().then((saved) => {
 			if (!active || epoch !== loadEpoch) return;
@@ -66,13 +93,14 @@
 		});
 		const navigate = (event: Event) => {
 			const target = resolveAylaAction((event as CustomEvent).detail, projects.map((item) => item.slug));
-			if (target) { conversationOpen = false; void goto(target); }
+			if (target) { speech?.stop(); voiceTurn = false; conversationOpen = false; void goto(target); }
 		};
 		window.addEventListener('ayla:navigate', navigate);
-		return () => { active = false; window.removeEventListener('ayla:navigate', navigate); };
+		return () => { active = false; document.removeEventListener('visibilitychange', visibility); globalThis.speechSynthesis?.removeEventListener('voiceschanged', refreshSpeech); window.removeEventListener('ayla:navigate', navigate); };
 	});
 
 	onDestroy(() => {
+		speech?.stop();
 		chat.stop();
 		if (ready) void saveConversation(chat.messages);
 	});
@@ -105,8 +133,11 @@
 		}
 	});
 
+	let lastRoute = '';
 	$effect(() => {
 		const route = page.url.pathname;
+		if (lastRoute && route !== lastRoute) { speech?.stop(); voiceTurn = false; }
+		lastRoute = route;
 		rememberView(route === '/ayla' ? 'ayla' : 'explore', browserStorage());
 		conversationOpen = false;
 	});
@@ -117,6 +148,7 @@
 	});
 
 	function closeConversation() {
+		speech?.stop(); voiceTurn = false;
 		conversationOpen = false;
 		void tick().then(() => dockTrigger?.focus());
 	}
@@ -145,7 +177,45 @@
 		void goto('/ayla', { replaceState: true, noScroll: true, keepFocus: true });
 	});
 
+	async function startLocalSpeech() {
+		if (!speech) return;
+		if (speechState === 'listening') { speech.stop(); voiceTurn = false; return; }
+		if (speechState === 'speaking') speech.stop();
+		if (chat.status === 'submitted' || chat.status === 'streaming') { chat.stop(); voiceTurn = false; }
+		speechError = '';
+		try { await speech.start(); } catch (cause) { speechError = cause instanceof Error ? cause.message : 'Speech could not start.'; speechState = 'error'; }
+	}
+
+	async function applyLocale() {
+		if (!speech) return;
+		let locale: string;
+		try { locale = Intl.getCanonicalLocales(localeInput.trim())[0]; } catch { locale = ''; }
+		if (!locale) { speechError = 'Enter a valid language tag, such as en-US or hu-HU.'; return; }
+		speech.stop(); speech.locale = locale; speech.voiceName = ''; selectedVoice = ''; speechError = '';
+		speechSnapshot = await speech.probe();
+	}
+
+	async function installLocalPack() {
+		if (!speech || installing) return;
+		installing = true; speechError = '';
+		try { if (!await speech.install()) speechError = 'This browser could not install the local speech pack.'; speechSnapshot = await speech.probe(); }
+		catch { speechError = 'The local speech pack could not be installed.'; }
+		finally { installing = false; }
+	}
+
+	$effect(() => {
+		if (!voiceTurn || chat.status !== 'ready') return;
+		if (chat.error) { voiceTurn = false; return; }
+		const last = chat.messages.at(-1);
+		if (!last || last.role !== 'assistant' || last.id === spokenAssistantId || last.id === speechBaseAssistantId) return;
+		const answer = last.parts.filter((part) => part.type === 'text').map((part) => 'text' in part ? part.text : '').join('').trim();
+		if (!answer) return;
+		spokenAssistantId = last.id; voiceTurn = false;
+		if (!speech?.speak(answer)) speechError = `No on-device voice is ready for ${speech?.locale ?? 'this language'}. The text answer is still here.`;
+	});
+
 	async function newConversation() {
+		speech?.stop(); voiceTurn = false;
 		loadEpoch++;
 		ready = true;
 		chat.stop();
@@ -170,7 +240,7 @@
 				<div class="pointer-events-auto flex items-center gap-2 rounded-full border border-surface-200 bg-white p-2 shadow-[0_14px_50px_-18px_rgba(83,54,37,.4)] dark:border-surface-700 dark:bg-surface-900 {isWebsite ? 'ml-auto' : 'w-full max-w-xl'}">
 					<span class="ayla-dock-light ml-2" aria-hidden="true"></span>
 					<button bind:this={dockTrigger} onclick={() => conversationOpen = true} aria-expanded={conversationOpen} aria-controls="ayla-conversation" class="min-w-0 flex-1 truncate px-2 py-2 text-left text-sm text-surface-600 dark:text-warm-300">Ask Ayla</button>
-					{#if !isWebsite}<button disabled aria-label="Speak to Ayla unavailable in this preview" title="Microphone unavailable in this preview" class="flex size-9 shrink-0 items-center justify-center rounded-full border border-surface-200 text-surface-400 dark:border-surface-700"><svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3m-4 0h8"/></svg></button>{/if}
+					{#if !isWebsite}<button onclick={() => { conversationOpen = true; void startLocalSpeech(); }} disabled={speechSnapshot.recognition !== 'available' && speechState !== 'listening'} aria-label={speechState === 'listening' ? 'Stop speech' : speechSnapshot.recognition === 'available' ? 'Speak to Ayla' : 'Local speech unavailable'} title={speechSnapshot.recognition === 'available' ? 'Speak with on-device recognition' : 'No on-device recognition pack is ready'} class="flex size-9 shrink-0 items-center justify-center rounded-full border border-surface-200 text-surface-600 disabled:text-surface-400 dark:border-surface-700"><svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3m-4 0h8"/></svg></button>{/if}
 				</div>
 			</div>
 		{/if}
@@ -179,7 +249,7 @@
 		<section bind:this={conversationPanel} id="ayla-conversation" role={isAyla ? 'main' : 'dialog'} aria-modal={isAyla ? undefined : 'true'} tabindex="-1" aria-label="Ayla conversation" class="relative z-30 flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:px-6 {isAyla ? 'mx-auto w-full max-w-6xl' : 'absolute inset-y-0 right-0 w-full max-w-[32rem] border-l border-surface-200 bg-white shadow-2xl dark:border-surface-800 dark:bg-surface-950'}">
 			<div class="pointer-events-none absolute inset-x-0 top-0 h-32 bg-[radial-gradient(ellipse_at_28%_0%,var(--color-accent-100),transparent_68%)] dark:bg-[radial-gradient(ellipse_at_28%_0%,var(--color-accent-900),transparent_68%)]" aria-hidden="true"></div>
 			<div class="relative flex shrink-0 items-center justify-between gap-2 py-3 text-xs">
-				<span class="font-semibold uppercase tracking-[0.2em] text-accent-700 dark:text-accent-300">Ayla · conversation</span>
+					<span class="flex items-center gap-2 font-semibold uppercase tracking-[0.2em] text-accent-700 dark:text-accent-300"><svg class="ayla-mini-aperture {pageVisible && (speechState === 'listening' || speechState === 'speaking' || (voiceTurn && (chat.status === 'submitted' || chat.status === 'streaming'))) ? 'ayla-dock-active' : ''}" viewBox="0 0 360 150" aria-hidden="true"><path d="M9 104 C82 43 129 29 193 54 C251 79 286 24 351 18 C301 68 282 117 216 119 C151 121 80 86 9 104Z" fill="currentColor" opacity=".85"/><path d="M48 91 C110 58 150 52 199 68 C249 86 287 51 326 38 C283 82 263 98 214 99 C150 100 102 78 48 91Z" class="ayla-aperture-cut"/></svg> Ayla · {speechState === 'listening' ? 'listening' : speechState === 'speaking' ? 'speaking' : voiceTurn && (chat.status === 'submitted' || chat.status === 'streaming') ? 'thinking' : 'conversation'}</span>
 				<div class="flex items-center gap-1">
 					{#if !isAyla}<button onclick={closeConversation} class="rounded-lg px-2 py-2 hover:bg-surface-100 dark:hover:bg-surface-800">Close</button>{/if}
 					<button onclick={() => historyOpen = !historyOpen} aria-pressed={historyOpen} class="rounded-lg px-2 py-2 hover:bg-surface-100 dark:hover:bg-surface-800">{historyOpen ? 'Latest' : 'History'}</button>
@@ -188,10 +258,16 @@
 				</div>
 			</div>
 			{#if voiceSettings}
-				<div class="relative mb-2 rounded-xl border border-surface-200 bg-white p-3 text-xs dark:border-surface-700 dark:bg-surface-900" role="status">
-					Speech is unavailable in this preview. Your text questions go to the online Aylith answer service. {durable ? 'Conversation history is saved on this device' : 'Conversation history lasts for this visit only'}; no audio is stored.
+				<div class="relative mb-2 grid gap-2 rounded-xl border border-surface-200 bg-white p-3 text-xs dark:border-surface-700 dark:bg-surface-900" role="group" aria-label="Voice settings">
+					<p>Answers use the online service. Browser speech stays on this device only when a local language pack and local voice are available. No audio is saved.</p>
+					<div class="flex flex-wrap items-center gap-2"><label for="ayla-speech-locale">Speech language</label><input id="ayla-speech-locale" aria-label="Speech language" bind:value={localeInput} class="w-28 rounded border border-surface-300 bg-transparent px-2 py-1 dark:border-surface-600" /><button onclick={applyLocale} class="rounded border border-surface-300 px-2 py-1 dark:border-surface-600">Use language</button></div>
+					<p>On-device recognition for {speechSnapshot.locale || 'this language'}: {speechSnapshot.recognition === 'available' ? 'ready' : speechSnapshot.recognition === 'downloadable' ? 'pack available to install' : speechSnapshot.recognition === 'downloading' ? 'pack downloading' : 'unavailable in this browser'}.</p>
+					{#if speechSnapshot.recognition === 'downloadable'}<button onclick={installLocalPack} disabled={installing} class="w-fit rounded border border-surface-300 px-2 py-1 dark:border-surface-600">{installing ? 'Installing…' : 'Install on-device language pack'}</button>{/if}
+					{#if speechSnapshot.localVoices.some((voice) => voice.lang.toLowerCase() === speechSnapshot.locale.toLowerCase())}<div class="flex flex-wrap items-center gap-2"><label for="ayla-local-voice">On-device voice</label><select id="ayla-local-voice" bind:value={selectedVoice} onchange={() => { if (speech) speech.voiceName = selectedVoice; }} class="min-w-0 max-w-64 rounded border border-surface-300 bg-white px-2 py-1 dark:border-surface-600 dark:bg-surface-900"><option value="">Automatic for this language</option>{#each speechSnapshot.localVoices.filter((voice) => voice.lang.toLowerCase() === speechSnapshot.locale.toLowerCase()) as voice}<option value={voice.name}>{voice.name} ({voice.lang})</option>{/each}</select></div>{:else}<p>No on-device voice is installed. Text answers remain available.</p>{/if}
+					<p>Own-server and Cartesia voices are not enabled in this preview.</p>
 				</div>
 			{/if}
+			{#if speechError}<p class="relative px-2 pb-1 text-xs text-red-700 dark:text-red-300" role="alert">{speechError}</p>{/if}
 			<div class="relative min-h-0 flex-1">
 				{#if isAyla && chat.messages.length === 0}
 					<div class="pointer-events-none absolute inset-0 z-10 flex flex-col items-center justify-center px-4 pb-14 text-center">
@@ -207,7 +283,7 @@
 					</div>
 				{/if}
 				{#if ready}
-					<Assistant {apiUrl} pageContext={currentContext} session={chat} immersive showIntro={false} showHistory={historyOpen} showSpeak={isAyla} suggestions={[]} placeholder="Ask Ayla…" />
+					<Assistant {apiUrl} pageContext={currentContext} session={chat} immersive showIntro={false} showHistory={historyOpen} showSpeak={isAyla} speakAvailable={speechSnapshot.recognition === 'available'} speechActive={speechState === 'listening' || speechState === 'speaking'} onSpeak={() => { void startLocalSpeech(); }} onStopVoice={() => { speech?.stop(); voiceTurn = false; }} onBeforeSend={() => { speech?.stop(); voiceTurn = false; }} suggestions={[]} placeholder="Ask Ayla…" />
 				{:else}
 					<p class="p-4 text-sm text-surface-500">Opening this device’s conversation…</p>
 				{/if}

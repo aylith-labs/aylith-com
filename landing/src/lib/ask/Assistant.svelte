@@ -16,6 +16,11 @@
 		session?: Chat<UIMessage>;
 		showHistory?: boolean;
 		showSpeak?: boolean;
+		speakAvailable?: boolean;
+		speechActive?: boolean;
+		onSpeak?: () => void;
+		onStopVoice?: () => void;
+		onBeforeSend?: () => void;
 	};
 
 	let {
@@ -33,7 +38,12 @@
 		immersive = false,
 		session,
 		showHistory = true,
-		showSpeak = false
+		showSpeak = false,
+		speakAvailable = false,
+		speechActive = false,
+		onSpeak = () => {},
+		onStopVoice = () => {},
+		onBeforeSend = () => {}
 	}: Props = $props();
 
 	// Session/endpoint are fixed for this mounted composer; the Explore shell owns
@@ -85,6 +95,7 @@
 		const trimmed = text.trim();
 		if (!trimmed || isBusy) return;
 		input = '';
+		onBeforeSend();
 		chat.sendMessage({ text: trimmed });
 		scrollToEnd();
 	}
@@ -191,7 +202,7 @@
 
 	<div class="{immersive ? 'px-1 pt-3' : 'border-t border-surface-200 bg-white/60 px-1 pt-3 dark:border-surface-800 dark:bg-surface-950/60'}">
 		<div class="flex items-end gap-2 rounded-2xl border border-surface-200 bg-surface-50 px-3 py-2 focus-within:border-accent-400 dark:border-surface-800 dark:bg-surface-900">
-			{#if showSpeak}<button disabled aria-label="Speak to Ayla unavailable in this preview" title="Microphone unavailable in this preview" class="flex size-8 shrink-0 items-center justify-center self-center rounded-full border border-surface-200 text-surface-400 dark:border-surface-700"><svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3m-4 0h8"/></svg></button>{/if}
+			{#if showSpeak}<button onclick={onSpeak} disabled={!speakAvailable && !speechActive} aria-label={speechActive ? "Stop speech" : speakAvailable ? "Speak to Ayla" : "Local speech unavailable"} title={speechActive ? "Stop speech" : speakAvailable ? "Speak with on-device recognition" : "No on-device recognition pack is ready"} class="flex size-8 shrink-0 items-center justify-center self-center rounded-full border border-surface-200 text-surface-400 dark:border-surface-700"><svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3m-4 0h8"/></svg></button>{/if}
 			<textarea
 				aria-label={immersive ? 'Ask Ayla a question' : placeholder}
 				bind:value={input}
@@ -202,7 +213,7 @@
 			></textarea>
 			{#if isBusy}
 				<button
-					onclick={() => chat.stop()}
+					onclick={() => { chat.stop(); onStopVoice(); }}
 					class="btn-press rounded-xl bg-surface-200 px-3 py-2 text-surface-700 dark:bg-surface-700 dark:text-surface-200"
 					aria-label="Stop"
 				>
