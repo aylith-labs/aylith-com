@@ -1,4 +1,5 @@
 import { createHash } from 'node:crypto';
+import matter from 'gray-matter';
 import { describe, expect, it } from 'vitest';
 import {
 	DEFAULT_GRADIENT_FROM,
@@ -87,6 +88,18 @@ describe('firstParagraph', () => {
 });
 
 describe('projectFromManifest', () => {
+	it('publishes a source-owned HTTPS website through collected Markdown', () => {
+		const project = projectFromManifest('bract', 'https://github.com/aylith-labs/bract', FULL_MANIFEST.replace('category: developer-tools', 'category: developer-tools\nwebsiteUrl: https://bract.example.org/'));
+		expect(project.websiteUrl).toBe('https://bract.example.org/');
+		expect(matter(toMarkdown(project)).data.websiteUrl).toBe('https://bract.example.org/');
+	});
+
+	it('does not turn a repository or unsafe URL into an embeddable website', () => {
+		const without = projectFromManifest('bract', 'https://github.com/aylith-labs/bract', FULL_MANIFEST);
+		const unsafe = projectFromManifest('bract', 'https://github.com/aylith-labs/bract', FULL_MANIFEST.replace('category: developer-tools', 'category: developer-tools\nwebsiteUrl: javascript:alert(1)'));
+		expect(without.websiteUrl).toBeUndefined();
+		expect(unsafe.websiteUrl).toBeUndefined();
+	});
 	it('carries every curated field through unchanged', () => {
 		const project = projectFromManifest('bract', 'https://github.com/aylith-labs/bract', FULL_MANIFEST);
 		expect(project).toMatchObject({

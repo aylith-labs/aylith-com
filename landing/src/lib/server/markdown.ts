@@ -8,6 +8,7 @@ import {
 	DEFAULT_ICON
 } from '$lib/catalog/defaults.js';
 import { normalizeOnboarding } from '$lib/catalog/onboarding.js';
+import { normalizeWebsiteUrl } from '$lib/catalog/website.js';
 import type { Project } from '$lib/types/project';
 
 // Source of truth is the collector's output (.generated/projects, fetched from
@@ -36,6 +37,7 @@ export function projectFromFrontmatter(
 		gradientTo: data.gradientTo ?? DEFAULT_GRADIENT_TO,
 		featured: data.featured ?? false,
 		onboarding: normalizeOnboarding(data.onboarding),
+		websiteUrl: normalizeWebsiteUrl(data.websiteUrl),
 		body
 	} as Project;
 }

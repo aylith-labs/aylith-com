@@ -7,6 +7,11 @@
 	"required": ["name", "tagline", "description", "category"],
 	"additionalProperties": false,
 	"properties": {
+		"websiteUrl": {
+			"type": "string",
+			"pattern": "^https://",
+			"description": "Source-owned public product website for Explore's Website view; distinct from repository and setup URLs. The site may still block iframe embedding."
+		},
 		"onboarding": {
 			"type": "object",
 			"additionalProperties": false,

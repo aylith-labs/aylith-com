@@ -11,6 +11,7 @@ import {
 	PLACEHOLDER_CATEGORY
 } from '../src/lib/catalog/defaults.js';
 import { normalizeOnboarding } from '../src/lib/catalog/onboarding.js';
+import { normalizeWebsiteUrl } from '../src/lib/catalog/website.js';
 
 /** Title-case a repo slug for placeholder display names: "entity-graph" -> "Entity Graph". */
 export function titleCase(slug) {
@@ -76,6 +77,7 @@ export function projectFromManifest(slug, repoUrl, raw) {
 				: DEFAULT_GRADIENT_TO,
 		repoUrl,
 		body: body || undefined,
+		websiteUrl: normalizeWebsiteUrl(data.websiteUrl),
 		onboarding: setup
 	};
 }
@@ -117,6 +119,7 @@ export function toMarkdown(project) {
 		repoUrl: project.repoUrl
 	};
 	if (project.order !== undefined) frontmatter.order = project.order;
+	if (project.websiteUrl !== undefined) frontmatter.websiteUrl = project.websiteUrl;
 	if (project.onboarding !== undefined) frontmatter.onboarding = project.onboarding;
 	return matter.stringify(project.body ? `\n${project.body}\n` : '', frontmatter);
 }
