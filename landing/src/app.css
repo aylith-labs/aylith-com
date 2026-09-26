@@ -48,6 +48,19 @@ html {
 	scrollbar-gutter: stable;
 }
 
+/* Ayla and Explore own their viewport and scroll only their content pane. */
+html.experience-mode {
+	scrollbar-gutter: auto;
+	overflow: hidden;
+	color-scheme: light;
+	background: var(--color-surface-50);
+}
+
+html.experience-mode.dark {
+	color-scheme: dark;
+	background: var(--color-surface-950);
+}
+
 body {
 	@apply bg-white text-surface-900 dark:bg-surface-950 dark:text-warm-200;
 	font-family: 'DM Sans', system-ui, -apple-system, sans-serif;

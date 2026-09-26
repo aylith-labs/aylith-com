@@ -91,6 +91,7 @@
 
 	onMount(() => {
 		let active = true;
+		document.documentElement.classList.add('experience-mode');
 		speech = new BrowserSpeech((text) => {
 			if (!active || !ready || !text.trim()) return;
 			speechBaseAssistantId = [...chat.messages].reverse().find((message) => message.role === 'assistant')?.id ?? '';
@@ -142,7 +143,7 @@
 			void goto(target).catch(() => { preservedVoiceRoute = ''; });
 		};
 		window.addEventListener('ayla:navigate', navigate);
-		return () => { active = false; speechProbeEpoch++; document.removeEventListener('visibilitychange', visibility); globalThis.speechSynthesis?.removeEventListener('voiceschanged', refreshSpeech); window.removeEventListener('ayla:navigate', navigate); };
+		return () => { active = false; speechProbeEpoch++; document.documentElement.classList.remove('experience-mode'); document.removeEventListener('visibilitychange', visibility); globalThis.speechSynthesis?.removeEventListener('voiceschanged', refreshSpeech); window.removeEventListener('ayla:navigate', navigate); };
 	});
 
 	onDestroy(() => {
@@ -330,16 +331,16 @@
 		{/if}
 		{#if isAyla || conversationOpen}
 			{#if !isAyla}<button class="absolute inset-0 z-20 bg-surface-950/30 backdrop-blur-[2px]" aria-label="Close Ayla conversation" onclick={closeConversation}></button>{/if}
-		<section bind:this={conversationPanel} id="ayla-conversation" role={isAyla ? 'main' : 'dialog'} aria-modal={isAyla ? undefined : 'true'} tabindex="-1" aria-label="Ayla conversation" class="relative z-30 flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:px-6 {isAyla ? 'mx-auto w-full max-w-6xl' : 'absolute inset-y-0 right-0 w-full max-w-[32rem] border-l border-surface-200 bg-white shadow-2xl dark:border-surface-800 dark:bg-surface-950'}">
+		<section bind:this={conversationPanel} id="ayla-conversation" role={isAyla ? 'main' : 'dialog'} aria-modal={isAyla ? undefined : 'true'} tabindex="-1" aria-label="Ayla conversation" class="z-30 flex min-h-0 min-w-0 flex-col overflow-hidden px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:px-6 {isAyla ? 'relative mx-auto w-full max-w-6xl flex-1' : 'absolute inset-y-0 right-0 w-full max-w-[32rem] border-l border-surface-200 bg-white shadow-2xl dark:border-surface-800 dark:bg-surface-950'}">
 			<div class="pointer-events-none absolute inset-x-0 top-0 h-32 bg-[radial-gradient(ellipse_at_28%_0%,var(--color-accent-100),transparent_68%)] dark:bg-[radial-gradient(ellipse_at_28%_0%,var(--color-accent-900),transparent_68%)]" aria-hidden="true"></div>
-			<div class="relative flex shrink-0 items-center justify-between gap-2 py-3 text-xs">
-					<span class="flex items-center gap-2 font-semibold uppercase tracking-[0.2em] text-accent-700 dark:text-accent-300"><svg class="ayla-mini-aperture {pageVisible && (speechState === 'listening' || speechState === 'speaking' || (voiceTurn && (chat.status === 'submitted' || chat.status === 'streaming'))) ? 'ayla-dock-active' : ''}" viewBox="0 0 360 150" aria-hidden="true"><path d="M9 104 C82 43 129 29 193 54 C251 79 286 24 351 18 C301 68 282 117 216 119 C151 121 80 86 9 104Z" fill="currentColor" opacity=".85"/><path d="M48 91 C110 58 150 52 199 68 C249 86 287 51 326 38 C283 82 263 98 214 99 C150 100 102 78 48 91Z" class="ayla-aperture-cut"/></svg> Ayla · {speechState === 'listening' ? 'listening' : speechState === 'speaking' ? 'speaking' : voiceTurn && (chat.status === 'submitted' || chat.status === 'streaming') ? 'thinking' : 'conversation'}</span>
-				<div class="flex items-center gap-1">
+			<div class="relative flex shrink-0 flex-wrap items-center justify-between gap-1 py-3 text-xs sm:flex-nowrap">
+					<span class="flex min-w-0 items-center gap-1 font-semibold uppercase tracking-[0.12em] text-accent-700 dark:text-accent-300 sm:gap-2 sm:tracking-[0.2em]"><svg class="ayla-mini-aperture shrink-0 {pageVisible && (speechState === 'listening' || speechState === 'speaking' || (voiceTurn && (chat.status === 'submitted' || chat.status === 'streaming'))) ? 'ayla-dock-active' : ''}" viewBox="0 0 360 150" aria-hidden="true"><path d="M9 104 C82 43 129 29 193 54 C251 79 286 24 351 18 C301 68 282 117 216 119 C151 121 80 86 9 104Z" fill="currentColor" opacity=".85"/><path d="M48 91 C110 58 150 52 199 68 C249 86 287 51 326 38 C283 82 263 98 214 99 C150 100 102 78 48 91Z" class="ayla-aperture-cut"/></svg><span class="sm:hidden">{speechState === 'listening' ? 'Listening' : speechState === 'speaking' ? 'Speaking' : voiceTurn && (chat.status === 'submitted' || chat.status === 'streaming') ? 'Thinking' : 'Ayla'}</span><span class="hidden sm:inline">Ayla · {speechState === 'listening' ? 'listening' : speechState === 'speaking' ? 'speaking' : voiceTurn && (chat.status === 'submitted' || chat.status === 'streaming') ? 'thinking' : 'conversation'}</span></span>
+				<div class="flex w-full flex-wrap items-center justify-end gap-0.5 sm:w-auto sm:shrink-0 sm:gap-1">
 					{#if !isAyla}<button onclick={closeConversation} class="rounded-lg px-2 py-2 hover:bg-surface-100 dark:hover:bg-surface-800">Close</button>{/if}
 					<button onclick={() => historyOpen = !historyOpen} aria-pressed={historyOpen} class="rounded-lg px-2 py-2 hover:bg-surface-100 dark:hover:bg-surface-800">{historyOpen ? 'Latest' : 'History'}</button>
 					<button onclick={newConversation} class="rounded-lg px-2 py-2 hover:bg-surface-100 dark:hover:bg-surface-800">New</button>
 					{#if activeVoice}<button onclick={stopAllVoice} aria-label="Interrupt voice" class="rounded-lg px-2 py-2 hover:bg-surface-100 dark:hover:bg-surface-800">Stop voice</button>{/if}
-					<button onclick={() => voiceSettings = !voiceSettings} aria-expanded={voiceSettings} class="rounded-lg px-2 py-2 hover:bg-surface-100 dark:hover:bg-surface-800">Voice settings</button>
+					<button onclick={() => voiceSettings = !voiceSettings} aria-expanded={voiceSettings} aria-label="Voice settings" class="rounded-lg px-1.5 py-2 hover:bg-surface-100 dark:hover:bg-surface-800 sm:px-2"><span class="sm:hidden">Voice</span><span class="hidden sm:inline">Voice settings</span></button>
 				</div>
 			</div>
 			{#if voiceSettings}
