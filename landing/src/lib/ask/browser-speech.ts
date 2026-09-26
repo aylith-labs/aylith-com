@@ -30,6 +30,7 @@ function recognitionConstructor(): RecognitionConstructor | undefined {
 
 export class BrowserSpeech {
 	private recognition?: LocalRecognition;
+	private recognitionEpoch = 0;
 	private utteranceEpoch = 0;
 	locale: string;
 	voiceName = '';
@@ -45,18 +46,19 @@ export class BrowserSpeech {
 	}
 
 	async probe(): Promise<SpeechSnapshot> {
+		const locale = this.locale;
 		let recognition: RecognitionAvailability = 'unavailable';
 		const Recognition = recognitionConstructor();
 		if (Recognition?.available) {
 			try {
 				const instance = new Recognition();
 				if ('processLocally' in instance) {
-					const result = await Recognition.available({ langs: [this.locale], processLocally: true });
+					const result = await Recognition.available({ langs: [locale], processLocally: true });
 					if (['available', 'downloadable', 'downloading'].includes(result)) recognition = result;
 				}
 			} catch { /* Local pack lookup may be blocked by Permissions-Policy. */ }
 		}
-		return { locale: this.locale, recognition, localVoices: this.localVoices().map(({ name, lang }) => ({ name, lang })) };
+		return { locale, recognition, localVoices: this.localVoices().map(({ name, lang }) => ({ name, lang })) };
 	}
 
 	async install(): Promise<boolean> {
@@ -67,7 +69,10 @@ export class BrowserSpeech {
 
 	async start(): Promise<void> {
 		this.stopRecognition();
-		if ((await this.probe()).recognition !== 'available') throw new Error('No installed local recognition pack is available for this language.');
+		const epoch = this.recognitionEpoch;
+		const snapshot = await this.probe();
+		if (epoch !== this.recognitionEpoch) return;
+		if (snapshot.recognition !== 'available') throw new Error('No installed local recognition pack is available for this language.');
 		const Recognition = recognitionConstructor();
 		if (!Recognition) throw new Error('No local recognition API is available.');
 		const instance = new Recognition();
@@ -78,7 +83,7 @@ export class BrowserSpeech {
 		instance.continuous = false;
 		let finalDelivered = false;
 		instance.onresult = (event) => {
-			if (finalDelivered) return;
+			if (epoch !== this.recognitionEpoch || finalDelivered) return;
 			for (let i = event.resultIndex; i < event.results.length; i++) {
 				const result = event.results[i];
 				if (!result?.isFinal) continue;
@@ -86,14 +91,15 @@ export class BrowserSpeech {
 				if (text) { finalDelivered = true; this.onTranscript(text); break; }
 			}
 		};
-		instance.onerror = (event) => { this.onState?.('error', event.error || 'Recognition failed.'); this.recognition = undefined; };
-		instance.onend = () => { if (this.recognition === instance) { this.recognition = undefined; this.onState?.('idle'); } };
+		instance.onerror = (event) => { if (epoch !== this.recognitionEpoch) return; this.onState?.('error', event.error || 'Recognition failed.'); this.recognition = undefined; };
+		instance.onend = () => { if (epoch === this.recognitionEpoch && this.recognition === instance) { this.recognition = undefined; this.onState?.('idle'); } };
 		this.recognition = instance;
 		try { instance.start(); this.onState?.('listening'); }
 		catch (cause) { this.recognition = undefined; this.onState?.('error', cause instanceof Error ? cause.message : 'Microphone could not start.'); throw cause; }
 	}
 
 	stopRecognition(): void {
+		this.recognitionEpoch++;
 		const active = this.recognition;
 		this.recognition = undefined;
 		if (active) { active.onresult = null; active.onend = null; active.onerror = null; active.abort(); this.onState?.('idle'); }

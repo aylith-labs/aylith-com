@@ -6,7 +6,7 @@ afterEach(() => vi.unstubAllGlobals());
 function recognition(local: boolean) {
 	const instances: Recognition[] = [];
 	class Recognition {
-		static available = vi.fn(async () => 'available');
+		static available = vi.fn(async (_options: { langs: string[]; processLocally: true }): Promise<'available' | 'downloadable'> => 'available');
 		constructor() { if (local) (this as Recognition & { processLocally?: boolean }).processLocally = false; instances.push(this); }
 		declare processLocally: boolean;
 		lang = '';
@@ -43,6 +43,36 @@ describe('local speech in the shared Ayla conversation', () => {
 		instances.at(-1)?.onresult?.({ resultIndex: 0, results: [{ isFinal: true, 0: { transcript: 'Nyisd meg a projektet.' } }] });
 		instances.at(-1)?.onresult?.({ resultIndex: 0, results: [{ isFinal: true, 0: { transcript: 'duplicate' } }] });
 		expect(received).toHaveBeenCalledExactlyOnceWith('Nyisd meg a projektet.');
+	});
+
+	 it('does not start a microphone after New or navigation cancels a pending pack check', async () => {
+		const { Recognition, instances } = recognition(true);
+		let resolveAvailability: ((status: 'available') => void) | undefined;
+		Recognition.available = vi.fn(() => new Promise<'available'>((resolve) => { resolveAvailability = resolve; }));
+		vi.stubGlobal('SpeechRecognition', Recognition);
+		vi.stubGlobal('navigator', { language: 'en-US' });
+		const speech = new BrowserSpeech(() => {});
+		const starting = speech.start();
+		speech.stop();
+		resolveAvailability?.('available');
+		await starting;
+		expect(instances.some((instance) => instance.start.mock.calls.length > 0)).toBe(false);
+	});
+
+	it('keeps a delayed pack result labeled with the language actually checked', async () => {
+		const { Recognition } = recognition(true);
+		const pending = new Map<string, (status: 'available' | 'downloadable') => void>();
+		Recognition.available = vi.fn(({ langs }: { langs: string[]; processLocally: true }) => new Promise<'available' | 'downloadable'>((resolve) => { pending.set(langs[0], resolve); }));
+		vi.stubGlobal('SpeechRecognition', Recognition);
+		vi.stubGlobal('navigator', { language: 'en-US' });
+		const speech = new BrowserSpeech(() => {});
+		const english = speech.probe();
+		speech.locale = 'hu-HU';
+		const hungarian = speech.probe();
+		pending.get('hu-HU')?.('available');
+		pending.get('en-US')?.('downloadable');
+		expect(await hungarian).toMatchObject({ locale: 'hu-HU', recognition: 'available' });
+		expect(await english).toMatchObject({ locale: 'en-US', recognition: 'downloadable' });
 	});
 
 	it('speaks only through a localService voice', () => {
