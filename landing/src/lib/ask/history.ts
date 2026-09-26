@@ -28,6 +28,8 @@ function durableMessages(messages: UIMessage[]): UIMessage[] {
 export async function loadConversation(): Promise<{ messages: UIMessage[]; available: boolean }> {
 	if (typeof indexedDB === 'undefined') return { messages: [], available: false };
 	try {
+		// A previous shell may have unmounted moments ago and queued its final text.
+		await writeQueue;
 		const db = await database();
 		const value = await new Promise<unknown>((resolve, reject) => {
 			const request = db.transaction(storeName, 'readonly').objectStore(storeName).get(key);

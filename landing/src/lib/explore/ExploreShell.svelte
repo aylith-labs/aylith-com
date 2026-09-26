@@ -66,7 +66,7 @@
 		});
 		const navigate = (event: Event) => {
 			const target = resolveAylaAction((event as CustomEvent).detail, projects.map((item) => item.slug));
-			if (target) void goto(target);
+			if (target) { conversationOpen = false; void goto(target); }
 		};
 		window.addEventListener('ayla:navigate', navigate);
 		return () => { active = false; window.removeEventListener('ayla:navigate', navigate); };
@@ -106,7 +106,8 @@
 	});
 
 	$effect(() => {
-		rememberView(isAyla ? 'ayla' : 'explore', browserStorage());
+		const route = page.url.pathname;
+		rememberView(route === '/ayla' ? 'ayla' : 'explore', browserStorage());
 		conversationOpen = false;
 	});
 
@@ -175,7 +176,7 @@
 		{/if}
 		{#if isAyla || conversationOpen}
 			{#if !isAyla}<button class="absolute inset-0 z-20 bg-surface-950/30 backdrop-blur-[2px]" aria-label="Close Ayla conversation" onclick={closeConversation}></button>{/if}
-		<section bind:this={conversationPanel} id="ayla-conversation" role={isAyla ? undefined : 'dialog'} aria-modal={isAyla ? undefined : 'true'} tabindex="-1" aria-label="Ayla conversation" class="relative z-30 flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:px-6 {isAyla ? 'mx-auto w-full max-w-6xl' : 'absolute inset-y-0 right-0 w-full max-w-[32rem] border-l border-surface-200 bg-white shadow-2xl dark:border-surface-800 dark:bg-surface-950'}">
+		<section bind:this={conversationPanel} id="ayla-conversation" role={isAyla ? 'main' : 'dialog'} aria-modal={isAyla ? undefined : 'true'} tabindex="-1" aria-label="Ayla conversation" class="relative z-30 flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden px-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:px-6 {isAyla ? 'mx-auto w-full max-w-6xl' : 'absolute inset-y-0 right-0 w-full max-w-[32rem] border-l border-surface-200 bg-white shadow-2xl dark:border-surface-800 dark:bg-surface-950'}">
 			<div class="pointer-events-none absolute inset-x-0 top-0 h-32 bg-[radial-gradient(ellipse_at_28%_0%,var(--color-accent-100),transparent_68%)] dark:bg-[radial-gradient(ellipse_at_28%_0%,var(--color-accent-900),transparent_68%)]" aria-hidden="true"></div>
 			<div class="relative flex shrink-0 items-center justify-between gap-2 py-3 text-xs">
 				<span class="font-semibold uppercase tracking-[0.2em] text-accent-700 dark:text-accent-300">Ayla · conversation</span>
