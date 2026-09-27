@@ -156,6 +156,7 @@ h1, h2, h3, h4, h5, h6 {
 	overflow: visible;
 	filter: drop-shadow(0 12px 26px var(--color-accent-200));
 }
+.ayla-aperture--compact { height: 90px; }
 .dark .ayla-aperture { filter: drop-shadow(0 12px 30px var(--color-accent-900)); }
 .ayla-aperture[data-active='true'] path:not(.ayla-aperture-cut) { transform-origin: center; animation: ayla-presence 2.4s ease-in-out infinite alternate; }
 @keyframes ayla-presence { from { transform: translateY(2px) scale(.99); opacity: .78; } to { transform: translateY(-2px) scale(1.015); opacity: 1; } }

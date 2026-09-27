@@ -125,6 +125,10 @@
 		void (last ? textOf(last) : '');
 		if (last) scrollToEnd();
 	});
+
+	$effect(() => {
+		if (showHistory) void tick().then(() => scroller?.scrollTo({ top: 0, behavior: 'instant' }));
+	});
 </script>
 
 <div class="flex h-full flex-col">

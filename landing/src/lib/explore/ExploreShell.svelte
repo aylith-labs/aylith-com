@@ -8,6 +8,8 @@
 	import Mark from '$lib/components/brand/Mark.svelte';
 	import ViewSwitcher from '$lib/components/layout/ViewSwitcher.svelte';
 	import SettingsMenu from '$lib/components/layout/SettingsMenu.svelte';
+	import RichCombobox from '$lib/components/controls/RichCombobox.svelte';
+	import { languageChoices, voiceChoices, VOICE_ROUTE_CHOICES, SPEECH_LANGUAGE_CODES } from '$lib/components/controls/choice-options';
 	import Assistant from '$lib/ask/Assistant.svelte';
 	import { resolveAiUrl } from '$lib/ask/config';
 	import { clearConversation, loadConversation, saveConversation } from '$lib/ask/history';
@@ -45,6 +47,10 @@
 	let serverVoiceStatus = $state('');
 	let speechSnapshot = $state<SpeechSnapshot>({ locale: '', recognition: 'unavailable', localVoices: [] });
 	let matchingLocalVoices = $derived(matchingVoiceLocale(speechSnapshot.localVoices, speechSnapshot.locale));
+	let localLanguageChoices = $derived(languageChoices([...SPEECH_LANGUAGE_CODES, speechSnapshot.locale, ...speechSnapshot.localVoices.map((voice) => voice.lang)].filter(Boolean), typeof navigator === 'undefined' ? 'en' : navigator.language));
+	let localVoiceChoices = $derived([{ value: '', label: 'Automatic local voice' }, ...voiceChoices(matchingLocalVoices.map((voice) => ({ value: voice.name, name: voice.name, locale: voice.lang })), typeof navigator === 'undefined' ? 'en' : navigator.language)]);
+	let serverLanguageChoices = $derived([{ value: 'auto', label: 'Detect language' }, ...languageChoices(ownedSnapshot.readyLanguages, typeof navigator === 'undefined' ? 'en' : navigator.language)]);
+	let serverVoiceChoices = $derived([{ value: '', label: 'Automatic language match' }, ...voiceChoices(ownedSnapshot.readyVoices.map((voice) => ({ value: voice.id, name: displayVoice(voice.id, voice.locale), locale: voice.locale })), typeof navigator === 'undefined' ? 'en' : navigator.language)]);
 	let speechState = $state<'idle' | 'connecting' | 'listening' | 'thinking' | 'speaking' | 'error'>('idle');
 	let speechError = $state('');
 	let localeInput = $state('');
@@ -60,6 +66,7 @@
 	let installing = $state(false);
 	let pageVisible = $state(true);
 	let speechProbeEpoch = 0;
+	let localStarting = false;
 	let voiceMode = $derived(voicePreference === 'auto' ? (speechSnapshot.recognition === 'available' && matchingLocalVoices.length > 0 ? 'browser' : ownedSnapshot.ready ? 'owned' : speechSnapshot.recognition === 'available' ? 'browser' : 'none') : voicePreference === 'browser' ? (speechSnapshot.recognition === 'available' ? 'browser' : 'none') : ownedSnapshot.ready ? 'owned' : 'none');
 	let voiceReady = $derived(ready && voiceMode !== 'none');
 	let cloudVoicePossible = $derived(voiceMode === 'owned' && voicePreference === 'auto' && (ownedSnapshot.cartesiaTtsReady || ownedSnapshot.cartesiaDiscoveryPending) && !ownedVoiceId);
@@ -113,7 +120,7 @@
 			speechError = '';
 			void chat.sendMessage({ text });
 		});
-		speech.onState = (state, detail) => { if (activeVoice !== 'browser') return; speechState = state; if (state === 'error' || (state === 'idle' && !voiceTurn)) activeVoice = ''; if (detail) speechError = detail; };
+		speech.onState = (state, detail) => { if (activeVoice !== 'browser' && !(localStarting && state === 'listening')) return; speechState = state; if (state === 'listening') activeVoice = 'browser'; if (state === 'error' || (state === 'idle' && !voiceTurn)) activeVoice = ''; if (detail) speechError = detail; };
 		owned = new OwnedSpeech(apiUrl, {
 			context: () => chat.messages,
 			onTranscript: (text) => { if (!active || !ready || activeVoice !== 'owned' || !text.trim()) return; chat.messages = [...chat.messages, { id: crypto.randomUUID(), role: 'user', parts: [{ type: 'text', text }] }]; },
@@ -128,7 +135,7 @@
 			},
 			onAction: (action) => { const target = resolveAylaAction(action, projects.map((item) => item.slug)); if (active && activeVoice === 'owned' && target) { pendingVoiceActionTarget = target; window.dispatchEvent(new CustomEvent('ayla:navigate', { detail: action })); } },
 			onVoice: (voice) => { if (activeVoice === 'owned') serverVoiceStatus = voice.provider === 'cartesia' ? `Speaking with a Cartesia cloud voice · ${displayLanguage(voice.locale)}` : `Speaking with ${displayVoice(voice.id, voice.locale)}`; },
-			onAudioUnavailable: (language) => { if (activeVoice === 'owned') speechError = `No Aylith server voice is ready for ${language || 'this language'}. The text answer remains here.`; },
+			onAudioUnavailable: () => { if (activeVoice === 'owned') speechError = 'Spoken reply unavailable. Your text answer is here.'; },
 			onState: (state, detail) => { if (activeVoice !== 'owned') return; speechState = state; if (state === 'idle' || state === 'error') activeVoice = ''; if (detail) speechError = detail; }
 		});
 		const ownedClient = owned;
@@ -219,6 +226,7 @@
 	}
 
 	function onShellKeydown(event: KeyboardEvent) {
+		if (event.defaultPrevented) return;
 		if (event.key === 'Escape') {
 			if (voiceSettings) { voiceSettings = false; voiceSettingsTrigger?.focus(); }
 			else if (historyOpen) historyOpen = false;
@@ -257,7 +265,9 @@
 		if (chat.status === 'submitted' || chat.status === 'streaming') { chat.stop(); voiceTurn = false; }
 		speechError = '';
 		activeVoice = 'browser';
+		localStarting = true;
 		try { await speech.start(); } catch (cause) { speechError = cause instanceof Error ? cause.message : 'Speech could not start.'; speechState = 'error'; }
+		finally { localStarting = false; }
 	}
 
 	function displayLanguage(tag: string): string {
@@ -288,7 +298,8 @@
 
 	function stopAllVoice() {
 		if (!ownedAnswerFinal && ownedAnswerId) interruptedAnswerId = ownedAnswerId;
-		speech?.stop(); void owned?.stop(); activeVoice = ''; voiceTurn = false; ownedAnswerFinal = true;
+		localStarting = false;
+		speech?.stop(); void owned?.stop(); activeVoice = ''; voiceTurn = false; ownedAnswerFinal = true; serverVoiceStatus = '';
 		speechState = 'idle';
 		if (chat.status === 'submitted' || chat.status === 'streaming') chat.stop();
 	}
@@ -324,7 +335,7 @@
 		if (!answer) return;
 		if (activeVoice !== 'browser' || voicePreference === 'owned') { voiceTurn = false; return; }
 		spokenAssistantId = last.id; voiceTurn = false;
-		if (!speech?.speak(answer)) { activeVoice = ''; speechError = `No on-device voice is ready for ${speech?.locale ?? 'this language'}. The text answer is still here.`; }
+		if (!speech?.speak(answer)) { activeVoice = ''; if (matchingLocalVoices.length > 0) speechError = 'Spoken reply unavailable. Your text answer is here.'; }
 	});
 
 	async function newConversation() {
@@ -375,17 +386,17 @@
 			{#if voiceSettings}
 				<div bind:this={voiceSettingsPanel} id="ayla-voice-settings" tabindex="-1" class="absolute inset-x-3 top-14 z-40 grid max-h-[calc(100svh-8rem)] content-start gap-4 overflow-y-auto overscroll-contain rounded-2xl border border-surface-200 bg-white p-5 text-sm shadow-[0_22px_70px_-18px_rgba(36,22,18,.5)] outline-none dark:border-surface-700 dark:bg-surface-900 sm:inset-x-auto sm:right-5 sm:w-[min(27rem,calc(100vw-2rem))]" role="dialog" aria-label="Voice settings">
 					<div class="flex items-start justify-between gap-3"><div><p class="text-xs font-semibold uppercase tracking-[0.16em] text-accent-700 dark:text-accent-300">Ayla preferences</p><h2 class="mt-1 text-xl font-semibold tracking-tight">Voice settings</h2></div><button onclick={() => { voiceSettings = false; voiceSettingsTrigger?.focus(); }} aria-label="Close voice settings" class="rounded-lg border border-surface-200 px-2 py-1 dark:border-surface-700">Close</button></div>
-					<div class="grid gap-2 border-t border-surface-200 pt-4 dark:border-surface-700"><label for="ayla-voice-route" class="font-semibold">Speech processing</label><p class="text-xs leading-relaxed text-surface-600 dark:text-warm-300">{voicePreference === 'auto' ? 'Ayla tries speech on this device first, then the Aylith server if a local speech pair is unavailable.' : voicePreference === 'browser' ? 'Recognition stays on this device. A local voice is optional; text replies still work without one.' : 'Aylith processes speech on its server.'}</p><select id="ayla-voice-route" bind:value={voicePreference} onchange={() => { stopAllVoice(); serverVoiceStatus = ''; speechError = ''; }} class="w-full rounded-lg border border-surface-300 bg-white px-3 py-2 dark:border-surface-600 dark:bg-surface-900"><option value="auto">Automatic · on-device first</option><option value="browser">On-device only</option><option value="owned">Aylith server</option></select></div>
+					<div class="grid gap-2 border-t border-surface-200 pt-4 dark:border-surface-700"><p class="font-semibold">Speech processing</p><p class="text-xs leading-relaxed text-surface-600 dark:text-warm-300">{voicePreference === 'auto' ? 'Ayla tries speech on this device first, then the Aylith server if a local speech pair is unavailable.' : voicePreference === 'browser' ? 'Recognition stays on this device. A local voice is optional; text replies still work without one.' : 'Aylith processes speech on its server.'}</p><RichCombobox id="ayla-voice-route" label="Speech processing" hideLabel value={voicePreference} options={VOICE_ROUTE_CHOICES} onSelect={(value) => { if (value === 'auto' || value === 'browser' || value === 'owned') { stopAllVoice(); serverVoiceStatus = ''; speechError = ''; voicePreference = value; } }} /></div>
 					{#if voicePreference !== 'owned'}<div class="grid grid-cols-2 gap-2 text-xs"><div class="rounded-xl bg-surface-50 p-3 dark:bg-surface-800"><p class="font-semibold text-surface-900 dark:text-warm-50">Listening</p><p class="mt-1 text-surface-600 dark:text-warm-300">{speechSnapshot.recognition === 'available' ? 'On-device pack ready' : speechSnapshot.recognition === 'downloadable' ? 'Pack available to install' : speechSnapshot.recognition === 'downloading' ? 'Pack downloading' : 'Not ready here'}</p></div><div class="rounded-xl bg-surface-50 p-3 dark:bg-surface-800"><p class="font-semibold text-surface-900 dark:text-warm-50">Spoken replies</p><p class="mt-1 text-surface-600 dark:text-warm-300">{matchingLocalVoices.length > 0 ? 'On-device voice ready' : 'No local voice · text replies work'}</p></div></div>{/if}
 					<div class="grid gap-2 border-t border-surface-200 pt-4 text-xs leading-relaxed text-surface-600 dark:border-surface-700 dark:text-warm-300"><h3 class="text-sm font-semibold text-surface-900 dark:text-warm-50">How your voice works</h3><p><strong class="text-surface-900 dark:text-warm-50">Your conversation</strong> uses the online service. {durable ? 'Text history is saved on this device.' : 'Text history lasts for this visit only.'} No audio is saved in this browser.</p>{#if voicePreference === 'browser'}<p>Recognition and spoken replies stay on this device. If a local language pack or voice is unavailable, text answers remain available.</p>{:else if voicePreference === 'owned'}<p>Microphone audio goes to Aylith for recognition; Aylith generates the spoken reply.</p>{:else}<p>Local speech stays here. If local speech is unavailable, microphone audio goes to Aylith. A matching Cartesia cloud voice may receive answer text for synthesis; otherwise Aylith uses its own voice or returns text.</p>{/if}</div>
 					<details class="group border-t border-surface-200 pt-3 dark:border-surface-700"><summary class="cursor-pointer py-1 font-semibold">Advanced voice options</summary><div class="grid gap-4 pt-3 text-xs leading-relaxed text-surface-600 dark:text-warm-300">
 						{#if voicePreference !== 'owned'}
-						<div class="grid gap-2"><label for="ayla-speech-locale" class="font-medium text-surface-900 dark:text-warm-50">On-device language</label><div class="flex flex-wrap gap-2"><input id="ayla-speech-locale" aria-label="Speech language" bind:value={localeInput} class="w-28 rounded-lg border border-surface-300 bg-transparent px-2 py-2 dark:border-surface-600" /><button onclick={applyLocale} class="rounded-lg border border-surface-300 px-3 py-2 dark:border-surface-600">Use language</button></div><p>Recognition for {speechSnapshot.locale || 'this language'}: {speechSnapshot.recognition === 'available' ? 'ready' : speechSnapshot.recognition === 'downloadable' ? 'pack available to install' : speechSnapshot.recognition === 'downloading' ? 'pack downloading' : 'unavailable in this browser'}.</p>{#if speechSnapshot.recognition === 'downloadable'}<button onclick={installLocalPack} disabled={installing} class="w-fit rounded-lg border border-surface-300 px-3 py-2 dark:border-surface-600">{installing ? 'Installing…' : 'Install on-device language pack'}</button>{/if}</div>
-						<div class="grid gap-2"><label for="ayla-local-voice" class="font-medium text-surface-900 dark:text-warm-50">On-device playback</label>{#if matchingLocalVoices.length > 0}<select id="ayla-local-voice" bind:value={selectedVoice} onchange={() => { if (speech) speech.voiceName = selectedVoice; }} class="w-full min-w-0 rounded-lg border border-surface-300 bg-white px-2 py-2 dark:border-surface-600 dark:bg-surface-900"><option value="">Automatic for this language</option>{#each matchingLocalVoices as voice}<option value={voice.name}>{voice.name} ({voice.lang})</option>{/each}</select>{:else}<p>No matching on-device playback voice is currently available. Local recognition can still send a question and show the text answer.</p>{/if}</div>
+						<div class="grid gap-2"><RichCombobox id="ayla-speech-locale" label="On-device language" value={speechSnapshot.locale || localeInput} options={localLanguageChoices} onSelect={(value) => { localeInput = value; void applyLocale(); }} /><p>Recognition for {speechSnapshot.locale || 'this language'}: {speechSnapshot.recognition === 'available' ? 'ready' : speechSnapshot.recognition === 'downloadable' ? 'pack available to install' : speechSnapshot.recognition === 'downloading' ? 'pack downloading' : 'unavailable in this browser'}.</p>{#if speechSnapshot.recognition === 'downloadable'}<button onclick={installLocalPack} disabled={installing} class="w-fit rounded-lg border border-surface-300 px-3 py-2 dark:border-surface-600">{installing ? 'Installing…' : 'Install on-device language pack'}</button>{/if}</div>
+						<div class="grid gap-2">{#if matchingLocalVoices.length > 0}<RichCombobox id="ayla-local-voice" label="On-device playback" value={selectedVoice} options={localVoiceChoices} onSelect={(value) => { selectedVoice = value; if (speech) speech.voiceName = value; }} />{:else}<p><strong class="text-surface-900 dark:text-warm-50">On-device playback</strong><br />No matching local voice is available. Local recognition can still send a question and show the text answer.</p>{/if}</div>
 						{/if}
 						{#if voicePreference !== 'browser'}
 						<div class="grid gap-2"><p><strong class="text-surface-900 dark:text-warm-50">Aylith server</strong> · recognition {ownedSnapshot.ready ? 'ready' : 'not ready'} · {ownedSnapshot.ttsReady ? `${ownedSnapshot.readyVoices.length} voices ready` : 'no voice ready'}{ownedSnapshot.cartesiaTtsReady ? ' · matching cloud voices available' : ''}</p><button onclick={refreshOwned} class="w-fit underline">Refresh availability</button></div>
-						{#if ownedSnapshot.ready}<div class="grid gap-2"><label for="ayla-server-language" class="font-medium text-surface-900 dark:text-warm-50">Server recognition</label><select id="ayla-server-language" bind:value={serverLanguage} class="w-full min-w-0 rounded-lg border border-surface-300 bg-white px-2 py-2 dark:border-surface-600 dark:bg-surface-900"><option value="auto">Detect language</option>{#each ownedSnapshot.readyLanguages as language}<option value={language}>{displayLanguage(language)} ({language})</option>{/each}</select><label for="ayla-server-voice" class="mt-2 font-medium text-surface-900 dark:text-warm-50">Server voice</label><select id="ayla-server-voice" bind:value={ownedVoiceId} class="w-full min-w-0 rounded-lg border border-surface-300 bg-white px-2 py-2 dark:border-surface-600 dark:bg-surface-900"><option value="">Automatic language match</option>{#each ownedSnapshot.readyVoices as voice}<option value={voice.id}>{displayVoice(voice.id, voice.locale)}</option>{/each}</select></div>{/if}
+						{#if ownedSnapshot.ready}<div class="grid gap-4"><RichCombobox id="ayla-server-language" label="Server recognition" value={serverLanguage} options={serverLanguageChoices} onSelect={(value) => { stopAllVoice(); serverLanguage = value; }} /><RichCombobox id="ayla-server-voice" label="Server voice" value={ownedVoiceId} options={serverVoiceChoices} onSelect={(value) => { stopAllVoice(); ownedVoiceId = value; }} /></div>{/if}
 						{/if}
 					</div></details>
 					{#if serverVoiceStatus && voicePreference !== 'browser'}<p>{serverVoiceStatus}</p>{/if}
@@ -395,7 +406,7 @@
 			<div class="relative min-h-0 flex-1">
 				{#if isAyla && !historyOpen && (chat.messages.length === 0 || shortAnswer)}
 					<div class="pointer-events-none absolute inset-0 z-10 flex flex-col items-center justify-center px-4 pb-14 text-center">
-						<svg class="ayla-aperture" data-active={pageVisible && voicePhase !== 'conversation'} viewBox="0 0 360 150" aria-hidden="true">
+						<svg class="ayla-aperture {shortAnswer.length > 100 ? 'ayla-aperture--compact' : ''}" data-active={pageVisible && voicePhase !== 'conversation'} viewBox="0 0 360 150" aria-hidden="true">
 							<defs><linearGradient id="ayla-light" x1="0" x2="1" y1=".7" y2=".2"><stop stop-color="#7a3f30" stop-opacity="0"/><stop offset=".26" stop-color="#ca8060"/><stop offset=".48" stop-color="#fff0d0"/><stop offset=".75" stop-color="#dc9b75"/><stop offset="1" stop-color="#80402f" stop-opacity="0"/></linearGradient><filter id="ayla-spill" x="-35%" y="-100%" width="170%" height="300%"><feGaussianBlur stdDeviation="12"/></filter></defs>
 							<path d="M9 104 C82 43 129 29 193 54 C251 79 286 24 351 18 C301 68 282 117 216 119 C151 121 80 86 9 104Z" fill="url(#ayla-light)" opacity=".7" filter="url(#ayla-spill)"/>
 							<path d="M9 104 C82 43 129 29 193 54 C251 79 286 24 351 18 C301 68 282 117 216 119 C151 121 80 86 9 104Z" fill="url(#ayla-light)"/>
@@ -403,7 +414,7 @@
 							<path d="M49 91 C109 59 152 51 199 68 C248 86 287 51 326 38" fill="none" stroke="#fff2dc" stroke-width="2" opacity=".75"/>
 						</svg>
 						<p class="mt-1 text-xs font-semibold uppercase tracking-[0.25em] text-accent-700 dark:text-accent-300">Ayla</p>
-						{#if shortAnswer}<p class="mt-4 max-w-[20ch] text-balance text-3xl font-medium leading-tight tracking-tight sm:max-w-[26ch] sm:text-5xl" aria-live="polite">{shortAnswer}</p>{:else}<h1 class="mt-3 text-3xl font-medium tracking-tight sm:text-5xl">I’m here.</h1>{/if}
+						{#if shortAnswer}<p class="mt-4 text-balance font-medium tracking-tight {shortAnswer.length > 100 ? 'max-w-[30ch] text-[1.375rem] leading-snug sm:max-w-[32ch] sm:text-3xl' : 'max-w-[20ch] text-3xl leading-tight sm:max-w-[26ch] sm:text-5xl'}" aria-live="polite">{shortAnswer}</p>{:else}<h1 class="mt-3 text-3xl font-medium tracking-tight sm:text-5xl">I’m here.</h1>{/if}
 					</div>
 				{/if}
 				{#if ready}
