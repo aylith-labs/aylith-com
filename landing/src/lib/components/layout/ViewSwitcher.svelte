@@ -9,4 +9,4 @@
 		void goto(target);
 	}
 </script>
-<div class="w-28 sm:w-32"><RichCombobox id="aylith-view" label="Aylith view" value={current} options={VIEW_CHOICES} onSelect={switchView} popupMode="floating" compact hideLabel /></div>
+<div class="w-28 sm:w-32"><RichCombobox id="aylith-view" label="Aylith view" value={current} options={VIEW_CHOICES} onSelect={switchView} popupMode="floating" compact hideLabel searchable={false} /></div>

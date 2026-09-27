@@ -19,6 +19,7 @@
 		hideLabel?: boolean;
 		popupMode?: 'inline' | 'floating';
 		compact?: boolean;
+		searchable?: boolean;
 	};
 
 	let {
@@ -32,15 +33,17 @@
 		disabled = false,
 		hideLabel = false,
 		popupMode = 'inline',
-		compact = false
+		compact = false,
+		searchable = true
 	}: Props = $props();
 	let root = $state<HTMLDivElement>();
 	let input = $state<HTMLInputElement>();
+	let trigger = $state<HTMLButtonElement>();
 	let open = $state(false);
 	let query = $state('');
 	let activeIndex = $state(0);
 	let selected = $derived(options.find((option) => option.value === value));
-	let filtered = $derived(filterChoices(options, query));
+	let filtered = $derived(searchable ? filterChoices(options, query) : [...options]);
 	let active = $derived(filtered.length ? Math.min(Math.max(activeIndex, 0), filtered.length - 1) : -1);
 	let visibleValue = $derived(open ? query : (selected?.label ?? ''));
 
@@ -63,7 +66,7 @@
 	function choose(choice: RichChoice) {
 		onSelect(choice.value);
 		closeList();
-		input?.focus();
+		if (searchable) input?.focus(); else trigger?.focus();
 	}
 
 	async function scrollActive() {
@@ -77,7 +80,7 @@
 			if (open) {
 				event.preventDefault();
 				closeList();
-				input?.focus();
+				if (searchable) input?.focus(); else trigger?.focus();
 			}
 			return;
 		}
@@ -92,7 +95,7 @@
 			void scrollActive();
 			return;
 		}
-		if (event.key === 'Enter' && open) {
+		if ((event.key === 'Enter' || (!searchable && event.key === ' ')) && open) {
 			event.preventDefault();
 			const choice = filtered[active];
 			if (choice) choose(choice);
@@ -115,7 +118,7 @@
 <div bind:this={root} class="relative z-50 min-w-0">
 	<label for={id} class={hideLabel ? 'sr-only' : 'mb-1.5 block text-sm font-medium text-surface-900 dark:text-warm-50'}>{label}</label>
 	<div class="relative">
-		<input
+		{#if searchable}<input
 			bind:this={input}
 			{id}
 			type="text"
@@ -136,7 +139,22 @@
 			oninput={(event) => { query = event.currentTarget.value; activeIndex = 0; open = true; }}
 			onkeydown={onKeydown}
 			class={`w-full min-w-0 rounded-xl border border-surface-300 bg-white px-3 pr-10 text-sm text-surface-900 shadow-sm outline-none transition-colors placeholder:text-surface-500 focus:border-accent-500 focus:ring-2 focus:ring-accent-500/25 disabled:cursor-not-allowed disabled:opacity-50 dark:border-surface-600 dark:bg-surface-900 dark:text-warm-50 dark:placeholder:text-warm-400 ${compact ? 'py-2' : 'py-2.5'}`}
-		/>
+		/>{:else}<button
+			bind:this={trigger}
+			{id}
+			type="button"
+			role="combobox"
+			aria-label={label}
+			aria-autocomplete="none"
+			aria-haspopup="listbox"
+			aria-expanded={open}
+			aria-controls={`${id}-listbox`}
+			aria-activedescendant={open && active >= 0 ? `${id}-choice-${active}` : undefined}
+			{disabled}
+			onclick={() => { if (open) closeList(); else openList(); }}
+			onkeydown={onKeydown}
+			class={`w-full min-w-0 rounded-xl border border-surface-300 bg-white px-3 pr-10 text-left text-sm text-surface-900 shadow-sm outline-none transition-colors focus:border-accent-500 focus:ring-2 focus:ring-accent-500/25 disabled:cursor-not-allowed disabled:opacity-50 dark:border-surface-600 dark:bg-surface-900 dark:text-warm-50 ${compact ? 'py-2' : 'py-2.5'}`}
+		>{selected?.label ?? placeholder}</button>{/if}
 		<span class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-surface-500 dark:text-warm-400" aria-hidden="true">⌄</span>
 	</div>
 	{#if open}
