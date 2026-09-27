@@ -28,6 +28,26 @@ function recognitionConstructor(): RecognitionConstructor | undefined {
 	return host.SpeechRecognition ?? host.webkitSpeechRecognition;
 }
 
+function canonicalVoiceTag(value: string): string | null {
+	try { return Intl.getCanonicalLocales(value.replaceAll('_', '-'))[0]?.toLowerCase() ?? null; }
+	catch { return null; }
+}
+
+/** Locale matching for a list already proven local by BrowserSpeech.probe(). */
+export function matchingVoiceLocale<T extends { lang: string }>(voices: readonly T[], locale: string): T[] {
+	const wanted = canonicalVoiceTag(locale);
+	if (!wanted) return [];
+	const language = wanted.split('-')[0];
+	const exact: T[] = [];
+	const regional: T[] = [];
+	for (const voice of voices) {
+		const tag = canonicalVoiceTag(voice.lang);
+		if (tag === wanted) exact.push(voice);
+		else if (tag?.split('-')[0] === language) regional.push(voice);
+	}
+	return [...exact, ...regional];
+}
+
 export class BrowserSpeech {
 	private recognition?: LocalRecognition;
 	private recognitionEpoch = 0;
@@ -43,6 +63,10 @@ export class BrowserSpeech {
 	localVoices(): SpeechSynthesisVoice[] {
 		if (typeof speechSynthesis === 'undefined') return [];
 		return speechSynthesis.getVoices().filter((voice) => voice.localService === true);
+	}
+
+	matchingLocalVoices(): SpeechSynthesisVoice[] {
+		return matchingVoiceLocale(this.localVoices(), this.locale);
 	}
 
 	async probe(): Promise<SpeechSnapshot> {
@@ -107,7 +131,7 @@ export class BrowserSpeech {
 
 	speak(text: string): boolean {
 		if (typeof speechSynthesis === 'undefined' || typeof SpeechSynthesisUtterance === 'undefined') return false;
-		const voices = this.localVoices().filter((voice) => voice.lang.toLowerCase() === this.locale.toLowerCase());
+		const voices = this.matchingLocalVoices();
 		const voice = voices.find((item) => item.name === this.voiceName) ?? voices[0];
 		if (!voice || !text.trim()) return false;
 		this.stopSynthesis();
