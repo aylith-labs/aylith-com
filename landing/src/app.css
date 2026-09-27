@@ -129,6 +129,38 @@ h1, h2, h3, h4, h5, h6 {
 	outline-offset: 4px;
 }
 
+/* Catalog search and selector share one control surface. Keyboard focus is a
+   stronger border, without a second ring or the global outline. */
+.catalog-control {
+	border: 1px solid var(--color-surface-300);
+	border-radius: 0.75rem;
+	background: var(--color-surface-50);
+	color: var(--color-surface-900);
+}
+.catalog-control:hover {
+	border-color: var(--color-surface-400);
+}
+.dark .catalog-control {
+	border-color: var(--color-surface-700);
+	background: var(--color-surface-900);
+	color: var(--color-warm-50);
+}
+.dark .catalog-control:hover {
+	border-color: var(--color-surface-500);
+}
+.rich-combobox-trigger:focus-visible,
+.catalog-control:focus-visible,
+.dark .rich-combobox-trigger:focus-visible,
+.dark .catalog-control:focus-visible {
+	border: 1px solid var(--color-accent-600);
+	outline: none;
+	box-shadow: none;
+}
+.dark .rich-combobox-trigger:focus-visible,
+.dark .catalog-control:focus-visible {
+	border: 1px solid var(--color-accent-400);
+}
+
 .preference-option {
 	@apply relative flex min-h-11 min-w-11 items-center justify-center rounded-md px-4 text-xs font-medium text-surface-600 hover:bg-surface-100 dark:text-warm-300 dark:hover:bg-surface-700;
 }

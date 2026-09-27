@@ -30,7 +30,7 @@
 	const markReadings = [
 		{
 			label: 'A count',
-			body: 'The strokes are a tally, the original mark’s idea: marks made one at a time as work ships. The story is a record kept honest (138 launches analyzed, every tool public from day one), and a tally is how you keep a record honest.'
+			body: 'The strokes form a tally: marks made one at a time. The shape gives the studio a recognizable signature that can grow with its work.'
 		},
 		{
 			label: 'A climb',
@@ -53,7 +53,7 @@
 		},
 		{
 			label: 'A field',
-			body: 'One slab is a trap. Aylith ships many sharp tools instead, each its own standing stone, with the umbrella as the field they stand in.'
+			body: 'A field of focused tools, each its own standing stone, with the umbrella as the place they stand together.'
 		},
 		{
 			label: 'Six letters',
@@ -452,7 +452,7 @@
 			<div class="rounded-2xl border border-surface-200 bg-surface-50 p-6 dark:border-surface-800 dark:bg-surface-900/40">
 				<p class="text-xs font-medium uppercase tracking-wider text-surface-400">Labels & nav</p>
 				<div class="mt-4 flex flex-wrap items-center gap-3">
-					<span class="rounded-full bg-accent-500/15 px-2.5 py-0.5 text-xs font-medium text-accent-600 dark:text-accent-400">Shipped</span>
+					<span class="rounded-full bg-accent-500/15 px-2.5 py-0.5 text-xs font-medium text-accent-600 dark:text-accent-400">New</span>
 					<span class="text-xs font-medium uppercase tracking-wider text-surface-400">Productivity</span>
 					<span class="rounded-lg bg-accent-100 px-3 py-1.5 text-sm font-medium text-accent-700 dark:bg-accent-900/40 dark:text-accent-300">Active nav</span>
 				</div>

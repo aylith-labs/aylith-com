@@ -19,7 +19,7 @@
 	<div class="mt-4 flex flex-col gap-3 sm:flex-row sm:items-end">
 		<div class="min-w-0 flex-1">
 			<label for="explore-search" class="sr-only">Find a project</label>
-			<input id="explore-search" type="search" bind:value={query} placeholder="Find a tool by name or purpose…" class="h-12 w-full rounded-xl border border-surface-300 bg-surface-50 px-4 py-0 text-surface-900 focus:border-accent-500 focus:outline-none dark:border-surface-700 dark:bg-surface-900 dark:text-warm-50" />
+			<input id="explore-search" type="search" bind:value={query} placeholder="Find a tool by name or purpose…" class="catalog-control h-12 w-full px-4 py-0" />
 		</div>
 		<div class="w-full shrink-0 sm:w-60">
 			<RichCombobox id="explore-category" label="Category" value={activeCategory} options={choices} onSelect={(value) => (activeCategory = value)} searchable={false} showSelectedMeta hideLabel tall popupMode="floating" />

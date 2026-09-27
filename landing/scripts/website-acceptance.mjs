@@ -24,7 +24,7 @@ try {
 		const page = await context.newPage();
 		page.on('pageerror', (error) => receipt.pageErrors.push(error.message));
 		await page.goto(origin);
-		await page.getByRole('heading', { name: /Useful tools.*An evolving suite/ }).waitFor();
+		await page.getByRole('heading', { name: /Useful tools.*Connected work/ }).waitFor();
 		check(`${profile.name}: no shipped/launch-count promises`, !/what shipped|138\+|ship in days/i.test(await page.locator('main').innerText()));
 		const cards = page.getByTestId('public-showcase').locator('article');
 		check(`${profile.name}: three publicly documented setup paths`, await cards.count() === 3);
@@ -75,7 +75,7 @@ try {
 		await page.screenshot({ path: path.join(output, `${profile.name}-catalog.png`), fullPage: true });
 		check(`${profile.name}: no horizontal page overflow`, await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1));
 		await page.goto(origin);
-		await page.getByRole('heading', { name: 'Start with public source setup' }).scrollIntoViewIfNeeded();
+		await page.getByRole('heading', { name: 'Get started' }).scrollIntoViewIfNeeded();
 		await page.screenshot({ path: path.join(output, `${profile.name}-home.png`), fullPage: true });
 		if (profile.name === 'mobile') {
 			await page.getByRole('button', { name: 'Toggle menu' }).click();

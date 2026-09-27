@@ -17,15 +17,15 @@
 					<Wordmark {variant} size="footer" />
 				</div>
 				<p class="mt-3 max-w-xs text-sm text-surface-500 dark:text-warm-400">
-					An evolving software lab. Early betas, ongoing development and planned products.
+					Tools for useful, connected work.
 				</p>
 			</div>
 
 			<div>
 				<h3 class="text-xs font-semibold uppercase tracking-wider text-surface-400 dark:text-warm-400">Explore</h3>
 				<ul class="mt-3 columns-2 gap-x-8 space-y-2">
-					<li><a href="/#try" class="text-sm text-surface-600 underline dark:text-warm-300">Available betas</a></li>
-					<li><a href="/projects" class="text-sm text-surface-600 underline dark:text-warm-300">Full catalog · {projects.length} entries</a></li>
+					<li><a href="/#try" class="text-sm text-surface-600 underline dark:text-warm-300">Explore tools</a></li>
+					<li><a href="/projects" class="text-sm text-surface-600 underline dark:text-warm-300">Browse {projects.length} projects</a></li>
 				</ul>
 			</div>
 

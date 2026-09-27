@@ -351,13 +351,13 @@
 <svelte:window onkeydown={onShellKeydown} onpointerdown={onOutsideSettings} />
 
 <div class="flex h-svh min-h-0 flex-col overflow-hidden bg-surface-50 text-surface-900 dark:bg-surface-950 dark:text-warm-50">
-	<header inert={conversationOpen && !isAyla} class="flex min-h-16 shrink-0 items-center justify-between gap-3 border-b border-surface-200/70 px-4 dark:border-surface-800 sm:px-7">
+	<header inert={conversationOpen && !isAyla} class="relative {conversationOpen && !isAyla ? 'z-0' : 'z-40'} flex min-h-16 shrink-0 items-center justify-between gap-3 border-b border-surface-200/70 px-4 dark:border-surface-800 sm:px-7">
 		<a href="/ayla" class="inline-flex items-center gap-2 font-semibold tracking-[0.13em]" aria-label="Ayla home"><Mark class="h-7 w-auto" /> AYLITH</a>
 		<div class="flex items-center gap-1"><ViewSwitcher /><SettingsMenu /></div>
 	</header>
-	<div class="relative flex min-h-0 flex-1 {isAyla ? 'justify-center' : ''}">
+	<div class="relative z-10 flex min-h-0 flex-1 {isAyla ? 'justify-center' : ''}">
 		{#if !isAyla}
-			<main bind:this={exploreMain} inert={conversationOpen} class="min-h-0 min-w-0 flex-1 bg-white dark:bg-surface-950 {isWebsite ? 'overflow-hidden pb-14' : 'overflow-y-auto'}" id="explore-content">
+			<main bind:this={exploreMain} inert={conversationOpen} class="relative z-0 min-h-0 min-w-0 flex-1 bg-white dark:bg-surface-950 {isWebsite ? 'overflow-hidden pb-14' : 'overflow-y-auto'}" id="explore-content">
 				{@render children()}
 			</main>
 			<div inert={conversationOpen} class="pointer-events-none absolute inset-x-0 bottom-0 z-20 flex justify-center px-4 pb-[max(1rem,env(safe-area-inset-bottom))] {isWebsite ? '' : 'bg-gradient-to-t from-white via-white/95 to-transparent pt-10 dark:from-surface-950 dark:via-surface-950/95'}">

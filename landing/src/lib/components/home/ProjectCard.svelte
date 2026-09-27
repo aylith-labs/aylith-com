@@ -1,6 +1,5 @@
 <script lang="ts">
 	import type { Project } from '$lib/types/project';
-	import { hasPublicOnboarding } from '$lib/catalog/availability';
 	import { tilt } from '$lib/actions/tilt';
 	import { tokenize } from '$lib/search/ranking';
 
@@ -64,11 +63,10 @@
 	></div>
 
 	<div class="relative flex flex-1 flex-col p-6">
-		<div class="mb-4 flex items-start justify-between">
+		<div class="mb-4 flex items-start">
 			<svg class="size-6" style="color: {project.gradientFrom}" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
 				<path stroke-linecap="round" stroke-linejoin="round" d={project.iconPath} />
 			</svg>
-			<span class="text-xs text-surface-600 dark:text-warm-300">{hasPublicOnboarding(project) ? 'Public source setup' : project.onboarding?.access === 'restricted' ? 'Restricted access' : 'Setup unverified'}</span>
 		</div>
 
 		<h3 class="text-base font-bold text-surface-900 dark:text-warm-50">
@@ -85,7 +83,7 @@
 			{/if}
 		</h3>
 
-		<p class="mt-1 text-sm font-medium" style="color: {project.gradientFrom}">
+		<p class="mt-1 text-sm font-medium text-surface-700 dark:text-warm-300">
 			{#if searchQuery.trim()}
 				{#each highlightText(project.tagline, searchQuery) as part}
 					{#if part.highlight}

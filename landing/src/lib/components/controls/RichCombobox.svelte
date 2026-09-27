@@ -142,7 +142,7 @@
 			onclick={openList}
 			oninput={(event) => { query = event.currentTarget.value; activeIndex = 0; open = true; }}
 			onkeydown={onKeydown}
-			class={`w-full min-w-0 rounded-xl border border-surface-300 bg-white px-3 pr-10 text-sm text-surface-900 shadow-sm outline-none transition-colors placeholder:text-surface-500 focus:border-accent-500 focus:ring-2 focus:ring-accent-500/25 disabled:cursor-not-allowed disabled:opacity-50 dark:border-surface-600 dark:bg-surface-900 dark:text-warm-50 dark:placeholder:text-warm-400 ${compact ? 'py-2' : 'py-2.5'}`}
+			class={`rich-combobox-trigger w-full min-w-0 rounded-xl border border-surface-300 bg-white px-3 pr-10 text-sm text-surface-900 shadow-sm transition-colors placeholder:text-surface-500 disabled:cursor-not-allowed disabled:opacity-50 dark:border-surface-600 dark:bg-surface-900 dark:text-warm-50 dark:placeholder:text-warm-400 ${compact ? 'py-2' : 'py-2.5'}`}
 		/>{:else}<button
 			bind:this={trigger}
 			{id}
@@ -157,7 +157,7 @@
 			{disabled}
 			onclick={() => { if (open) closeList(); else openList(); }}
 			onkeydown={onKeydown}
-			class={`w-full min-w-0 rounded-xl border border-surface-300 bg-white px-3 pr-10 text-left text-sm text-surface-900 shadow-sm outline-none transition-colors focus:border-accent-500 focus:ring-2 focus:ring-accent-500/25 disabled:cursor-not-allowed disabled:opacity-50 dark:border-surface-600 dark:bg-surface-900 dark:text-warm-50 ${compact ? 'py-2' : 'py-2.5'} ${tall ? 'h-12' : ''}`}
+			class={`rich-combobox-trigger w-full min-w-0 px-3 pr-10 text-left text-sm transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${tall ? 'catalog-control h-12' : 'rounded-xl border border-surface-300 bg-white text-surface-900 shadow-sm dark:border-surface-600 dark:bg-surface-900 dark:text-warm-50'} ${compact ? 'py-2' : 'py-2.5'}`}
 		><span>{selected?.label ?? placeholder}</span>{#if showSelectedMeta && selected?.meta}<span class="ml-2 rounded-full bg-surface-100 px-1.5 py-0.5 text-xs tabular-nums text-surface-600 dark:bg-surface-800 dark:text-warm-300">{selected.meta}</span>{/if}</button>{/if}
 		<span class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-surface-500 dark:text-warm-400" aria-hidden="true">⌄</span>
 	</div>

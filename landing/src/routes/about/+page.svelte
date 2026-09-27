@@ -4,7 +4,7 @@
 
 <Seo
 	title="About — Aylith"
-	description="Aylith is an evolving software lab. Explore its products and each one's setup and access limits."
+	description="Aylith makes focused tools for working with AI. Explore the catalog and find a useful place to start."
 />
 
 <section class="mx-auto max-w-3xl px-4 py-24 sm:px-6 sm:py-32 lg:px-8">
@@ -30,10 +30,9 @@
 			repeats.
 		</p>
 		<p>
-			We use those patterns to choose what to build and verify a useful workflow. Our catalog
-			includes products with different access and setup requirements, not a finished suite.
+			We use those patterns to choose what to build, then shape each tool around a useful workflow.
 		</p>
-		<p>Product research and internal use guide the work; neither establishes customer adoption. Each product page explains access and setup separately from its described capabilities.</p>
+		<p>Explore the catalog to find tools for your work and learn how to use them.</p>
 	</div>
 
 	<p

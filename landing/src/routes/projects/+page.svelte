@@ -76,7 +76,7 @@
 					aria-label="Search catalog"
 					onkeydown={handleKeyDown}
 					placeholder="Search tools by keyword or prompt (press Enter to ask assistant)…"
-					class="h-12 w-full rounded-2xl border border-surface-200/80 bg-white/80 py-0 pr-28 pl-11 text-[0.95rem] text-surface-900 placeholder:text-surface-400 focus:border-accent-500 focus:bg-white focus:ring-4 focus:ring-accent-500/10 focus:outline-none dark:border-surface-800 dark:bg-surface-900/60 dark:text-warm-50 dark:placeholder:text-warm-500 dark:focus:border-accent-400 dark:focus:bg-surface-900"
+					class="catalog-control h-12 w-full py-0 pr-28 pl-11 text-[0.95rem] placeholder:text-surface-400 dark:placeholder:text-warm-500"
 				/>
 				<div class="absolute inset-y-0 right-0 flex items-center gap-1.5 pr-3">
 					{#if searchQuery.trim()}
