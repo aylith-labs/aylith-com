@@ -6,7 +6,7 @@ import matter from 'gray-matter';
 const dir = path.resolve(process.argv[2] ?? '.generated/projects');
 const files = readdirSync(dir, { withFileTypes: true });
 const allowedFields = new Set([
-	'name', 'tagline', 'description', 'category', 'features', 'targetUser',
+	'name', 'tagline', 'description', 'category', 'features', 'targetUser', 'websiteUrl',
 	'featured', 'icon', 'gradientFrom', 'gradientTo', 'repoUrl', 'order', 'onboarding'
 ]);
 const prohibited = [
