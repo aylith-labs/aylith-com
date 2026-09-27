@@ -136,7 +136,7 @@
 			onAction: (action) => { const target = resolveAylaAction(action, projects.map((item) => item.slug)); if (active && activeVoice === 'owned' && target) { pendingVoiceActionTarget = target; window.dispatchEvent(new CustomEvent('ayla:navigate', { detail: action })); } },
 			onVoice: (voice) => { if (activeVoice === 'owned') serverVoiceStatus = voice.provider === 'cartesia' ? `Speaking with a Cartesia cloud voice · ${displayLanguage(voice.locale)}` : `Speaking with ${displayVoice(voice.id, voice.locale)}`; },
 			onAudioUnavailable: () => { if (activeVoice === 'owned') speechError = 'Spoken reply unavailable. Your text answer is here.'; },
-			onState: (state, detail) => { if (activeVoice !== 'owned') return; speechState = state; if (state === 'idle' || state === 'error') activeVoice = ''; if (detail) speechError = detail; }
+			onState: (state, detail) => { if (activeVoice !== 'owned') return; speechState = state; if (state === 'idle' || state === 'error') { activeVoice = ''; serverVoiceStatus = ''; } if (detail) speechError = detail; }
 		});
 		const ownedClient = owned;
 		const stopAvailability = watchOwnedAvailability(() => ownedClient.probe(), (snapshot) => { if (active) ownedSnapshot = snapshot; });
