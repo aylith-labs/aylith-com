@@ -1,6 +1,7 @@
 import type { UIMessage } from 'ai';
 
 type ContextTurn = { role: 'user' | 'assistant'; content: string };
+export type VoiceSessionProvider = 'owned' | 'cartesia';
 export type OwnedAvailability = { ready: boolean; ttsReady: boolean; readyLanguages: string[]; readyVoices: { id: string; locale: string }[]; maxRecordingSeconds: number };
 type OwnedCallbacks = {
 	context: () => UIMessage[];
@@ -52,7 +53,7 @@ export class OwnedSpeech {
 	voiceId = '';
 	language = 'auto';
 
-	constructor(private readonly apiUrl: string, private readonly callbacks: OwnedCallbacks) {}
+	constructor(private readonly apiUrl: string, private readonly callbacks: OwnedCallbacks, private readonly provider: VoiceSessionProvider = 'owned') {}
 
 	async probe(): Promise<OwnedAvailability> {
 		try {
@@ -61,7 +62,12 @@ export class OwnedSpeech {
 			const data = await response.json() as Record<string, unknown>;
 			const stt = data.stt as { serverAvailable?: unknown; readyLanguages?: unknown; maxRecordingSeconds?: unknown } | undefined;
 			const tts = data.tts as { serverAvailable?: unknown; readyVoices?: unknown } | undefined;
-			const provider = (data.providers as { owned?: { stt?: unknown; tts?: unknown } } | undefined)?.owned;
+			const providers = data.providers as { owned?: { stt?: unknown; tts?: unknown }; cartesia?: { serverAvailable?: unknown } } | undefined;
+			if (this.provider === 'cartesia') {
+				const ready = providers?.cartesia?.serverAvailable === true;
+				return { ready, ttsReady: ready, readyLanguages: [], readyVoices: [], maxRecordingSeconds: 30 };
+			}
+			const provider = providers?.owned;
 			const readyLanguages = Array.isArray(stt?.readyLanguages) ? stt.readyLanguages.filter((item): item is string => typeof item === 'string') : [];
 			const readyVoices = Array.isArray(tts?.readyVoices) ? tts.readyVoices.filter((item): item is { id: string; locale: string } => typeof item?.id === 'string' && typeof item?.locale === 'string') : [];
 			return { ready: provider?.stt === true && stt?.serverAvailable === true && readyLanguages.length > 0,
@@ -77,7 +83,7 @@ export class OwnedSpeech {
 	}
 
 	private async openSession(turn: Turn): Promise<void> {
-		const response = await fetch(`${this.apiUrl}/api/voice/sessions`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ provider: 'owned', ...(this.voiceId ? { voiceId: this.voiceId } : {}) }) });
+		const response = await fetch(`${this.apiUrl}/api/voice/sessions`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ provider: this.provider, ...(this.voiceId ? { voiceId: this.voiceId } : {}) }) });
 		if (!response.ok) throw new Error('The Aylith voice server could not start a session.');
 		const session = await response.json() as { url?: unknown };
 		if (!this.isCurrent(turn)) return;
@@ -104,8 +110,8 @@ export class OwnedSpeech {
 		const available = await this.probe();
 		if (epoch !== this.epoch) return;
 		if (!available.ready) throw new Error('The Aylith voice server is not ready for speech.');
-		if (this.voiceId && !available.readyVoices.some((voice) => voice.id === this.voiceId)) throw new Error('The selected server voice is not ready.');
-		if (this.language !== 'auto' && !available.readyLanguages.some((lang) => lang.toLowerCase() === this.language.toLowerCase().split('-')[0])) throw new Error('The selected server speech language is not ready.');
+		if (this.provider === 'owned' && this.voiceId && !available.readyVoices.some((voice) => voice.id === this.voiceId)) throw new Error('The selected server voice is not ready.');
+		if (this.provider === 'owned' && this.language !== 'auto' && !available.readyLanguages.some((lang) => lang.toLowerCase() === this.language.toLowerCase().split('-')[0])) throw new Error('The selected server speech language is not ready.');
 		if (!navigator.mediaDevices?.getUserMedia || typeof AudioWorkletNode === 'undefined') throw new Error('Microphone capture is unavailable in this browser.');
 		const turn: Turn = { epoch, id: crypto.randomUUID(), recording: false, finishing: false, sentBytes: 0, maxBytes: Math.floor(Math.max(1, available.maxRecordingSeconds) * 16000 * 2), playing: new Set(), nextAudioTime: 0, done: false };
 		this.current = turn;

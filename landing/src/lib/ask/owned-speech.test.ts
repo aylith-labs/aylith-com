@@ -9,6 +9,94 @@ function turn(role: 'user' | 'assistant', content: string): UIMessage {
 }
 
 describe('owned voice fallback', () => {
+	it('opens an explicitly selected Cartesia session only when the gateway reports it ready', async () => {
+		let microphoneRequested: (() => void) | undefined;
+		let grantMicrophone: ((stream: MediaStream) => void) | undefined;
+		const requested = new Promise<void>((resolve) => { microphoneRequested = resolve; });
+		const getUserMedia = vi.fn(() => { microphoneRequested?.(); return new Promise<MediaStream>((resolve) => { grantMicrophone = resolve; }); });
+		vi.stubGlobal('navigator', { mediaDevices: { getUserMedia } });
+		vi.stubGlobal('AudioWorkletNode', class {});
+		class Socket {
+			static OPEN = 1;
+			readyState = 1;
+			onopen: (() => void) | null = null;
+			onmessage: (() => void) | null = null;
+			onclose: (() => void) | null = null;
+			onerror: (() => void) | null = null;
+			send = vi.fn();
+			close = vi.fn();
+			constructor() { queueMicrotask(() => this.onopen?.()); }
+		}
+		vi.stubGlobal('WebSocket', Socket);
+		const fetcher = vi.fn(async (input: string, _init?: RequestInit) => input.endsWith('/capabilities')
+			? new Response(JSON.stringify({ providers: { cartesia: { serverAvailable: true }, owned: { stt: false, tts: false } }, stt: { serverAvailable: false, readyLanguages: [] }, tts: { serverAvailable: false, readyVoices: [] } }))
+			: new Response(JSON.stringify({ url: 'wss://ai.example.test/api/voice/ws' })));
+		vi.stubGlobal('fetch', fetcher);
+		const speech = new OwnedSpeech('https://ai.example.test', { onTranscript: () => {}, onAnswer: () => {}, onAction: () => {}, context: () => [] }, 'cartesia');
+		expect((await speech.probe()).ready).toBe(true);
+		const starting = speech.start();
+		await requested;
+		expect(JSON.parse(String(fetcher.mock.calls.find((call) => call[0].endsWith('/sessions'))?.[1]?.body))).toEqual({ provider: 'cartesia' });
+		await speech.stop();
+		grantMicrophone?.({ getTracks: () => [{ stop: vi.fn() }] } as unknown as MediaStream);
+		await starting;
+	});
+
+	it('ignores delayed action, text, and audio after interrupting an active turn and starting another', async () => {
+		vi.stubGlobal('navigator', { mediaDevices: { getUserMedia: async () => ({ getTracks: () => [{ stop: vi.fn() }] }) } });
+		const audioStarts = vi.fn();
+		class Context {
+			state = 'running';
+			destination = {};
+			audioWorklet = { addModule: async () => {} };
+			resume = async () => {};
+			close = async () => { this.state = 'closed'; };
+			createMediaStreamSource = () => ({ connect: () => {} });
+			createGain = () => ({ gain: { value: 0 }, connect: () => ({}) });
+			createBuffer = () => ({ getChannelData: () => new Float32Array(2), duration: 0.1 });
+			createBufferSource = () => ({ connect: () => {}, start: audioStarts, stop: vi.fn(), onended: null });
+		}
+		class Capture {
+			port = { onmessage: null, postMessage: vi.fn() };
+			disconnect = vi.fn();
+			connect = () => ({ connect: () => {} });
+		}
+		vi.stubGlobal('AudioContext', Context);
+		vi.stubGlobal('AudioWorkletNode', Capture);
+		class Socket {
+			static OPEN = 1;
+			static instances: Socket[] = [];
+			readyState = 1;
+			onopen: (() => void) | null = null;
+			onmessage: ((event: { data: string }) => void) | null = null;
+			onclose: (() => void) | null = null;
+			onerror: (() => void) | null = null;
+			send = vi.fn();
+			close = vi.fn();
+			constructor() { Socket.instances.push(this); queueMicrotask(() => this.onopen?.()); }
+		}
+		vi.stubGlobal('WebSocket', Socket);
+		vi.stubGlobal('fetch', vi.fn(async (input: string) => input.endsWith('/capabilities')
+			? new Response(JSON.stringify({ stt: { serverAvailable: true, readyLanguages: ['en'], maxRecordingSeconds: 30 }, tts: { serverAvailable: true, readyVoices: [{ id: 'voice', locale: 'en_US' }] }, providers: { owned: { stt: true, tts: true } } }))
+			: new Response(JSON.stringify({ url: 'wss://ai.example.test/api/voice/ws' }))));
+		const onAction = vi.fn(), onAnswer = vi.fn();
+		const speech = new OwnedSpeech('https://ai.example.test', { onTranscript: () => {}, onAnswer, onAction, context: () => [] });
+		await speech.start();
+		const firstTurnId = JSON.parse(String(Socket.instances[0].send.mock.calls.find((call) => JSON.parse(String(call[0])).type === 'mic.start')?.[0])).turnId;
+		expect(typeof firstTurnId).toBe('string');
+		await speech.stop();
+		await speech.start();
+		const secondTurnId = JSON.parse(String(Socket.instances[1].send.mock.calls.find((call) => JSON.parse(String(call[0])).type === 'mic.start')?.[0])).turnId;
+		expect(secondTurnId).not.toBe(firstTurnId);
+		Socket.instances[0].onmessage?.({ data: JSON.stringify({ type: 'assistant.action', turnId: firstTurnId, action: { type: 'open_project', slug: 'torbie', view: 'website' } }) });
+		Socket.instances[0].onmessage?.({ data: JSON.stringify({ type: 'assistant.audio', turnId: firstTurnId, data: 'AAAA', format: 'pcm_s16le', sampleRate: 24000 }) });
+		Socket.instances[0].onmessage?.({ data: JSON.stringify({ type: 'assistant.text', turnId: firstTurnId, text: 'late', final: true }) });
+		expect(onAction).not.toHaveBeenCalled();
+		expect(onAnswer).not.toHaveBeenCalled();
+		expect(audioStarts).not.toHaveBeenCalled();
+		expect(Socket.instances[1].send.mock.calls.map((call) => JSON.parse(String(call[0])).type)).toEqual(['mic.start']);
+		await speech.stop();
+	});
 	it('sends a bounded, visible text history to the owned voice turn', () => {
 		const messages = [turn('user', 'First'), turn('assistant', 'Answer'), ...Array.from({ length: 12 }, (_, index) => turn('user', `Question ${index}`))];
 		expect(visibleVoiceContext(messages)).toEqual(Array.from({ length: 8 }, (_, index) => ({ role: 'user', content: `Question ${index + 4}` })));
