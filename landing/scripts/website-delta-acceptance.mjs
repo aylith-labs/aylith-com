@@ -85,7 +85,7 @@ try {
 		check(`${profile.name}: direct authoritative empty-state reference`, await emptyLink.getAttribute('href') === publicUrl);
 		await emptyLink.scrollIntoViewIfNeeded();
 		await page.screenshot({ path: path.join(output, `${profile.name}-empty.png`), fullPage: true });
-		await page.getByRole('link', { name: 'Check Inspekt setup & availability →', exact: true }).focus();
+		await page.getByRole('link', { name: 'Get started with Inspekt →', exact: true }).focus();
 		await page.keyboard.press('Enter');
 		await page.waitForURL(`${origin}/projects/inspekt#setup`);
 		await page.getByRole('heading', { name: 'Getting started', exact: true }).waitFor();

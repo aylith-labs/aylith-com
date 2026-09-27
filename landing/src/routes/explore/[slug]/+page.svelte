@@ -3,11 +3,11 @@
 	import Seo from '$lib/components/Seo.svelte';
 	import ThemedShot from '$lib/components/changelog/ThemedShot.svelte';
 	import { getHero } from '$lib/changelog/entries';
-	import { hasPublicOnboarding } from '$lib/catalog/availability';
+	import { hasPublicOnboarding, hasSetupDetails } from '$lib/catalog/availability';
 	let { data } = $props();
 	let project: Project = $derived(data.project);
 	let hero = $derived(getHero(project.slug));
-	let hasSetup = $derived(hasPublicOnboarding(project) || !!project.onboarding?.prerequisites?.length || !!project.onboarding?.limitations?.length);
+	let hasSetup = $derived(hasSetupDetails(project));
 	let hasAside = $derived(hasSetup || !!project.features?.length);
 </script>
 
@@ -27,6 +27,7 @@
 			{#if hasPublicOnboarding(project)}
 				<a href={project.onboarding?.url} class="mt-4 inline-flex text-sm font-semibold text-accent-700 underline underline-offset-4 dark:text-accent-300">Read the quick-start →</a>
 			{/if}
+			{#if project.onboarding?.releasesUrl}<p class="mt-3"><a href={project.onboarding.releasesUrl} rel="noreferrer" class="inline-flex min-h-11 items-center text-sm font-semibold text-accent-700 underline underline-offset-4 dark:text-accent-300">Package versions &amp; publication dates →</a></p>{/if}
 			{#if project.onboarding?.prerequisites?.length}<h3 class="mt-6 text-sm font-semibold">Requirements</h3><ul class="mt-2 list-disc space-y-1 pl-5 text-sm text-surface-600 dark:text-warm-300">{#each project.onboarding.prerequisites as item}<li>{item}</li>{/each}</ul>{/if}
 			{#if project.onboarding?.limitations?.length}<h3 class="mt-6 text-sm font-semibold">Things to know</h3><ul class="mt-2 list-disc space-y-1 pl-5 text-sm text-surface-600 dark:text-warm-300">{#each project.onboarding.limitations as item}<li>{item}</li>{/each}</ul>{/if}
 			{#if project.features?.length}{#if hasSetup}<h3 class="mt-6 text-sm font-semibold">Capabilities</h3>{/if}<ul class="mt-2 list-disc space-y-1 pl-5 text-sm text-surface-600 dark:text-warm-300">{#each project.features as item}<li>{item}</li>{/each}</ul>{/if}

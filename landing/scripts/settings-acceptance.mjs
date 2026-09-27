@@ -175,7 +175,7 @@ try {
     check('catalog to setup route', await page.getByRole('link', { name: 'Read Inspekt quick-start →', exact: true }).getAttribute('href') === 'https://github.com/aylith-labs/inspekt#quick-start');
     await page.goto(`${origin}/projects/inspekt/changelog`);
     check('empty notes do not imply unreleased', (await page.locator('main').innerText()).includes('not a complete package release history') && !(await page.locator('main').innerText()).includes('moment something ships'));
-    await page.getByRole('link', { name: 'Check Inspekt setup & availability →' }).click(); await page.waitForURL(`${origin}/projects/inspekt#setup`);
+    await page.getByRole('link', { name: 'Get started with Inspekt →' }).click(); await page.waitForURL(`${origin}/projects/inspekt#setup`);
     for (const slug of ['bract', 'compokit', 'videx']) {
       await page.goto(`${origin}/projects/${slug}`);
       check(`${slug}: signed-out visitor has no dead source CTA`, await page.locator(`main a[href="https://github.com/aylith-labs/${slug}"]`).count() === 0);

@@ -22,7 +22,7 @@ describe('public showcase availability', () => {
 		expect(hasPublicOnboarding(project({ ...setup, access: 'restricted' }))).toBe(false);
 		expect(hasPublicOnboarding(project({ ...setup, url: undefined }))).toBe(false);
 		expect(hasPublicOnboarding(project({ ...setup, prerequisites: [] }))).toBe(false);
-		expect(hasPublicOnboarding(project({ ...setup, limitations: [] }))).toBe(false);
+		expect(hasPublicOnboarding(project({ ...setup, limitations: [] }))).toBe(true);
 	});
 	it.each(['javascript:alert(1)', 'https://', 'https://user:secret@example.org', '//example.org', 'http://example.org'])('rejects unsafe or invalid setup URL %s', (url) => {
 		expect(normalizeOnboarding({ ...setup, url })).toBeUndefined();

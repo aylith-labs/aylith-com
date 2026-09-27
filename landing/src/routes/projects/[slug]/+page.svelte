@@ -3,11 +3,11 @@
 	import Seo from '$lib/components/Seo.svelte';
 	import ThemedShot from '$lib/components/changelog/ThemedShot.svelte';
 	import { getHero } from '$lib/changelog/entries';
-	import { hasPublicOnboarding } from '$lib/catalog/availability';
+	import { hasPublicOnboarding, hasSetupDetails } from '$lib/catalog/availability';
 	let { data } = $props();
 	let project: Project = $derived(data.project);
 	let hero = $derived(getHero(project.slug));
-	let hasSetup = $derived(hasPublicOnboarding(project) || !!project.onboarding?.releasesUrl || !!project.onboarding?.prerequisites?.length || !!project.onboarding?.limitations?.length);
+	let hasSetup = $derived(hasSetupDetails(project));
 </script>
 
 <Seo title="{project.name} — Aylith" description={project.description} type="article" />

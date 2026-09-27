@@ -3,10 +3,12 @@
 	import type { ChangelogEntry, ChangelogTag } from '$lib/types/changelog';
 	import { reveal } from '$lib/actions/reveal';
 	import Seo from '$lib/components/Seo.svelte';
+	import { hasSetupDetails } from '$lib/catalog/availability';
 
 	let { data } = $props();
 	let project: Project = $derived(data.project);
 	let entries: ChangelogEntry[] = $derived(data.entries);
+	let setupTarget = $derived(hasSetupDetails(project) ? `/projects/${project.slug}#setup` : `/projects/${project.slug}`);
 
 	const tagStyles: Record<ChangelogTag, string> = {
 		added: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-500/15 dark:text-emerald-300',
@@ -87,8 +89,8 @@
 					No studio release notes have been added here. This is not a complete package
 					release history and does not determine whether {project.name} is available.
 				</p>
-				<a href="/projects/{project.slug}#setup" class="mt-5 inline-flex min-h-11 items-center rounded-lg px-3 text-sm font-medium text-accent-700 underline underline-offset-4 dark:text-accent-300">
-					Check {project.name} setup &amp; availability →
+				<a href={setupTarget} class="mt-5 inline-flex min-h-11 items-center rounded-lg px-3 text-sm font-medium text-accent-700 underline underline-offset-4 dark:text-accent-300">
+					{hasSetupDetails(project) ? `Get started with ${project.name} →` : `View ${project.name} →`}
 				</a>
 				{#if project.onboarding?.releasesUrl}
 					<p class="mt-2"><a href={project.onboarding.releasesUrl} rel="noreferrer" class="inline-flex min-h-11 items-center px-3 text-sm font-medium text-accent-700 underline underline-offset-4 dark:text-accent-300">Package versions &amp; publication dates →</a></p>
