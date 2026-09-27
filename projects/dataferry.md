@@ -1,17 +1,19 @@
 ---
 name: Dataferry
-tagline: 'Universal data migration, powered by AI agents'
+tagline: Preview SaaS field mappings before migration
 description: >-
-  Move data between any two systems without hand-writing brittle ETL — describe
-  the source and destination, and AI agents map, transform, and verify the
-  crossing.
+  Build migration drafts from a SaaS catalog, generate proposed field mappings,
+  and preview deterministic transformations on sample records. Live data
+  transfer is not available yet because per-app connectors are unfinished.
 category: data-tools
 features:
-  - Connects arbitrary sources and destinations without bespoke connectors
-  - AI agents infer field mappings and transformations
-  - Validates row counts and integrity on both shores
-  - Incremental and resumable migrations for large datasets
-  - Dry-run previews before anything is written
+  - Create migration drafts and proposed field mappings from catalog schemas
+  - >-
+    Generate AI field-mapping suggestions when the worker and model are
+    configured
+  - >-
+    Preview mapped and transformed sample records without writing to destination
+    apps
 targetUser: >-
   Engineers and operators moving off legacy systems, consolidating databases, or
   onboarding customer data
@@ -23,17 +25,18 @@ repoUrl: 'https://github.com/aylith-labs/dataferry'
 order: 11
 ---
 
-## Vision
+## See the crossing before you make it
 
-Every migration is the same problem wearing a different costume: read from here, reshape, write to there, prove nothing was lost. Dataferry treats that as a solved category. Describe the two shores and let AI agents map the fields, transform the shapes, and verify the crossing — so a migration is a task you finish, not a quarter you survive.
+A migration begins with a question: *where will each field go?* Dataferry's current local workflow lets you draft that answer using SaaS catalog schemas, review proposed field mappings, and preview how sample records would be transformed. The preview is a planning aid; it does not write to either app.
 
-## The Problem
+| In the local product | What you can inspect |
+| --- | --- |
+| Migration draft | The selected source and destination schemas |
+| Proposed mappings | How source fields correspond to destination fields |
+| Sample preview | Transformed rows and errors for the sample, before any transfer |
 
-Data migration is where projects quietly stall. Schemas never line up, edge cases hide in old rows, and the ETL scripts written to bridge two systems are thrown away the moment the move is done. Teams rebuild the same disposable plumbing for every migration, and the riskiest part — confirming the data arrived intact — is usually the most manual.
+AI mapping suggestions require a configured worker and model. The deterministic sample preview works independently of a live app connection. When the caller omits sample rows, the preview may use illustrative records; those records are examples, not extracted customer data.
 
-## Key Differentiators
+### The boundary today
 
-- **Agent-mapped, not hand-mapped**: field mappings and transforms are inferred and reviewed, not typed out by hand.
-- **Verification is first-class**: integrity checks run on both sides, so "did everything make it" has an answer, not a hope.
-- **Resumable at scale**: large crossings checkpoint and resume instead of restarting from zero.
-- **Preview before commit**: dry-run the entire migration and inspect the result before a single row is written.
+Dataferry does **not** yet extract records from a live source or load them into a destination. It cannot verify a destination's row counts or integrity, preserve attachments and relationships, or resume a large migration. The current preview speaks only for its sample rows. Those execution and verification steps remain product work, not a promise attached to this page.

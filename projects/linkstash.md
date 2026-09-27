@@ -2,15 +2,14 @@
 name: Linkstash
 tagline: Bookmarks you will find again
 description: >-
-  A bookmarks manager built for retrieval — save links with tags and context,
-  then actually find them later instead of losing them to a forgotten folder.
+  A self-hostable bookmarks manager for saving links, searching by title,
+  description, or URL, and organizing them with tags and collections.
 category: productivity
 features:
-  - Save links with tags and a note for context
-  - Fast search so saved means findable
-  - Organized without a folder maze
-  - Quick capture from anywhere you browse
-  - 'A private stash, not a social feed'
+  - Save links with tags and optional descriptions
+  - 'Search titles, descriptions, and URLs'
+  - Organize links with named collections
+  - Import and export bookmarks as JSON or HTML
 targetUser: People who save links constantly and can never find the one they need later
 featured: false
 icon: >-
@@ -25,7 +24,7 @@ order: 22
 
 ## Vision
 
-Saving a link is easy; finding it three weeks later is the actual product. Linkstash is built around retrieval — tags, context, and search that works — so the bookmark you saved is the bookmark you can reach. It turns a graveyard of starred links into a stash you actually mine.
+Linkstash helps a single operator save links and find them again with search, tags, and collections. The current app runs without authentication or per-user access control.
 
 ## The Problem
 
@@ -33,7 +32,15 @@ Every browser has bookmarks, and every set of bookmarks becomes a junk drawer. L
 
 ## Key Differentiators
 
-- **Retrieval-first**: tags, context, and search instead of nested folders.
-- **Context attached**: a note on why you saved it, so future-you understands.
-- **Quick capture**: saving is one step from anywhere.
-- **Private stash**: your links, not a public collection.
+- **Search**: find bookmarks by title, description, or URL.
+- **Context attached**: add a description and tags when saving a link.
+- **Collections**: group bookmarks in named collections without moving the underlying bookmark.
+- **Transfer**: import and export bookmarks as JSON or Netscape HTML.
+
+## How the current app works
+
+Save a URL in the app, optionally add a description and tags, then return to the bookmark list to search its title, description, or URL. Filter the list by status, tag, or collection. Collections group existing bookmarks, so removing a link from one collection leaves the saved bookmark in your library. Export creates a URL-based transfer file in JSON or Netscape HTML.
+
+## Current boundaries
+
+Linkstash is a self-hostable, single-operator prototype. It has no sign-in or per-user access control, so its API should stay on a trusted network. Saving starts in the app; there is no browser extension or share-sheet capture. The main list currently shows only the first 50 matching bookmarks, the add-to-collection picker loads only the first 100, and import skips duplicate URLs rather than restoring distinct bookmark identities. Those limits matter before using Linkstash as a large personal archive or treating export as a full backup.

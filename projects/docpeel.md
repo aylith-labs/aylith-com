@@ -1,16 +1,16 @@
 ---
 name: Docpeel
-tagline: Upload any document. Get structured data.
+tagline: 'Extract fields, check the source'
 description: >-
-  AI-powered document processing that extracts structured, usable data from any
-  document — contracts, invoices, reports — in seconds, not hours.
+  A document extraction prototype for supported PDFs, Word files, and images.
+  Review typed fields and confidence flags against the retained original, then
+  export the result.
 category: data-tools
 features:
-  - 'Processes PDFs, images, Word docs, and scanned documents'
-  - 'Extracts key clauses, dates, parties, and obligations'
-  - Custom extraction templates for recurring document types
-  - Batch processing for high-volume workflows
-  - API and Zapier integration for automated pipelines
+  - 'Processes PDFs, Word documents, and images, with OCR for scans'
+  - Extracts typed fields with confidence and review flags
+  - Supports custom fields and batches of up to 20 documents
+  - 'Downloads the original file and exports fields to JSON, CSV, or Excel'
 targetUser: 'Freelancers, small law firms, accountants, and compliance officers'
 featured: false
 icon: >-
@@ -26,14 +26,25 @@ order: 8
 
 ## Vision
 
-Enterprise document AI solutions exist but cost $50K-$500K+ annually and require months of onboarding. Docpeel delivers the same intelligence in a self-serve tool that any freelancer, small firm, or solo consultant can start using in minutes.
+Docpeel helps freelancers and small firms turn client documents into structured fields they can inspect and export. The original file remains available to the owner for checking the extraction.
 
 ## The Problem
 
-Lawyers spend 60% of their time on document review. Accountants manually key in data from invoices. Compliance officers cross-reference regulatory documents by hand. The tools that could automate this are priced for Fortune 500 companies, leaving individuals and small teams doing it manually.
+Lawyers, accountants, and compliance officers spend time reading documents and copying values into other tools. Docpeel brings the source document and extracted fields into one review flow.
 
-## Key Differentiators
+## Current scope
 
-- **Instant start**: No onboarding, no training, no enterprise sales call. Upload a document and get structured data immediately
-- **Self-serve pricing**: Per-document or subscription pricing starting under $30/month, not six-figure contracts
-- **Custom templates**: Train extraction rules for your specific document types with a few examples, then batch-process thousands
+- Upload PDF, DOCX, JPEG, PNG, or TIFF files and extract fields by document type or a supplied field list.
+- Review confidence and validation flags, download the original, and export extracted fields.
+- Processing currently runs in the app background. A durable queue, field-level source references, and extraction version history are future work.
+
+## Evaluation boundary
+
+This catalog page is a source description, not a public processing account or
+signup. A source-run evaluation requires repository access, a configured
+Supabase Auth/database/private Storage project with the app's migrations, and a
+model provider key. Use a long-lived app process when checking processing; the
+source's background task is not a durable queue on a serverless host. The
+illustrative invoice on the separate static landing is synthetic design, not a
+captured extraction or an accuracy result. No public Docpeel origin, provider
+run, or completion-time benchmark has been verified for this entry.

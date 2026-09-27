@@ -1,17 +1,19 @@
 ---
 name: Augur
-tagline: Can AI do this?
+tagline: Test an AI task with your model
 description: >-
-  A multi-provider AI task analyzer that tells you whether a task is feasible,
-  which model fits, and what it will cost — with token economics built in.
+  Analyze a website or described task with a selected AI model. Get a
+  feasibility verdict, implementation plans, and an analysis cost estimate when
+  usage and model pricing are available.
 category: developer-tools
 features:
-  - Feasibility analysis across multiple AI providers
-  - Token-level cost estimates before you commit
-  - Model recommendations matched to the task shape
-  - Side-by-side provider comparison on price and capability
-  - 'Clear answers to "can AI do this, and is it worth it"'
-targetUser: Builders deciding whether — and with which model — to throw AI at a problem
+  - Feasibility verdict from a selected AI model
+  - Implementation plans with estimated monthly cost ranges
+  - >-
+    Provider-reported analysis tokens and estimated list-price cost when
+    available
+  - Select from configured providers or connect a custom endpoint
+targetUser: Builders exploring whether a selected AI model could help with a task
 featured: false
 icon: >-
   M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0
@@ -21,19 +23,38 @@ gradientFrom: '#7c3aed'
 gradientTo: '#c4b5fd'
 repoUrl: 'https://github.com/aylith-labs/augur'
 order: 16
+onboarding:
+  access: restricted
+  prerequisites:
+    - >-
+      Build and run the source with Node.js 22 or newer and a trusted local file
+      store
+    - >-
+      Set VITE_SKIP_AUTH=true at build time for local access, then configure one
+      provider
+  limitations:
+    - No hosted Augur origin or public install path has been verified
+    - Sign-in does not scope the analysis and feedback API to a user
+    - Do not submit sensitive tasks to a shared public deployment
 ---
 
 ## Vision
 
-Every AI feature starts with the same gamble: is this even feasible, which model should run it, and what will it cost at scale. Augur turns that gamble into an estimate. Describe the task and it reports feasibility, the best-fit provider, and the token economics — so the decision is grounded in numbers instead of vibes.
+Describe a task or enter a website URL, choose a configured model, and get a feasibility verdict with implementation options. Augur shows provider-reported token usage when available and calculates an estimated analysis cost from configured model prices. Plan cost ranges are estimates for hypothetical monthly use.
 
 ## The Problem
 
-Teams pick AI models the way they pick lottery numbers: a hunch, a benchmark they half-remember, a default they never revisited. The cost surprises arrive in the bill, and the capability surprises arrive in production. There is no cheap way to ask "can AI do this, and what does it cost" before you build it.
+It can be hard to decide whether an AI workflow is plausible before building it. Augur gives an initial verdict and concrete plans for a task supplied by the user.
 
-## Key Differentiators
+## Current capabilities
 
-- **Multi-provider by default**: compares across providers instead of assuming one.
-- **Economics up front**: token costs are first-class, not a postmortem line item.
-- **Task-shaped recommendations**: matches the model to the job, not to fashion.
-- **A real answer**: "yes, with this model, at this cost" — not a shrug.
+- **Selectable provider**: runs an analysis on one configured model at a time.
+- **Usage provenance**: separates provider-reported tokens from a cost estimate based on maintained prices. Missing usage is shown as unavailable.
+- **Actionable plans**: presents generated implementation steps and estimated monthly cost ranges.
+
+## Current boundaries
+
+- One selected model runs per analysis; Augur does not compare providers side by side or recommend the best model across them.
+- Cost is an estimate from configured prices, not a provider bill. If usage or model price is unavailable, no analysis cost is shown.
+- Results and feedback live in a global single-user store. Analysis routes are not scoped to an authenticated owner; use a trusted local deployment, not a shared public service, for sensitive tasks.
+- The default store is file-backed. The PostgreSQL schema exists, but the runtime adapter is not connected.

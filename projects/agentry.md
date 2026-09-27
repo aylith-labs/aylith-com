@@ -1,20 +1,19 @@
 ---
 name: Agentry
-tagline: Your prompt & agent library
+tagline: Save the prompts and agents worth revisiting
 description: >-
-  A library for the prompts and agents you actually reuse — organized,
-  versioned, and ready to drop into any tool instead of scattered across notes
-  and chat history.
+  A library for reusable prompts and agent definitions, with tags and search for
+  prompts and version history for agent definitions.
 category: developer-tools
 features:
   - One home for reusable prompts and agent definitions
-  - Versioning so you can iterate without losing what worked
+  - Agent definition version history and restore
   - Tags and search to find the right prompt fast
-  - Portable exports that drop into any tool or runtime
-  - Share and reuse across projects and teammates
+  - Draft and published items with author-aware library lists
+  - Fork public prompts into your own library
 targetUser: >-
-  Anyone who reuses prompts and agents and is tired of digging through chat
-  history
+  People who maintain reusable prompts and agent definitions and need to find
+  and revise them across projects
 featured: false
 icon: >-
   M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987
@@ -25,19 +24,36 @@ gradientFrom: '#0d9488'
 gradientTo: '#5eead4'
 repoUrl: 'https://github.com/aylith-labs/agentry'
 order: 17
+onboarding:
+  access: restricted
+  prerequisites:
+    - Run the Bun web and API workspaces with a local SQLite database
+    - Create an account with email and password
+  limitations:
+    - No hosted Agentry origin or public install path has been verified
+    - >-
+      Google OAuth exists in the API but has no verified web sign-in path;
+      email/password is the current page flow
+    - >-
+      Prompt search and agent definition history are distinct; prompts do not
+      have saved versions or portable export
 ---
 
 ## Vision
 
-The best prompts and agents you have written are buried in chat logs, sticky notes, and half-remembered files. Agentry makes them a library — organized, versioned, and searchable — so the prompt that worked last month is one search away, not a reconstruction job. Your prompting becomes an asset you compound instead of a thing you keep rewriting.
+The prompts and agent definitions you want to reuse can get buried in chats and notes. Agentry gives them a library with prompt search and agent definition history, so saved work is easier to find and revise.
 
 ## The Problem
 
-Prompts and agent definitions are valuable artifacts treated like disposable scratch. They live in scattered chats and untitled files, get rewritten from memory, and quietly degrade with every copy-paste. There is no library, so there is no leverage — every reuse starts from a search through history.
+Prompts and agent definitions live in scattered chats and files. Agentry collects the ones you choose to save, with tags and search for prompts and version history for agent definitions. It does not import chat history automatically.
 
 ## Key Differentiators
 
-- **A real library, not a folder**: prompts and agents are first-class, organized objects.
-- **Versioned iteration**: improve a prompt without losing the version that worked.
-- **Findable**: tags and search turn a pile into a catalog.
-- **Portable**: exports drop into whatever tool or runtime you use next.
+- **Saved objects**: prompts and agents have dedicated editor and library views.
+- **Agent history**: review and restore earlier agent definitions.
+- **Findable prompts**: tags and search turn a pile into a catalog.
+- **Author-aware lists**: see your own draft agents and prompts alongside published items in their library views.
+
+## Current boundary
+
+Agentry runs from source with local database setup; no hosted app deployment has been verified. Email/password sign-in works in source. Google OAuth is optional at the API, but the former web button targeted an unmatched route and was withdrawn until its navigation can be repaired and checked. Search is implemented for prompts, while version snapshots and restore apply to agent definitions. Collection references need additional item-visibility checks before the app can make a blanket privacy claim about all cross-linked drafts.

@@ -1,19 +1,17 @@
 ---
 name: Brainstash
-tagline: Your personal knowledge base
+tagline: Find the note you meant to keep
 description: >-
-  A personal knowledge base for the things you want to keep and actually find
-  again — notes, ideas, and references in one searchable, connected place.
+  A locally run knowledge base for notes and references. Capture an entry with
+  categories, tags, and a source URL, then retrieve it through title and content
+  search or revisit an earlier entry snapshot.
 category: productivity
 features:
-  - 'Capture notes, ideas, and references in one place'
-  - Connections between entries so knowledge links up
-  - Fast search across everything you have saved
-  - Lightweight capture that does not interrupt thinking
-  - 'Yours alone — a private store, not a feed'
-targetUser: >-
-  Thinkers and builders who want a second brain they can trust to give things
-  back
+  - Capture notes and references with source URLs
+  - Organize entries with categories and tags
+  - Search entry titles and content with SQLite FTS5
+  - Review and restore earlier entry content
+targetUser: 'Developers who want to retrieve their own notes, TILs, and references'
 featured: false
 icon: >-
   M12 18v-5.25m0 0a6.01 6.01 0 0 0 1.5-.189m-1.5.189a6.01 6.01 0 0
@@ -24,11 +22,26 @@ gradientFrom: '#db2777'
 gradientTo: '#f9a8d4'
 repoUrl: 'https://github.com/aylith-labs/brainstash'
 order: 18
+onboarding:
+  access: restricted
+  prerequisites:
+    - Run the Bun API and SvelteKit web workspaces from source with local SQLite
+    - Set an AUTH_SECRET and create an account on that instance
+  limitations:
+    - No hosted Brainstash origin or public account service has been verified
+    - >-
+      Media files are currently served by ID without authentication; do not
+      treat uploads as private
+    - >-
+      Search filters are applied after FTS pagination, so filtered counts and
+      pages can be incomplete
 ---
 
 ## Vision
 
-A personal knowledge base only earns its name if it gives things back. Brainstash is built around retrieval as much as capture — save a note, an idea, a reference, and find it again the moment it matters, with the connections that make it more than a pile. It is the place your thinking accumulates instead of evaporates.
+Brainstash stores notes and references as entries with source URLs, categories, tags, and version history. Its SQLite FTS5 search retrieves matching titles and content; filtered result counts and pages have a known pagination limit.
+
+The [public source overview](https://aylith-labs.github.io/brainstash/) introduces the workflow. It is a static page, not a hosted knowledge base or sign-in service.
 
 ## The Problem
 
@@ -36,7 +49,12 @@ Most note tools are excellent at swallowing information and terrible at returnin
 
 ## Key Differentiators
 
-- **Retrieval-first**: designed so what you save comes back, not just goes in.
-- **Connected, not flat**: entries link, so knowledge compounds.
-- **Frictionless capture**: getting things in never breaks your train of thought.
-- **Private by design**: a knowledge base you own, not a stream you scroll.
+- **Retrieval-first**: use title and content search to find saved entries.
+- **Structured capture**: entries can carry categories, tags, and source URLs.
+- **Edit history**: earlier title and content snapshots can be browsed and restored.
+
+## Current boundaries
+
+- Entry and category routes use an authenticated account, including an owner check for newly selected categories. Older cross-account category associations are not repaired by that guard.
+- Uploaded media is served by a public-by-ID route, and deleting an entry can leave its media available. Uploaded files should not be described as private.
+- Source URLs are stored and shown, but the current editor cannot clear an existing source URL by emptying the field.

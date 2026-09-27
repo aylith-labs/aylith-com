@@ -42,6 +42,10 @@ onboarding:
 
 Compokit explores generation constrained by an existing component vocabulary. The goal is code that fits the host design system. First-pass review acceptance and reduced rework have not been established by a reproducible evaluation.
 
+## Public overview
+
+The [static Compokit overview](https://aylith-labs.github.io/compokit/) explains the source-run scan, keyword matching, and reviewable generation flow. It is an informational page, not a hosted scanner, account, or public installation route.
+
 ## The Problem
 
 Translating a design into an existing component library can involve manual matching and cleanup. How much work this saves depends on the design, library and task; this entry does not establish a competitor-wide rework rate.

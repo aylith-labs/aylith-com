@@ -1,16 +1,15 @@
 ---
 name: Plainbase
-tagline: Talk to your database in plain English
+tagline: Ask questions of your PostgreSQL data in plain English
 description: >-
-  AI-native business intelligence that lets anyone ask questions about their
-  data in natural language and get instant visual answers.
+  A prototype for asking questions of a connected PostgreSQL database and
+  viewing the generated SQL, result table, and suggested charts.
 category: data-tools
 features:
-  - Natural language to SQL query generation
-  - Auto-generated visualizations and dashboards
-  - 'Connects to PostgreSQL, MySQL, and SQLite'
-  - Persistent context — remembers your schema and past queries
-  - Shareable reports with one-click export
+  - PostgreSQL natural-language to SQL queries with a static read-only guard
+  - 'Suggested charts, saved dashboards, and CSV export'
+  - Bearer-token dashboard links that let viewers rerun pinned queries
+  - Schema exploration and per-session follow-up questions
 targetUser: 'Non-technical founders, marketers, and operators at startups and SMBs'
 featured: false
 icon: >-
@@ -24,18 +23,34 @@ gradientFrom: '#3b82f6'
 gradientTo: '#60a5fa'
 repoUrl: 'https://github.com/aylith-labs/plainbase'
 order: 6
+onboarding:
+  access: restricted
+  prerequisites:
+    - Run the Next.js app with its own PostgreSQL store and an AI provider key
+    - 'Use a separate, least-privilege PostgreSQL role for a test data source'
+  limitations:
+    - >-
+      No public Plainbase host, signup, or supported package install has been
+      verified
+    - >-
+      Shared links grant unauthenticated live reruns without row-level scope or
+      rate limits
+    - >-
+      TLS certificate verification is disabled when the connection form's TLS
+      option is enabled
+    - 'Generated SQL, answer accuracy, and result size require independent review'
 ---
 
 ## Vision
 
-Small businesses accumulate valuable data but can't access it without SQL expertise. Plainbase makes every database conversational — any team member should be able to ask a question about their business data and get an accurate, visual answer in seconds.
+Small teams can struggle to use PostgreSQL data without SQL expertise. Plainbase explores a conversational interface for questions and visual answers. It is a prototype; accuracy, permissions, and deployment readiness have not been established.
 
 ## The Problem
 
-Non-technical founders and operators make decisions based on gut feeling instead of data because the alternatives are expensive ($80K-$130K/yr analyst), complex (Looker, Metabase require SQL), manual (spreadsheet exports), or risky (asking ChatGPT to write SQL).
+Non-technical founders and operators often need help turning data questions into queries and interpretable results.
 
 ## Key Differentiators
 
-- **Conversational context**: Remembers your schema, previous queries, and business terminology — gets smarter over time
-- **Visualization-first**: Automatically picks the right chart type and generates interactive dashboards, not just query results
-- **No SQL required**: Truly accessible to non-technical users, with guardrails that prevent destructive queries
+- **Schema-aware questions**: PostgreSQL schema metadata is sent to the configured model; follow-ups can use conversation history supplied by the current client session.
+- **Suggested visualization**: The model suggests a chart type for each query; users can pin queries to dashboards.
+- **Read-only execution controls**: A static SQL guard and PostgreSQL read-only transaction limit writes, but are not a substitute for a least-privilege database role. Public dashboard tokens can rerun pinned queries without login; use synthetic data only until permissions and transport are verified.

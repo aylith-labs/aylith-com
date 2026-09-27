@@ -1,18 +1,24 @@
 ---
 name: Videx
-tagline: Turn any video library into a domain-tailored knowledge base
+tagline: Find the exact moment in your YouTube research library
 description: >-
-  Videx indexes YouTube channels and their full transcripts, then adapts its
-  search, summaries and topic discovery to the domain you pick — AI engineering,
-  data science, system design, security, creative tech, or anything at all.
+  Videx brings indexed YouTube channels, available transcripts, search and
+  timestamped notes into one local research workspace. Choose a domain to tune
+  the topics and suggestions you see.
 category: developer-tools
 features:
-  - Pick a knowledge domain and the whole app retunes to it
-  - Channel and video transcript ingestion with chapter and metadata extraction
-  - Full-text plus pgvector semantic search across every transcript
-  - 'AI summaries, topics and extraction over a pluggable provider chain'
-  - 'Chat grounded in a video''s transcript, answers cited back to timestamps'
-  - YouTube OAuth sync for personal playlists and video groups
+  - 'Choose a domain to tune suggested searches, topics and discovery'
+  - Index YouTube channels and available transcripts as timestamped segments
+  - >-
+    Search indexed videos by text, with semantic search when embeddings are
+    available
+  - >-
+    Save transcript selections as notes, with a source timestamp when timing is
+    available
+  - Ask questions against a video's transcript and review timestamp citations
+  - >-
+    Organize videos in groups; optional YouTube OAuth can sync personal
+    playlists
 targetUser: >-
   Developers and researchers who learn from video and need it searchable,
   quotable and organised around the field they actually work in.
@@ -44,32 +50,32 @@ onboarding:
       account consent
 ---
 
-## Vision
+## From a question to the original moment
 
-### Access and setup
-
-Videx is in a private repository, not a public self-service service. Its local development addresses do not provide application access to visitors. Authorized installation prerequisites and unresolved setup gaps are listed above; no waitlist or automatic access grant is implied.
-
-The best technical talks, deep dives and frontier lectures are on YouTube, and video is the worst
-medium there is for finding a specific idea again. Videx turns a library of channels into an index
-you can search, quote and interrogate — and it shapes itself around the field you are studying
-rather than assuming everyone is here for the same thing.
+The useful line in a long technical talk is easy to lose. Videx is built around a short research
+loop: index a YouTube channel, find a passage in its available transcript, and return to the video
+at the right time. The timestamp matters as much as the summary: it lets you check the speaker's
+words and context for yourself.
 
 ## The problem
 
-Video knowledge sits in unsearchable timelines, spread across creators who never agreed on
-vocabulary. A single generic search box treats a shader tutorial and a distributed-consensus talk
-the same way, so the queries that would surface the right moment never get suggested and the
-summaries never use the right words.
+Video knowledge sits in long timelines and across channels that use different vocabulary. A title
+or thumbnail rarely tells you where an idea appears. Videx keeps available captions as segments:
+search can find a matching video, then its timestamped transcript can help locate the passage.
 
 ## How it works
 
-- **Domain personalization** — choose AI Engineering, Data Science, System Design, Cybersecurity,
-  Creative Tech, or the universal profile. Suggested queries, focus topics, channel discovery and
-  AI prompts all retune, and switching is instant.
-- **Transcript-first ingestion** — channel listings via InnerTube, captions, chapters and engagement
-  metadata, stored as timestamped segments rather than one flat blob.
-- **Hybrid search** — PostgreSQL full-text for the exact phrase, pgvector embeddings for the idea
-  you can only describe.
-- **Grounded chat** — transcript context and timestamp citations support answers; citation accuracy still needs review.
-- **Provider-agnostic AI** — a configurable provider chain; features can be unavailable when access or providers fail.
+- **Collect** — index a YouTube channel and the captions Videx can retrieve. Missing captions and
+  unavailable sources remain gaps in the library, not invented transcript text.
+- **Find** — search the indexed material by phrase. Semantic search and AI suggestions depend on
+  configured model access and completed enrichment.
+- **Verify** — open a video, read its timestamped transcript, and save a passage as a note. Chat
+  can answer from transcript context with clickable times, but its citations still need human review.
+- **Shape the workspace** — choose a knowledge domain to tune suggested queries, focus topics and
+  discovery. This changes the research lens; it does not rewrite the underlying source material.
+
+## Access and setup
+
+Videx is in a private repository, not a public self-service service. Its local development addresses
+do not provide application access to visitors. Authorized installation prerequisites and unresolved
+setup gaps are listed above; no waitlist or automatic access grant is implied.

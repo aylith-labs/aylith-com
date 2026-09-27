@@ -24,6 +24,7 @@ icon: >-
 gradientFrom: '#C47A36'
 gradientTo: '#9E5727'
 repoUrl: 'https://github.com/aylith-labs/bindlume'
+websiteUrl: 'https://bindlume.aylith.com/'
 onboarding:
   access: public-source
   url: 'https://bindlume.aylith.com'

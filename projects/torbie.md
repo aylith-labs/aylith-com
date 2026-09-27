@@ -33,6 +33,7 @@ icon: >-
 gradientFrom: '#c97a3a'
 gradientTo: '#8a5a2b'
 repoUrl: 'https://github.com/aylith-labs/torbie'
+websiteUrl: 'https://torbie.aylith.com/'
 ---
 
 [Explore the Torbie homepage](https://torbie.aylith.com/) — screenshots, features and downloads.

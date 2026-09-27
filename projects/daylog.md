@@ -2,15 +2,16 @@
 name: Daylog
 tagline: A day worth keeping
 description: >-
-  Daily journaling built around momentum — streaks, a calendar view, and a
-  frictionless entry so the habit sticks and the days add up.
+  A daily journal with one entry per date, optional writing prompts, mood and
+  energy ratings, habit check-ins, and a month calendar. Its API and SQLite
+  database are intended for a trusted local setup.
 category: wellness
 features:
-  - 'One quick entry per day, no blank-page dread'
-  - Streaks that make the habit visible
-  - Calendar view of your journaling history
+  - One journal entry per date with an optional title and tags
+  - Habit check-ins with current and longest streaks
+  - Month calendar showing days with entries
   - Gentle prompts when you want a starting point
-  - A private record that grows day by day
+  - Local SQLite storage by default
 targetUser: People who want to keep a journal and have always struggled to keep it going
 featured: false
 icon: >-
@@ -21,19 +22,34 @@ gradientFrom: '#0d9488'
 gradientTo: '#5eead4'
 repoUrl: 'https://github.com/aylith-labs/daylog'
 order: 20
+onboarding:
+  access: restricted
+  prerequisites:
+    - Run the API and web app locally with Bun and a SQLite database
+  limitations:
+    - >-
+      The API has no authentication or owner isolation; use it only in a trusted
+      local environment
+    - >-
+      The API listens on all network interfaces by default; restrict network
+      access before storing personal entries
 ---
 
 ## Vision
 
-The hard part of journaling is not writing — it is coming back tomorrow. Daylog is built around momentum: a frictionless daily entry, a streak you can see, and a calendar that turns showing up into a visible record. The goal is not a perfect journal; it is a journal that actually continues.
+Daylog makes the daily entry and the return visit visible. Write about a date, add mood, energy or focus ratings when useful, and check in on a habit. The calendar and streak history help you look back; neither measures the quality of a day.
 
 ## The Problem
 
-Most journaling apps optimize the entry and ignore the habit. They give you a beautiful blank page and no reason to return, so the streak breaks on day three and the app joins the graveyard. The failure mode is never the writing — it is the not-coming-back.
+The blank page can be hard to start, and a long history can be hard to browse. Daylog offers optional writing prompts without inserting text, while entries, tags, search, metrics and a calendar provide ways back to what was recorded.
 
 ## Key Differentiators
 
-- **Habit-first**: streaks and a calendar make consistency the point.
-- **Friction-free entry**: a quick daily log, not a blank-page ritual.
-- **Visible momentum**: showing up is the metric you can see.
-- **Private and simple**: a record for you, without the bloat.
+- **One date at a time**: save an entry with an optional title and tags; view a prompt when you want a starting point.
+- **Visible check-ins**: habit cards show current and longest runs; the month calendar marks recorded days.
+- **Separate reflection signals**: mood, energy, focus and notes can be saved independently from journal text.
+- **Local access boundary**: SQLite is the default store, but the separate API has no authentication or owner isolation and listens on all interfaces by default. Restrict network access before storing personal entries.
+
+## Current boundary
+
+This is a single-user local setup, not a hosted private account. The public light/dark gallery shows a recorded editor before optional prompts were added; it is product footage, not a current live session or a promise of deployed access. A safe internet-facing deployment needs an authority model and owner-scoped data access first.

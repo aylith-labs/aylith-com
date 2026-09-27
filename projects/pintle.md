@@ -1,16 +1,16 @@
 ---
 name: Pintle
-tagline: >-
-  The pin a gate turns on — a Go HTTPS reverse proxy for local development that
-  reads Traefik and Caddy labels natively, so services keep the labels they
-  already have.
+tagline: Route local development domains through one HTTPS reverse proxy
 description: >-
-  The pin a gate turns on — a Go HTTPS reverse proxy for local development that
-  reads Traefik and Caddy labels natively, so services keep the labels they
-  already have.
-category: uncategorized
-features: []
-targetUser: ''
+  A Go reverse proxy for local development with Docker and file routes, TLS
+  termination, SNI passthrough and an embedded dashboard. Its optional
+  static-only mode serves loopback routes without Docker discovery.
+category: developer-tools
+features:
+  - 'Docker route discovery from Pintle, Traefik and Caddy labels'
+  - 'File-defined routes, SNI passthrough and TLS termination for local services'
+  - Embedded dashboard and runtime self-description for local route inspection
+targetUser: Developers running several local services behind HTTPS domains
 featured: false
 icon: >-
   M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303
@@ -20,6 +20,23 @@ icon: >-
 gradientFrom: '#6366f1'
 gradientTo: '#818cf8'
 repoUrl: 'https://github.com/aylith-labs/pintle'
+onboarding:
+  access: public-source
+  url: 'https://github.com/aylith-labs/pintle#setup'
+  prerequisites:
+    - Local TLS certificates from mkcert and route configuration
+    - >-
+      Docker for the recommended mode, or a locally built Go binary for
+      host-native use
+  limitations:
+    - Host-native port redirection requires administrator privileges
+    - >-
+      Static-only mode serves loopback HTTP routes without Docker discovery or
+      TCP routing
 ---
 
-The pin a gate turns on. A Go HTTPS reverse proxy that replaces Traefik and Caddy — it reads **their** labels and **their** config files, so services keep the labels they already have and the proxy underneath them changes. Single static binary (~9 MB) with an embedded React dashboard. Routes domains via SNI with HTTP/2, auto-discovers Docker containers through three label dialects, terminates TLS for database connections, and passes any domain it does not own through to another proxy untouched.
+## A local proxy that reads existing labels
+
+Pintle routes local HTTPS domains to development services. Its source accepts Pintle, Traefik and Caddy label formats, reads static route files, and can pass an SNI domain through to another proxy. The embedded dashboard and `GET /api/self` describe the running local configuration.
+
+The [setup guide](https://github.com/aylith-labs/pintle#setup) covers certificates, route files, build and Docker use. The optional static-only mode serves loopback HTTP routes and omits Docker discovery, TCP listeners and SNI passthrough.

@@ -1,16 +1,20 @@
 ---
 name: GitHerald
-tagline: From git push to published announcement
+tagline: GitHub activity into reviewable release drafts
 description: >-
-  Transforms code activity into marketing content — changelogs, blog posts, and
-  social media updates from a single source of truth.
+  Drafts changelog, blog, and social copy from GitHub commits and merged pull
+  requests. Source receipts stay beside new drafts; publishing the changelog is
+  a separate action.
 category: developer-tools
 features:
-  - Auto-generates changelogs from commits and PRs
-  - Creates blog posts about releases
-  - 'Crafts social media threads for X, LinkedIn, Bluesky'
-  - 'Understands the "why" behind changes, not just the "what"'
-  - Scheduled publishing with approval workflows
+  - 'Generates changelog, blog, and social drafts from GitHub activity'
+  - >-
+    Preserves commit and PR source identities, with verified links when
+    available
+  - 'Exports drafts as Markdown, HTML, or JSON'
+  - >-
+    Publishes changelogs to the configured app's public page with RSS and an
+    embed view
 targetUser: Developer founders and small teams shipping fast but lagging on communication
 featured: false
 icon: >-
@@ -28,7 +32,9 @@ order: 2
 
 ## Vision
 
-Developers ship fast but lag on communicating what they shipped. GitHerald closes this gap by automating the entire journey from `git push` to published announcement. One pipeline that reads your commits and generates human-quality changelogs, blog posts, and social media updates.
+Developers ship fast but lag on communicating what they shipped. GitHerald reads GitHub commits and merged PRs for a selected date range and generates changelog, blog, and social drafts. The signed-in dashboard retains source identities, with verified links when available, for new drafts so users can inspect the underlying work. The reader currently fetches the first 100 commits and first 100 closed PRs; merged PRs are not bounded by the chosen end date.
+
+The [public GitHerald overview](https://aylith-labs.github.io/githerald/) explains this source-run workflow. It is a static product page, not a hosted GitHub connection, AI generation service, account, or published changelog instance.
 
 ## The Problem
 
@@ -36,6 +42,6 @@ Communication debt is real. Writing changelogs is tedious, blog posts about rele
 
 ## Key Differentiators
 
-- **Context-aware generation**: Reads PR descriptions, issue threads, and commit bodies to understand intent — not just automated commit message reformatting
-- **Full pipeline**: Single tool covers changelogs, blog posts, and social media instead of stitching together 3-4 services
-- **Tone matching**: Learns your brand voice from previous content and maintains consistency
+- **GitHub context**: Sends commit messages and merged PR descriptions to the configured AI provider; new generations retain commit and PR identities, with verified links when available.
+- **One generation flow**: Creates changelog, blog, and social drafts together, with tone presets and export options.
+- **Changelog publishing**: A separate user action publishes a changelog to the configured app's public page. Blog and social outputs remain copy/export drafts; in-app editing, scheduling, direct posting, and brand-voice learning are not implemented. No public hosted signup or pricing is announced here.

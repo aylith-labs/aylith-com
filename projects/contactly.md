@@ -1,6 +1,6 @@
 ---
 name: Contactly
-tagline: A CRM light enough to actually use
+tagline: A small CRM for contacts and dated follow-ups
 description: >-
   A lightweight personal CRM for the relationships that matter — keep track of
   people, notes, and follow-ups without the weight of a sales platform.
@@ -8,9 +8,9 @@ category: productivity
 features:
   - 'A simple record per person, not a sales pipeline'
   - Notes and context that travel with each contact
-  - Follow-up reminders so relationships do not lapse
-  - 'Fast capture after a call, meeting, or intro'
-  - 'Yours and private — relationships, not leads'
+  - Dated follow-ups to review in the app
+  - 'Record a call, meeting, email, or note on a contact'
+  - 'Search by name, email, or company'
 targetUser: People who want to stay in touch intentionally without running a sales CRM
 featured: false
 icon: >-
@@ -24,11 +24,26 @@ gradientFrom: '#0284c7'
 gradientTo: '#38bdf8'
 repoUrl: 'https://github.com/aylith-labs/contactly'
 order: 21
+onboarding:
+  access: restricted
+  prerequisites:
+    - >-
+      Run the Bun API and SvelteKit web workspaces from source with a local
+      SQLite database
+    - Keep the unauthenticated API inside a trusted local or deployment boundary
+  limitations:
+    - No public Contactly host or account service has been verified
+    - >-
+      The API has no login or per-owner read and write checks; a client-supplied
+      user ID does not protect records
+    - 'Reminders are dated items to review in the app, not external notifications'
 ---
 
 ## Vision
 
-Staying in touch is a memory problem, and memory does not scale. Contactly is a personal CRM stripped to what an individual actually needs — a record per person, the notes that give it context, and a nudge before a relationship lapses. It is the difference between meaning to follow up and actually doing it.
+Contactly keeps a record per person, notes that give it context, and dated follow-ups to review inside the app. It is a small personal CRM for someone who wants a place to remember a conversation and plan the next one.
+
+The [public source overview](https://aylith-labs.github.io/contactly/) is a static explanation of that workflow. It does not host the Contactly application, contacts, sign-in, or reminder delivery.
 
 ## The Problem
 
@@ -37,6 +52,6 @@ Real CRMs are built for sales teams and feel like it: pipelines, stages, deal si
 ## Key Differentiators
 
 - **Personal, not sales**: people and context, not pipelines and deals.
-- **Light enough to keep**: capture is fast, so the records actually get made.
-- **Follow-ups that fire**: reminders before a relationship goes cold.
-- **Private**: your network is yours, not a lead database.
+- **Small workflow**: add a contact, log an interaction, and set a dated follow-up without a sales pipeline.
+- **Dated follow-ups**: review upcoming and overdue reminders in the app.
+- **Local storage by default**: a local SQLite file is the default; remote libSQL is optional. The API currently has no authentication or owner scoping, so access must be limited by the deployment boundary.

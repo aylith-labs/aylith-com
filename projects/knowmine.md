@@ -1,19 +1,19 @@
 ---
 name: Knowmine
-tagline: Know what's mine.
+tagline: Review and save a record of what you own
 description: >-
-  AI-powered home inventory. Scan items with your camera, identify them with AI,
-  look up barcodes, parse receipts — and keep track of everything you own.
+  A personal inventory where photo, barcode, and receipt scans suggest details
+  for review. Save and organize item records yourself.
 category: productivity
 features:
-  - Camera scan with AI item identification
-  - Barcode lookup for instant product details
-  - Receipt parsing that catalogs purchases automatically
-  - Searchable inventory of everything you own
-  - Value tracking for insurance and warranty records
+  - Photo upload on the new-item form suggests item details
+  - Barcode lookup for product details
+  - Receipt parsing with links to the new-item form
+  - Searchable inventory with session-owned items and photo reads
+  - Manual value and warranty fields for each item
 targetUser: >-
-  Homeowners, renters, and collectors who want a real record of what they own
-  without typing it all in
+  Homeowners, renters, and collectors who want to reduce typing while keeping a
+  personal record of their possessions
 featured: false
 icon: >-
   m21 7.5-9-5.25L3 7.5m18 0-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9
@@ -22,11 +22,34 @@ gradientFrom: '#ca8a04'
 gradientTo: '#facc15'
 repoUrl: 'https://github.com/aylith-labs/knowmine'
 order: 14
+onboarding:
+  access: restricted
+  prerequisites:
+    - >-
+      Run the Bun web and API workspaces with a local SQLite database and Google
+      OAuth credentials
+    - Supply an Anthropic API key for optional photo and receipt suggestions
+  limitations:
+    - >-
+      No public Knowmine host, signup, or supported package install has been
+      verified
+    - >-
+      Scan-page Add to Inventory links do not prefill the new-item form; save
+      the item manually
+    - >-
+      A photo used for a new-item suggestion is not attached to the saved item
+      by that action
+    - >-
+      Category, location, and tag references on item writes do not yet verify
+      the requesting user's ownership
+    - >-
+      ZIP export skips missing or unreadable photo files; verify the archive
+      before relying on it
 ---
 
 ## Vision
 
-Nobody knows what they own until they need to — at claim time, at move time, at the moment a warranty would have helped. Knowmine turns the camera and the receipt you already have into a living inventory: point, identify, and it is catalogued. Knowing what is yours should not require an afternoon of data entry.
+A personal inventory is useful before a move, loss, or warranty question. Knowmine can suggest item details from photos and parse receipts for review; you decide what to enter and save. A suggestion is not a saved record or proof of value.
 
 ## The Problem
 
@@ -34,7 +57,11 @@ Home inventory tools exist, but they all assume you will sit down and type. Almo
 
 ## Key Differentiators
 
-- **Capture by camera, not by keyboard**: identification happens from a photo, not a form.
-- **Receipts do the work**: parsed automatically into catalogued items with prices and dates.
-- **Built for the moment it matters**: value and warranty records ready for insurance, not buried.
-- **Searchable, not just stored**: find any item, room, or purchase the instant you need it.
+- **Camera-assisted entry**: uploading a photo on the new-item form suggests details in place.
+- **Receipt review**: parsed line items link to an empty form for manual addition.
+- **Record useful details**: add values and warranty dates to the items you save.
+- **Searchable records**: search saved items and filter the inventory by category or location.
+
+## Current boundary
+
+This source prototype has session-protected item and photo reads, but item create/update does not verify ownership of referenced categories, locations, and tags. It is not an audited household sharing or insurance-claim system. The scan page does not carry photo/barcode suggestions into the new-item form, and scanning a photo on that form does not persist the image with the item. Export can omit photo files that are missing or unreadable on disk. No public Knowmine deployment has been verified.

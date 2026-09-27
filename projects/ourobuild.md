@@ -1,22 +1,17 @@
 ---
 name: Ourobuild
-tagline: The self-building serpent
+tagline: Scaffold agent workflows and preview PRD issues from a project
 description: >-
-  A pluggable toolkit that turns any software project into an autonomous,
-  self-building one — from market signal to ticket to merge to changelog, then
-  around again.
+  A TypeScript CLI that scaffolds agent workflow files, MCP configuration and
+  skills, and previews or creates GitHub issues from PRD roadmap items.
 category: developer-tools
 features:
-  - >-
-    Closes the full loop — signal, ticket, implementation, review, merge,
-    changelog
-  - 'Pluggable adapters for issue trackers, CI, and code hosts'
-  - 'Generates tickets from market signals, not just dependency bumps'
-  - 'Implements, reviews, and merges with guardrails you control'
-  - Learns from each cycle to sharpen the next
+  - 'Scaffold configuration, MCP settings, skills and GitHub workflow templates'
+  - Preview PRD roadmap items as issue proposals without a GitHub write
+  - Create issues from PRD roadmap items with configured GitHub credentials
 targetUser: >-
-  Solo founders and small teams who want to compound shipping velocity without
-  compounding process
+  Developers who want a starting point for agent workflow configuration in an
+  existing repository.
 featured: false
 icon: >-
   M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181
@@ -28,17 +23,14 @@ repoUrl: 'https://github.com/aylith-labs/ourobuild'
 order: 10
 ---
 
-## Vision
+## Current scope
 
-Ourobuild closes the autonomous software development loop end to end: market signal, ticket, implementation, review, merge, changelog, learn, repeat. No existing tool does the whole circle. Claude Code Action implements issues but does not create them from signals. Renovate opens tickets but only for dependencies. GPT-Researcher researches but never touches code. Ourobuild orchestrates the entire lifecycle as one continuous motion.
+`ourobuild init` writes starter files into a target repository. `ourobuild run --layer 2 --dry-run` parses checklist items in the configured PRD and previews issue proposals. Without `--dry-run`, Layer 2 uses GitHub credentials to create issues. Other `run` layers currently print guidance about scaffolded workflows; they do not execute a local autonomous loop. Generated workflow files need engine credentials, configuration and external execution before they can produce a build or changelog event. No completed workflow run or graph sync is implied by the presence of those files.
 
-## The Problem
+## From source checkout to issue preview
 
-The pieces of autonomous development exist, but they are scattered. A founder stitching them together spends more time wiring the loop than running it. The handoffs between research, planning, building, and shipping leak context at every seam, and nothing carries what it learned into the next pass.
+Install the repository dependencies with Bun, then run `bun /path/to/ourobuild/packages/cli/src/index.ts init --engine codex` from a separate target repository. Review the generated configuration, MCP settings, skills, and workflow templates before using them. Layer 2 is designed to preview PRD roadmap issue proposals with `--dry-run`, without a GitHub write. In a disposable source-checkout evaluation, `init` wrote the files but the immediate dry run could not load its generated config: the target did not have the bare `ourobuild` package imported by that config. `doctor` reported 6/9 checks. This documented quick-start path is therefore not yet verified end to end. `doctor` checks setup; it does not certify an external workflow run.
 
-## Key Differentiators
+## Current boundary
 
-- **Whole-loop, not a single stage**: every other tool owns one arc of the circle. Ourobuild owns the circle.
-- **Signal-driven tickets**: work starts from demand evidence, not from a backlog someone has to keep grooming.
-- **Pluggable by design**: bring your own tracker, CI, and host. Ourobuild is the orchestration, not a walled garden.
-- **Learns across cycles**: each merge feeds the next signal, so the loop gets sharper the longer it runs.
+Ourobuild is a scaffold and PRD-issue CLI prototype. It does not run the full market-signal-to-merge loop locally, enforce configured budgets, or prove that generated workflows compile or ship changes. Re-running issue creation can produce duplicate issues, so dry-run and review remain important before any write. The seven-stage ring on the standalone landing is a design map, not an execution trace.

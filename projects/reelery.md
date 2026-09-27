@@ -1,21 +1,17 @@
 ---
 name: Reelery
-tagline: Write it. Watch yourself say it.
+tagline: Inspect local footage before a video workflow
 description: >-
-  Local-first video authoring studio. A written script becomes a finished video
-  — narrated in your own cloned voice, presented by your own face, captioned and
-  cut — without the source material leaving your machine.
+  Early local video preparation project. Its working CLI inspects source-video
+  metadata, provenance and three sampled frames in a self-contained offline
+  review page.
 category: design-tools
 features:
-  - 'Script to finished video, with every stage scriptable'
-  - Narration in your own cloned voice
-  - Presenter from recorded footage (lipsync) or a single portrait
-  - 'Word-level captions derived from the locked audio, so nothing drifts'
-  - Renders locally — cents of electricity against dollars per minute hosted
-  - Machine-readable AI marking and disclosure built into the render
-targetUser: >-
-  Solo creators and engineers who publish talking-head video regularly and want
-  to own the pipeline rather than rent it per minute
+  - Local video stream and duration inspection with ffprobe
+  - Three sampled PNG frames for human review
+  - SHA-256 source hash and media-tool versions in a JSON report
+  - Offline light/dark HTML review sheet with the real frames and source facts
+targetUser: Creators preparing recorded footage for a video workflow
 featured: false
 icon: >-
   M15.75 10.5l4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0
@@ -27,25 +23,22 @@ repoUrl: 'https://github.com/aylith-labs/reelery'
 order: 4
 ---
 
-## Vision
+## Start with the source
 
-Hosted avatar platforms charge between $2 and $10 for every finished minute of video. The same
-minute rendered on a desktop GPU costs about three cents of electricity. Reelery exists to close
-that gap without giving up quality — and without handing the raw material to a third party.
+Before editing a recording, a creator needs to see what is actually there. Reelery's
+local `python -m reelery inspect` command accepts a video and a new or empty
+output directory. It writes three real sample PNGs, source and stream facts in
+`report.json`, and an offline `report.html` that puts those facts beside the
+frames. The page follows the system light or dark theme and makes no network
+requests. The README documents the command and prerequisites.
 
-## The bet
+## Review, then decide
 
-The realism ceiling on a synthetic presenter is set by the source material, not by the model. A few
-minutes of recorded footage turns every future video from a *generation* problem into a *lipsync*
-problem — cheaper, faster, and markedly more convincing, because most of every frame is real video.
+The samples offer a first look near the beginning, middle and end. Watch and
+listen to the whole source before deciding whether to use it. The report
+records an absolute local path and can reveal sensitive imagery, so inspect
+it before sharing. Nothing in the report grants usage rights or scores quality.
 
-Reelery is built around that: record yourself once, then write.
+## Current limits
 
-## Scope
-
-Script → per-beat voice-over → locked audio timeline → presenter render → word-level captions →
-assembly with b-roll and titles → a QC gate that actually inspects the output → publish with the
-AI marking and disclosure the law now requires.
-
-Dictation is deliberately out of scope; that belongs to its sibling, Dictaro. The two share the
-voice identity, the speech-recognition worker and the media conventions.
+The frames require human review. Reelery does not yet make a finished video, generate a voice or presenter, create captions, enforce consent, verify publish quality, or publish media. No local-versus-hosted cost or performance benchmark has been measured here.

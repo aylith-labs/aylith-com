@@ -1,19 +1,20 @@
 ---
 name: Cohesa
-tagline: One platform. Total cohesion.
+tagline: 'Chat, issues, documents, and connected project context in one workspace'
 description: >-
-  A unified workplace platform that replaces the fragmented stack of enterprise
-  SaaS tools with a single application backed by a single data store.
+  A self-hosted workplace application for team chat, issues, documents, and
+  search. An opt-in native suite mode also shows selected project context from
+  explicitly configured source adapters.
 category: productivity
 features:
-  - One application instead of a dozen disconnected tools
-  - A single shared data store across every workflow
-  - 'Docs, tasks, people, and projects that reference each other natively'
-  - No integrations to maintain — the data already lives together
-  - Consistent permissions and search across the whole workspace
+  - 'Team chat, issue tracking, documents, and workspace search'
+  - >-
+    Selected project context from configured source adapters in native suite
+    mode
+  - Self-hosted local development stack
 targetUser: >-
-  Teams drowning in tool sprawl who want their work to live in one coherent
-  place
+  Engineering teams evaluating a self-hosted home for communication and project
+  work
 featured: false
 icon: >-
   M2.25 12.75V12A2.25 2.25 0 0 1 4.5 9.75h15A2.25 2.25 0 0 1 21.75
@@ -24,19 +25,32 @@ gradientFrom: '#0d9488'
 gradientTo: '#5eead4'
 repoUrl: 'https://github.com/aylith-labs/cohesa'
 order: 12
+onboarding:
+  access: restricted
+  prerequisites:
+    - 'Local infrastructure, database migrations, and OIDC configuration'
+    - >-
+      Explicit BFF and source-grant configuration for native suite project
+      context
+  limitations:
+    - >-
+      Native suite mode currently exposes the selected-project surface; legacy
+      chat, issues, and documents use a separate session path
+    - >-
+      Local fixtures and automated tests do not establish a ready owner
+      installation or full source coverage
 ---
 
 ## Vision
 
-The modern workplace stack is a dozen apps that barely speak to each other, each holding a slice of the same truth. Cohesa replaces that fragmentation with one application on one data store, so a task, the document that defines it, and the person who owns it are the same graph — not three exports waiting to drift apart.
+Engineering teams move between conversations, issues, documents, and project decisions. Cohesa brings chat, issues, documents, and search into one self-hosted application. An opt-in native suite view can display the selected project and its source-owned context when its session and source grants are configured.
 
 ## The Problem
 
-Tool sprawl is expensive in ways that do not show up on the invoice. Every new SaaS app is another silo, another integration to babysit, another place the truth can diverge. Teams spend their attention reconciling tools instead of doing the work the tools were bought to support.
+Moving among separate tools makes it harder to keep a project's conversation and source decisions together. Cohesa's current implementation offers a common workspace application and a bounded selected-project context path.
 
 ## Key Differentiators
 
-- **One data store, not many integrations**: cohesion comes from shared data, not from syncing copies between apps.
-- **Native cross-references**: tasks, docs, and people link directly because they live in the same model.
-- **Consistent everywhere**: one permission model and one search across the entire workspace.
-- **Replaces, not augments**: Cohesa is the stack, not another tool bolted onto it.
+- **Workspace tools together**: chat, issues, documents, and search have application surfaces backed by Cohesa's services.
+- **Explicit selected-project context**: the native suite path resolves a configured binding under the current session and displays source-owned projections. A binding is a selector, not an access grant.
+- **Current limit**: native suite mode does not yet make every legacy surface available under the same session. A package mapping alone does not establish an active cross-app entity graph.

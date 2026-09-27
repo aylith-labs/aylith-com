@@ -1,20 +1,20 @@
 ---
 name: Inspekt
-tagline: 'Click any element, get its source — or hand it to your agent'
+tagline: Inspect instrumented elements and find their source
 description: >-
-  A framework-agnostic element inspector for dev servers: Ctrl+Alt+Click
-  anything in your running app to see the file, line, and component tree behind
-  it. Then open it in your IDE, or hand it — with its surrounding source — to a
-  coding agent over MCP.
+  An element inspector for instrumented development projects: Ctrl+Alt+Click an
+  element to see its source location and surrounding lines. Copy the path, open
+  it in an editor, or configure the separate extension and MCP workflow for
+  agent handoff.
 category: developer-tools
 features:
-  - 'Ctrl+Alt+Click any element to reveal its source file, line, and column'
+  - >-
+    Ctrl+Alt+Click an instrumented element to reveal its source file, line, and
+    column
   - >-
     Component tree with props, search, and highlighting — React, Vue, Svelte,
     and Solid adapters plus a generic DOM fallback
-  - >-
-    Plugins for Vite, Webpack, Rspack, esbuild, and Rollup — the same inspector
-    on any bundler
+  - 'Plugins for Vite, Webpack, Rspack, esbuild, and Rollup'
   - >-
     Send a grabbed element to Claude Code, Cursor, Codex, Gemini CLI, or
     Antigravity over MCP
@@ -60,8 +60,11 @@ onboarding:
       Published plugin 0.2.1 can probe the wrong origin and leaves a dev-module
       reference in production HTML; local fixes are not a public package update
     - >-
-      Local packed-source Windows inspection is verified separately; other
-      operating systems, frameworks and optional integrations remain unverified
+      Local packed-source React/Vite inspection is verified on Windows and
+      Linux; macOS, other frameworks and optional integrations remain unverified
+    - >-
+      Dev-server source and editor endpoints are unauthenticated cross-origin
+      routes; keep the server local and review configured path mappings
 ---
 
 ## Vision
@@ -69,8 +72,8 @@ onboarding:
 The gap between seeing a bug and editing the code that causes it is pure overhead:
 you spot the misaligned button, then go hunting through a component tree in your
 editor to find which file renders it. Inspekt closes that gap to one click. The
-inspector knows the source location of every element because the bundler plugin
-wrote it there at build time — so clicking is the lookup.
+inspector can read the source location of instrumented elements because the
+bundler plugin writes it into the development output.
 
 That same context is exactly what a coding agent needs and almost never gets.
 "Fix this button" is useless without a file and a line; Inspekt turns the element
@@ -90,10 +93,9 @@ the build output — it just has no path from the browser to the agent.
 
 ## How it's different
 
-- **Framework-agnostic by construction.** The source location is injected at
-  build time onto every element, so the inspector works the same whether the app
-  is React, Vue, Svelte, or Solid — and a generic DOM adapter covers the rest.
-- **Any bundler.** Vite gets a first-class plugin with a dev-server integration;
+- **Framework adapters.** The runtime has React, Vue, Svelte and Solid adapters;
+  a generic DOM adapter reads injected source attributes where available.
+- **Several bundlers.** Vite gets a plugin with a dev-server integration;
   Webpack, Rspack, esbuild, and Rollup get the same transform through unplugin.
 - **Built for the handoff.** The daemon holds a grab queue and the MCP server
   exposes it to agents over stdio, so an element you clicked in Chrome becomes a
@@ -101,8 +103,8 @@ the build output — it just has no path from the browser to the agent.
 - **Docker is a first-class case.** When the app runs in a container, paths point
   at `/app/...`; Inspekt reads the volume mounts out of `docker-compose.yaml` and
   maps them back to your real checkout.
-- **Works without a build step too.** The Chrome extension carries global
-  settings across projects and can inject the inspector into a page that has no
-  plugin installed at all.
+- **Extension fallback.** The Chrome extension carries settings across projects
+  and can inject the inspector without a plugin, but a page without source
+  instrumentation may provide only DOM information.
 
 MIT licensed. The [public Vite quick start](https://github.com/aylith-labs/inspekt#quick-start) uses `@aylith/inspekt-vite`. The published `@aylith/inspekt` package includes the runtime, plugins, CLI, daemon and MCP packages, not an installed Chrome extension. Check setup requirements above before using optional integrations.

@@ -2,18 +2,15 @@
 name: Inglenook
 tagline: Your AI. Your hardware. Your rules.
 description: >-
-  A beautiful desktop app that makes running local AI models as easy as using
-  ChatGPT — with zero data leaving your machine.
+  A desktop app for local model chat and on-device document search. Model
+  downloads require a network connection; chats and indexed files stay local.
 category: ai-infrastructure
 features:
-  - One-click model download and management
-  - Polished chat interface rivaling cloud AI products
-  - Document analysis and RAG workflows built in
-  - Completely offline — works on aircraft and in secure facilities
-  - 'Supports Llama, Mistral, Gemma, Qwen, and more'
-targetUser: >-
-  Privacy-conscious professionals, enterprises with compliance requirements, and
-  users in regulated industries
+  - Curated GGUF model downloads and local model management
+  - Local streaming chat and conversation history
+  - 'Explicit, single-document keyword search of locally indexed files'
+  - Optional loopback OpenAI-compatible API server
+targetUser: People who want local model chat and document search on their own desktop
 featured: false
 icon: >-
   M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115
@@ -24,18 +21,31 @@ gradientFrom: '#64748b'
 gradientTo: '#94a3b8'
 repoUrl: 'https://github.com/aylith-labs/inglenook'
 order: 7
+onboarding:
+  access: restricted
+  prerequisites:
+    - Source access and a supported Tauri build environment
+    - A local GGUF model or network access to download one
+  limitations:
+    - The source repository is private and no public installer has been verified
+    - >-
+      Native build, inference, and offline behavior have not passed end-to-end
+      verification
+    - >-
+      Document search is keyword-only for one selected file and does not ground
+      chat replies
 ---
 
 ## Vision
 
-Open-source AI models are now good enough for most professional tasks. The missing piece is a polished, integrated experience that makes local AI accessible to non-technical users. Ollama provides the runtime but no UI. LM Studio provides a chat UI but no workflows. Inglenook is the complete private AI workstation.
+Inglenook brings local model chat and document search into one desktop interface. The app downloads selected models from Hugging Face, then runs inference on the user's hardware. Indexed document text and conversation history are stored in a local SQLite database.
 
 ## The Problem
 
-Cloud AI creates fundamental tensions: privacy erosion, data sovereignty concerns, cost unpredictability, internet dependency, and content censorship. Users in HIPAA/GDPR-regulated industries, government, and legal sectors need guarantees that data never leaves their jurisdiction.
+Cloud AI can require sending prompts and documents to a provider. Inglenook offers local inference and local document storage for users who prefer to keep that material on their machine. Model downloads still make outbound requests, and this repository does not establish a compliance certification.
 
 ## Key Differentiators
 
-- **Complete experience, not just a chat UI**: Includes document analysis, RAG pipelines, workflow automation — not just another chat wrapper around Ollama
-- **Enterprise privacy**: Zero data exfiltration by design. Every byte stays on local hardware
-- **Beautiful by default**: Desktop-native UI that rivals ChatGPT's polish, not a developer tool aesthetic
+- **Local chat**: Streaming responses, saved conversations, search, and export.
+- **Document search**: Drop a supported file into the desktop window to index it locally, then select one document to search its text.
+- **Local API option**: The OpenAI-compatible server binds to loopback when enabled.
