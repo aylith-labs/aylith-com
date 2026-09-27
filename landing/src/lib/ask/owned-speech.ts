@@ -1,14 +1,13 @@
 import type { UIMessage } from 'ai';
 
 type ContextTurn = { role: 'user' | 'assistant'; content: string };
-export type VoiceSessionProvider = 'owned' | 'cartesia';
-export type OwnedAvailability = { ready: boolean; ttsReady: boolean; readyLanguages: string[]; readyVoices: { id: string; locale: string }[]; maxRecordingSeconds: number };
+export type OwnedAvailability = { ready: boolean; ttsReady: boolean; cartesiaTtsReady: boolean; cartesiaDiscoveryPending: boolean; readyLanguages: string[]; readyVoices: { id: string; locale: string }[]; maxRecordingSeconds: number };
 type OwnedCallbacks = {
 	context: () => UIMessage[];
 	onTranscript: (text: string, language?: string) => void;
 	onAnswer: (text: string, final: boolean) => void;
 	onAction: (action: unknown) => void;
-	onVoice?: (voice: { id: string; locale: string }) => void;
+	onVoice?: (voice: { id: string; locale: string; provider: 'owned' | 'cartesia' }) => void;
 	onAudioUnavailable?: (language?: string) => void;
 	onState?: (state: 'idle' | 'connecting' | 'listening' | 'thinking' | 'speaking' | 'error', detail?: string) => void;
 };
@@ -31,6 +30,7 @@ export function visibleVoiceContext(messages: UIMessage[]): ContextTurn[] {
 type Turn = {
 	epoch: number;
 	id: string;
+	ttsPreference: 'owned' | 'cartesia_then_owned';
 	socket?: WebSocket;
 	stream?: MediaStream;
 	input?: AudioContext;
@@ -52,8 +52,9 @@ export class OwnedSpeech {
 	private current?: Turn;
 	voiceId = '';
 	language = 'auto';
+	ttsPreference: 'owned' | 'cartesia_then_owned' = 'owned';
 
-	constructor(private readonly apiUrl: string, private readonly callbacks: OwnedCallbacks, private readonly provider: VoiceSessionProvider = 'owned') {}
+	constructor(private readonly apiUrl: string, private readonly callbacks: OwnedCallbacks) {}
 
 	async probe(): Promise<OwnedAvailability> {
 		try {
@@ -62,18 +63,16 @@ export class OwnedSpeech {
 			const data = await response.json() as Record<string, unknown>;
 			const stt = data.stt as { serverAvailable?: unknown; readyLanguages?: unknown; maxRecordingSeconds?: unknown } | undefined;
 			const tts = data.tts as { serverAvailable?: unknown; readyVoices?: unknown } | undefined;
-			const providers = data.providers as { owned?: { stt?: unknown; tts?: unknown }; cartesia?: { serverAvailable?: unknown } } | undefined;
-			if (this.provider === 'cartesia') {
-				const ready = providers?.cartesia?.serverAvailable === true;
-				return { ready, ttsReady: ready, readyLanguages: [], readyVoices: [], maxRecordingSeconds: 30 };
-			}
+			const providers = data.providers as { owned?: { stt?: unknown; tts?: unknown }; cartesia?: { tts?: { serverAvailable?: unknown; readyLanguages?: unknown; readyVoices?: unknown; discoveryPending?: unknown } } } | undefined;
 			const provider = providers?.owned;
 			const readyLanguages = Array.isArray(stt?.readyLanguages) ? stt.readyLanguages.filter((item): item is string => typeof item === 'string') : [];
 			const readyVoices = Array.isArray(tts?.readyVoices) ? tts.readyVoices.filter((item): item is { id: string; locale: string } => typeof item?.id === 'string' && typeof item?.locale === 'string') : [];
+			const cartesiaTts = providers?.cartesia?.tts;
+			const cartesiaTtsReady = cartesiaTts?.serverAvailable === true && Array.isArray(cartesiaTts.readyLanguages) && cartesiaTts.readyLanguages.some((language) => typeof language === 'string') && Array.isArray(cartesiaTts.readyVoices) && cartesiaTts.readyVoices.some((voice) => typeof voice?.id === 'string' && typeof voice?.locale === 'string' && typeof voice?.language === 'string');
 			return { ready: provider?.stt === true && stt?.serverAvailable === true && readyLanguages.length > 0,
-				ttsReady: provider?.tts === true && tts?.serverAvailable === true && readyVoices.length > 0, readyLanguages, readyVoices,
+				ttsReady: provider?.tts === true && tts?.serverAvailable === true && readyVoices.length > 0, cartesiaTtsReady, cartesiaDiscoveryPending: cartesiaTts?.discoveryPending === true, readyLanguages, readyVoices,
 				maxRecordingSeconds: typeof stt?.maxRecordingSeconds === 'number' ? Math.min(30, stt.maxRecordingSeconds) : 30 };
-		} catch { return { ready: false, ttsReady: false, readyLanguages: [], readyVoices: [], maxRecordingSeconds: 30 }; }
+		} catch { return { ready: false, ttsReady: false, cartesiaTtsReady: false, cartesiaDiscoveryPending: false, readyLanguages: [], readyVoices: [], maxRecordingSeconds: 30 }; }
 	}
 
 	private isCurrent(turn: Turn): boolean { return this.current === turn && turn.epoch === this.epoch; }
@@ -83,7 +82,7 @@ export class OwnedSpeech {
 	}
 
 	private async openSession(turn: Turn): Promise<void> {
-		const response = await fetch(`${this.apiUrl}/api/voice/sessions`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ provider: this.provider, ...(this.voiceId ? { voiceId: this.voiceId } : {}) }) });
+		const response = await fetch(`${this.apiUrl}/api/voice/sessions`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ provider: 'owned', ...(turn.ttsPreference === 'cartesia_then_owned' ? { ttsPreference: turn.ttsPreference } : {}), ...(this.voiceId ? { voiceId: this.voiceId } : {}) }) });
 		if (!response.ok) throw new Error('The Aylith voice server could not start a session.');
 		const session = await response.json() as { url?: unknown };
 		if (!this.isCurrent(turn)) return;
@@ -110,10 +109,10 @@ export class OwnedSpeech {
 		const available = await this.probe();
 		if (epoch !== this.epoch) return;
 		if (!available.ready) throw new Error('The Aylith voice server is not ready for speech.');
-		if (this.provider === 'owned' && this.voiceId && !available.readyVoices.some((voice) => voice.id === this.voiceId)) throw new Error('The selected server voice is not ready.');
-		if (this.provider === 'owned' && this.language !== 'auto' && !available.readyLanguages.some((lang) => lang.toLowerCase() === this.language.toLowerCase().split('-')[0])) throw new Error('The selected server speech language is not ready.');
+		if (this.voiceId && !available.readyVoices.some((voice) => voice.id === this.voiceId)) throw new Error('The selected server voice is not ready.');
+		if (this.language !== 'auto' && !available.readyLanguages.some((lang) => lang.toLowerCase() === this.language.toLowerCase().split('-')[0])) throw new Error('The selected server speech language is not ready.');
 		if (!navigator.mediaDevices?.getUserMedia || typeof AudioWorkletNode === 'undefined') throw new Error('Microphone capture is unavailable in this browser.');
-		const turn: Turn = { epoch, id: crypto.randomUUID(), recording: false, finishing: false, sentBytes: 0, maxBytes: Math.floor(Math.max(1, available.maxRecordingSeconds) * 16000 * 2), playing: new Set(), nextAudioTime: 0, done: false };
+		const turn: Turn = { epoch, id: crypto.randomUUID(), ttsPreference: this.ttsPreference === 'cartesia_then_owned' && available.cartesiaTtsReady && !this.voiceId ? 'cartesia_then_owned' : 'owned', recording: false, finishing: false, sentBytes: 0, maxBytes: Math.floor(Math.max(1, available.maxRecordingSeconds) * 16000 * 2), playing: new Set(), nextAudioTime: 0, done: false };
 		this.current = turn;
 		this.callbacks.onState?.('connecting');
 		try {
@@ -200,7 +199,7 @@ export class OwnedSpeech {
 		if (message.type === 'assistant.text' && typeof message.text === 'string') this.callbacks.onAnswer(message.text, message.final === true);
 		if (message.type === 'assistant.action') this.callbacks.onAction(message.action);
 		if (message.type === 'assistant.audio.unavailable') this.callbacks.onAudioUnavailable?.(typeof message.language === 'string' ? message.language : undefined);
-		if (message.type === 'assistant.voice' && typeof message.voiceId === 'string' && typeof message.locale === 'string') this.callbacks.onVoice?.({ id: message.voiceId, locale: message.locale });
+		if (message.type === 'assistant.voice' && typeof message.voiceId === 'string' && typeof message.locale === 'string') this.callbacks.onVoice?.({ id: message.voiceId, locale: message.locale, provider: message.provider === 'cartesia' ? 'cartesia' : 'owned' });
 		if (message.type === 'assistant.audio' && typeof message.data === 'string' && message.format === 'pcm_s16le' && message.sampleRate === 24000) this.play(turn, message.data);
 		if (message.type === 'error') { const detail = typeof message.message === 'string' ? message.message : 'Voice turn failed.'; void this.stop(false).then(() => { if (this.epoch === turn.epoch + 1) this.callbacks.onState?.('error', detail); }); }
 		if (message.type === 'turn.done') {

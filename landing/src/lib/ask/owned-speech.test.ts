@@ -9,7 +9,20 @@ function turn(role: 'user' | 'assistant', content: string): UIMessage {
 }
 
 describe('owned voice fallback', () => {
-	it('opens an explicitly selected Cartesia session only when the gateway reports it ready', async () => {
+	it('does not treat a coarse Cartesia availability flag as a ready multilingual voice', async () => {
+		vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify({
+			stt: { serverAvailable: true, readyLanguages: ['en', 'hu'] },
+			tts: { serverAvailable: true, readyVoices: [{ id: 'piper', locale: 'en_US' }] },
+			providers: { owned: { stt: true, tts: true }, cartesia: { serverAvailable: true, tts: { discoveryPending: true, readyLanguages: [], readyVoices: [] } } }
+		}))));
+		const speech = new OwnedSpeech('https://ai.example.test', { onTranscript: () => {}, onAnswer: () => {}, onAction: () => {}, context: () => [] });
+		const availability = await speech.probe();
+		expect(availability.ready).toBe(true);
+		expect(availability.cartesiaTtsReady).toBe(false);
+		expect(availability.cartesiaDiscoveryPending).toBe(true);
+	});
+
+	it('opts into cloud narration only when native-language Cartesia TTS is ready', async () => {
 		let microphoneRequested: (() => void) | undefined;
 		let grantMicrophone: ((stream: MediaStream) => void) | undefined;
 		const requested = new Promise<void>((resolve) => { microphoneRequested = resolve; });
@@ -29,14 +42,17 @@ describe('owned voice fallback', () => {
 		}
 		vi.stubGlobal('WebSocket', Socket);
 		const fetcher = vi.fn(async (input: string, _init?: RequestInit) => input.endsWith('/capabilities')
-			? new Response(JSON.stringify({ providers: { cartesia: { serverAvailable: true }, owned: { stt: false, tts: false } }, stt: { serverAvailable: false, readyLanguages: [] }, tts: { serverAvailable: false, readyVoices: [] } }))
+			? new Response(JSON.stringify({ providers: { cartesia: { serverAvailable: true, tts: { serverAvailable: true, readyLanguages: ['en', 'hu'], readyVoices: [{ id: 'native-en', locale: 'en-US', language: 'en' }, { id: 'native-hu', locale: 'hu-HU', language: 'hu' }] } }, owned: { stt: true, tts: true } }, stt: { serverAvailable: true, readyLanguages: ['en', 'hu'] }, tts: { serverAvailable: true, readyVoices: [{ id: 'piper', locale: 'en_US' }] } }))
 			: new Response(JSON.stringify({ url: 'wss://ai.example.test/api/voice/ws' })));
 		vi.stubGlobal('fetch', fetcher);
-		const speech = new OwnedSpeech('https://ai.example.test', { onTranscript: () => {}, onAnswer: () => {}, onAction: () => {}, context: () => [] }, 'cartesia');
-		expect((await speech.probe()).ready).toBe(true);
+		const speech = new OwnedSpeech('https://ai.example.test', { onTranscript: () => {}, onAnswer: () => {}, onAction: () => {}, context: () => [] });
+		const availability = await speech.probe();
+		expect(availability.ready).toBe(true);
+		expect(availability.cartesiaTtsReady).toBe(true);
+		speech.ttsPreference = 'cartesia_then_owned';
 		const starting = speech.start();
 		await requested;
-		expect(JSON.parse(String(fetcher.mock.calls.find((call) => call[0].endsWith('/sessions'))?.[1]?.body))).toEqual({ provider: 'cartesia' });
+		expect(JSON.parse(String(fetcher.mock.calls.find((call) => call[0].endsWith('/sessions'))?.[1]?.body))).toEqual({ provider: 'owned', ttsPreference: 'cartesia_then_owned' });
 		await speech.stop();
 		grantMicrophone?.({ getTracks: () => [{ stop: vi.fn() }] } as unknown as MediaStream);
 		await starting;
@@ -79,8 +95,8 @@ describe('owned voice fallback', () => {
 		vi.stubGlobal('fetch', vi.fn(async (input: string) => input.endsWith('/capabilities')
 			? new Response(JSON.stringify({ stt: { serverAvailable: true, readyLanguages: ['en'], maxRecordingSeconds: 30 }, tts: { serverAvailable: true, readyVoices: [{ id: 'voice', locale: 'en_US' }] }, providers: { owned: { stt: true, tts: true } } }))
 			: new Response(JSON.stringify({ url: 'wss://ai.example.test/api/voice/ws' }))));
-		const onAction = vi.fn(), onAnswer = vi.fn();
-		const speech = new OwnedSpeech('https://ai.example.test', { onTranscript: () => {}, onAnswer, onAction, context: () => [] });
+		const onAction = vi.fn(), onAnswer = vi.fn(), onVoice = vi.fn();
+		const speech = new OwnedSpeech('https://ai.example.test', { onTranscript: () => {}, onAnswer, onAction, onVoice, context: () => [] });
 		await speech.start();
 		const firstTurnId = JSON.parse(String(Socket.instances[0].send.mock.calls.find((call) => JSON.parse(String(call[0])).type === 'mic.start')?.[0])).turnId;
 		expect(typeof firstTurnId).toBe('string');
@@ -91,9 +107,13 @@ describe('owned voice fallback', () => {
 		Socket.instances[0].onmessage?.({ data: JSON.stringify({ type: 'assistant.action', turnId: firstTurnId, action: { type: 'open_project', slug: 'torbie', view: 'website' } }) });
 		Socket.instances[0].onmessage?.({ data: JSON.stringify({ type: 'assistant.audio', turnId: firstTurnId, data: 'AAAA', format: 'pcm_s16le', sampleRate: 24000 }) });
 		Socket.instances[0].onmessage?.({ data: JSON.stringify({ type: 'assistant.text', turnId: firstTurnId, text: 'late', final: true }) });
+		Socket.instances[0].onmessage?.({ data: JSON.stringify({ type: 'assistant.voice', turnId: firstTurnId, voiceId: 'old', locale: 'hu-HU', provider: 'cartesia' }) });
 		expect(onAction).not.toHaveBeenCalled();
 		expect(onAnswer).not.toHaveBeenCalled();
+		expect(onVoice).not.toHaveBeenCalled();
 		expect(audioStarts).not.toHaveBeenCalled();
+		Socket.instances[1].onmessage?.({ data: JSON.stringify({ type: 'assistant.voice', turnId: secondTurnId, voiceId: 'native-hu', locale: 'hu-HU', provider: 'cartesia' }) });
+		expect(onVoice).toHaveBeenCalledWith({ id: 'native-hu', locale: 'hu-HU', provider: 'cartesia' });
 		expect(Socket.instances[1].send.mock.calls.map((call) => JSON.parse(String(call[0])).type)).toEqual(['mic.start']);
 		await speech.stop();
 	});

@@ -35,7 +35,7 @@
 	let voiceSettings = $state(false);
 	let speech: BrowserSpeech | undefined;
 	let owned: OwnedSpeech | undefined;
-	let ownedSnapshot = $state<OwnedAvailability>({ ready: false, ttsReady: false, readyLanguages: [], readyVoices: [], maxRecordingSeconds: 30 });
+	let ownedSnapshot = $state<OwnedAvailability>({ ready: false, ttsReady: false, cartesiaTtsReady: false, cartesiaDiscoveryPending: false, readyLanguages: [], readyVoices: [], maxRecordingSeconds: 30 });
 	let voicePreference = $state<'auto' | 'browser' | 'owned'>('auto');
 	let activeVoice = $state<'browser' | 'owned' | ''>('');
 	let ownedVoiceId = $state('');
@@ -57,7 +57,8 @@
 	let speechProbeEpoch = 0;
 	let voiceMode = $derived(voicePreference === 'auto' ? (speechSnapshot.recognition === 'available' && speechSnapshot.localVoices.some((voice) => voice.lang.toLowerCase() === speechSnapshot.locale.toLowerCase()) ? 'browser' : ownedSnapshot.ready ? 'owned' : speechSnapshot.recognition === 'available' ? 'browser' : 'none') : voicePreference === 'browser' ? (speechSnapshot.recognition === 'available' ? 'browser' : 'none') : ownedSnapshot.ready ? 'owned' : 'none');
 	let voiceReady = $derived(ready && voiceMode !== 'none');
-	let voiceActionLabel = $derived(activeVoice === 'owned' && speechState === 'listening' ? 'Finish speaking' : speechState === 'speaking' || speechState === 'thinking' ? 'Interrupt and speak again' : activeVoice === 'browser' && speechState === 'listening' ? 'Stop listening' : voiceMode === 'owned' ? 'Speak via Aylith server' : voiceMode === 'browser' ? 'Speak on this device' : 'Speech unavailable');
+	let cloudVoicePossible = $derived(voiceMode === 'owned' && voicePreference === 'auto' && ownedSnapshot.cartesiaTtsReady && !ownedVoiceId);
+	let voiceActionLabel = $derived(activeVoice === 'owned' && speechState === 'listening' ? 'Finish speaking' : speechState === 'speaking' || speechState === 'thinking' ? 'Interrupt and speak again' : activeVoice === 'browser' && speechState === 'listening' ? 'Stop listening' : voiceMode === 'owned' ? cloudVoicePossible ? 'Speak via Aylith server; reply text may go to Cartesia for voice' : 'Speak via Aylith server' : voiceMode === 'browser' ? 'Speak on this device' : 'Speech unavailable');
 	let voicePhase = $derived(speechState === 'connecting' || speechState === 'listening' || speechState === 'thinking' || speechState === 'speaking' ? speechState : voiceTurn && (chat.status === 'submitted' || chat.status === 'streaming') ? 'thinking' : 'conversation');
 	let isAyla = $derived(page.url.pathname === '/ayla');
 	let isWebsite = $derived(/^\/explore\/[a-z0-9-]+\/website\/?$/.test(page.url.pathname));
@@ -92,6 +93,7 @@
 
 	onMount(() => {
 		let active = true;
+		let discoveryTimer: ReturnType<typeof setTimeout> | undefined;
 		document.documentElement.classList.add('experience-mode');
 		speech = new BrowserSpeech((text) => {
 			if (!active || !ready || !text.trim()) return;
@@ -113,11 +115,15 @@
 				chat.messages = [...chat.messages.filter((message) => message.id !== id), { id, role: 'assistant', parts: [{ type: 'text', text: body }] }];
 			},
 			onAction: (action) => { const target = resolveAylaAction(action, projects.map((item) => item.slug)); if (active && target) { pendingVoiceActionTarget = target; window.dispatchEvent(new CustomEvent('ayla:navigate', { detail: action })); } },
-			onVoice: (voice) => { serverVoiceStatus = `Speaking with ${voice.id} (${voice.locale})`; },
+			onVoice: (voice) => { serverVoiceStatus = voice.provider === 'cartesia' ? `Speaking with a Cartesia cloud voice · ${displayLanguage(voice.locale)}` : `Speaking with ${displayVoice(voice.id, voice.locale)}`; },
 			onAudioUnavailable: (language) => { speechError = `No Aylith server voice is ready for ${language || 'this language'}. The text answer remains here.`; },
 			onState: (state, detail) => { speechState = state; if (state === 'connecting' || state === 'listening' || state === 'thinking' || state === 'speaking') activeVoice = 'owned'; if (state === 'idle' || state === 'error') activeVoice = ''; if (detail) speechError = detail; }
 		});
-		void owned.probe().then((snapshot) => { if (active) ownedSnapshot = snapshot; });
+		void owned.probe().then((snapshot) => {
+			if (!active) return;
+			ownedSnapshot = snapshot;
+			if (snapshot.cartesiaDiscoveryPending) discoveryTimer = setTimeout(() => { void owned?.probe().then((fresh) => { if (active) ownedSnapshot = fresh; }); }, 1500);
+		});
 		localeInput = speech.locale;
 		const refreshSpeech = () => { void updateSpeechSnapshot(); };
 		refreshSpeech();
@@ -144,7 +150,7 @@
 			void goto(target).catch(() => { preservedVoiceRoute = ''; });
 		};
 		window.addEventListener('ayla:navigate', navigate);
-		return () => { active = false; speechProbeEpoch++; document.documentElement.classList.remove('experience-mode'); document.removeEventListener('visibilitychange', visibility); globalThis.speechSynthesis?.removeEventListener('voiceschanged', refreshSpeech); window.removeEventListener('ayla:navigate', navigate); };
+		return () => { active = false; if (discoveryTimer) clearTimeout(discoveryTimer); speechProbeEpoch++; document.documentElement.classList.remove('experience-mode'); document.removeEventListener('visibilitychange', visibility); globalThis.speechSynthesis?.removeEventListener('voiceschanged', refreshSpeech); window.removeEventListener('ayla:navigate', navigate); };
 	});
 
 	onDestroy(() => {
@@ -261,6 +267,7 @@
 		if (voiceMode !== 'owned' || !owned) return;
 		activeVoice = 'owned'; ownedAnswerId = ''; serverVoiceStatus = ''; speechError = '';
 		owned.voiceId = ownedVoiceId; owned.language = serverLanguage;
+		owned.ttsPreference = cloudVoicePossible ? 'cartesia_then_owned' : 'owned';
 		try { await owned.start(); }
 		catch (cause) { activeVoice = ''; speechError = cause instanceof Error ? cause.message : 'Aylith voice could not start.'; speechState = 'error'; }
 	}
@@ -328,8 +335,8 @@
 			<div inert={conversationOpen} class="pointer-events-none absolute inset-x-0 bottom-0 z-20 flex justify-center px-4 pb-[max(1rem,env(safe-area-inset-bottom))] {isWebsite ? '' : 'bg-gradient-to-t from-white via-white/95 to-transparent pt-10 dark:from-surface-950 dark:via-surface-950/95'}">
 				<div class="pointer-events-auto flex items-center gap-2 rounded-full border border-surface-200 bg-white p-2 shadow-[0_14px_50px_-18px_rgba(83,54,37,.4)] dark:border-surface-700 dark:bg-surface-900 {isWebsite ? 'ml-auto' : 'w-full max-w-xl'}">
 					<span class="ayla-dock-light ml-2" aria-hidden="true"></span>
-					<button bind:this={dockTrigger} onclick={() => conversationOpen = true} aria-expanded={conversationOpen} aria-controls="ayla-conversation" class="min-w-0 flex-1 truncate px-2 py-2 text-left text-sm text-surface-600 dark:text-warm-300">Ask Ayla</button>
-					{#if !isWebsite}<button onclick={() => { conversationOpen = true; void toggleVoice(); }} disabled={!voiceReady && !activeVoice} aria-label={voiceActionLabel} title={voiceMode === 'owned' ? 'Speech goes to the Aylith voice server' : voiceMode === 'browser' ? 'Speech stays in this browser' : 'Speech is not ready'} class="flex size-9 shrink-0 items-center justify-center rounded-full border border-surface-200 text-surface-600 disabled:text-surface-400 dark:border-surface-700"><svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3m-4 0h8"/></svg></button>{/if}
+					<button bind:this={dockTrigger} onclick={() => conversationOpen = true} aria-expanded={conversationOpen} aria-controls="ayla-conversation" class="min-w-0 flex-1 px-2 py-1 text-left text-sm text-surface-600 dark:text-warm-300"><span class="block truncate">Ask Ayla</span>{#if cloudVoicePossible}<span class="block truncate text-[0.65rem]">Voice replies may use Cartesia</span>{/if}</button>
+					{#if !isWebsite}<button onclick={() => { conversationOpen = true; void toggleVoice(); }} disabled={!voiceReady && !activeVoice} aria-label={voiceActionLabel} title={voiceActionLabel} class="flex size-9 shrink-0 items-center justify-center rounded-full border border-surface-200 text-surface-600 disabled:text-surface-400 dark:border-surface-700"><svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3m-4 0h8"/></svg></button>{/if}
 					{#if activeVoice}<button onclick={stopAllVoice} aria-label="Interrupt voice" class="shrink-0 rounded-full border border-surface-300 px-3 py-2 text-xs font-medium dark:border-surface-700">Stop voice</button>{/if}
 				</div>
 			</div>
@@ -350,13 +357,13 @@
 			</div>
 			{#if voiceSettings}
 				<div class="relative mb-2 grid max-h-[min(40svh,18rem)] gap-2 overflow-y-auto rounded-xl border border-surface-200 bg-white p-3 text-xs dark:border-surface-700 dark:bg-surface-900" role="group" aria-label="Voice settings">
-					<p>Answers use the online service. On-device speech stays in this browser; Aylith server speech sends microphone audio to our voice server. No audio is saved in this browser.</p>
+					<p>Answers use the online service. On-device speech stays in this browser. If automatic speech uses our server, microphone audio goes to Aylith; when a matching Cartesia cloud voice is used, the answer text goes to Cartesia for speech synthesis. Otherwise Aylith uses its own voice or gives a text answer. No audio is saved in this browser.</p>
 					<div class="flex flex-wrap items-center gap-2"><label for="ayla-voice-route">Speech processing</label><select id="ayla-voice-route" bind:value={voicePreference} class="rounded border border-surface-300 bg-white px-2 py-1 dark:border-surface-600 dark:bg-surface-900"><option value="auto">Automatic · on-device first</option><option value="browser">On-device only</option><option value="owned">Aylith server</option></select></div>
 					<div class="flex flex-wrap items-center gap-2"><label for="ayla-speech-locale">Speech language</label><input id="ayla-speech-locale" aria-label="Speech language" bind:value={localeInput} class="w-28 rounded border border-surface-300 bg-transparent px-2 py-1 dark:border-surface-600" /><button onclick={applyLocale} class="rounded border border-surface-300 px-2 py-1 dark:border-surface-600">Use language</button></div>
 					<p>On-device recognition for {speechSnapshot.locale || 'this language'}: {speechSnapshot.recognition === 'available' ? 'ready' : speechSnapshot.recognition === 'downloadable' ? 'pack available to install' : speechSnapshot.recognition === 'downloading' ? 'pack downloading' : 'unavailable in this browser'}.</p>
 					{#if speechSnapshot.recognition === 'downloadable'}<button onclick={installLocalPack} disabled={installing} class="w-fit rounded border border-surface-300 px-2 py-1 dark:border-surface-600">{installing ? 'Installing…' : 'Install on-device language pack'}</button>{/if}
 					{#if speechSnapshot.localVoices.some((voice) => voice.lang.toLowerCase() === speechSnapshot.locale.toLowerCase())}<div class="flex flex-wrap items-center gap-2"><label for="ayla-local-voice">On-device voice</label><select id="ayla-local-voice" bind:value={selectedVoice} onchange={() => { if (speech) speech.voiceName = selectedVoice; }} class="min-w-0 max-w-64 rounded border border-surface-300 bg-white px-2 py-1 dark:border-surface-600 dark:bg-surface-900"><option value="">Automatic for this language</option>{#each speechSnapshot.localVoices.filter((voice) => voice.lang.toLowerCase() === speechSnapshot.locale.toLowerCase()) as voice}<option value={voice.name}>{voice.name} ({voice.lang})</option>{/each}</select></div>{:else}<p>No on-device voice is ready for this language. Text answers remain available.</p>{/if}
-					<p>Aylith server speech: {ownedSnapshot.ready ? 'recognition ready' : 'not ready'}; {ownedSnapshot.ttsReady ? `${ownedSnapshot.readyVoices.length} voice${ownedSnapshot.readyVoices.length === 1 ? '' : 's'} ready` : 'text answers only until a voice is ready'}. <button onclick={refreshOwned} class="underline">Refresh availability</button></p>
+					<p>Aylith server recognition: {ownedSnapshot.ready ? 'ready' : 'not ready'}. Aylith voices: {ownedSnapshot.ttsReady ? `${ownedSnapshot.readyVoices.length} ready` : 'none ready'}. {#if ownedSnapshot.cartesiaTtsReady}Automatic replies may also use a matching Cartesia cloud voice.{:else if !ownedSnapshot.ttsReady}Text answers remain available.{/if} <button onclick={refreshOwned} class="underline">Refresh availability</button></p>
 					{#if ownedSnapshot.ready}<div class="flex flex-wrap gap-2"><label class="flex items-center gap-1">Server recognition <select bind:value={serverLanguage} class="rounded border border-surface-300 bg-white px-2 py-1 dark:border-surface-600 dark:bg-surface-900"><option value="auto">Detect language</option>{#each ownedSnapshot.readyLanguages as language}<option value={language}>{displayLanguage(language)} ({language})</option>{/each}</select></label><label class="flex items-center gap-1">Server voice <select bind:value={ownedVoiceId} class="min-w-0 max-w-64 rounded border border-surface-300 bg-white px-2 py-1 dark:border-surface-600 dark:bg-surface-900"><option value="">Automatic language match</option>{#each ownedSnapshot.readyVoices as voice}<option value={voice.id}>{displayVoice(voice.id, voice.locale)}</option>{/each}</select></label></div>{/if}
 				{#if serverVoiceStatus}<p>{serverVoiceStatus}</p>{/if}
 				</div>
@@ -382,7 +389,7 @@
 					<p class="p-4 text-sm text-surface-500">Opening this device’s conversation…</p>
 				{/if}
 			</div>
-			<p class="relative px-2 pb-1 text-center text-[0.7rem] text-surface-500 dark:text-warm-400">{durable ? 'History saved on this device' : 'History for this visit only'} · Answers use the online service</p>
+			<p class="relative px-2 pb-1 text-center text-[0.7rem] text-surface-500 dark:text-warm-400">{durable ? 'History saved on this device' : 'History for this visit only'} · Answers use the online service{#if cloudVoicePossible}<span class="block">Voice replies may use Cartesia · <button onclick={() => voiceSettings = true} class="underline">How voice works</button></span>{/if}</p>
 		</section>
 		{/if}
 	</div>
