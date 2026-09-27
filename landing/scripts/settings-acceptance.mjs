@@ -179,7 +179,7 @@ try {
     for (const slug of ['bract', 'compokit', 'videx']) {
       await page.goto(`${origin}/projects/${slug}`);
       check(`${slug}: signed-out visitor has no dead source CTA`, await page.locator(`main a[href="https://github.com/aylith-labs/${slug}"]`).count() === 0);
-      check(`${slug}: setup boundary visible`, (await page.locator('#setup').innerText()).includes('Access is restricted'));
+      check(`${slug}: setup requirements visible`, (await page.locator('#setup').innerText()).includes('Requirements'));
     }
     await page.setViewportSize({ width: 1440, height: 1000 });
     await page.goto(`${origin}/design`); await select('Motion', 'Reduced'); await page.keyboard.press('Escape');

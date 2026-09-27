@@ -31,7 +31,7 @@ try {
 		check(`${profile.name}: restricted Videx not showcased`, !(await page.getByTestId('public-showcase').innerText()).includes('Videx'));
 		await page.getByRole('link', { name: 'Set up Tickets →' }).focus();
 		await page.keyboard.press('Enter');
-		await page.getByRole('heading', { name: 'Setup & access' }).waitFor();
+		await page.getByRole('heading', { name: 'Getting started' }).waitFor();
 		check(`${profile.name}: keyboard quick-start navigation`, page.url().endsWith('/projects/tickets#setup'));
 		check(`${profile.name}: binary/AI/media limits visible`, /0.1.3/.test(await page.locator('main').innerText()) && /publishing access/.test(await page.locator('main').innerText()));
 		await page.reload();
@@ -47,7 +47,7 @@ try {
 		await page.goForward();
 		check(`${profile.name}: back/forward returns exact detail`, page.url().includes('/projects/tickets'));
 		await page.goto(`${origin}/projects/videx`);
-		check(`${profile.name}: restricted access, no broken public CTA`, /Access is restricted/.test(await page.locator('main').innerText()) && await page.locator('main a[href*="github.com/aylith-labs/videx"]').count() === 0);
+		check(`${profile.name}: restricted access, no broken public CTA`, /Requirements/.test(await page.locator('main').innerText()) && await page.locator('main a[href*="github.com/aylith-labs/videx"]').count() === 0);
 		for (const slug of ['bract', 'compokit']) {
 			await page.goto(`${origin}/projects/${slug}`);
 			check(`${profile.name}: ${slug} has no stage badge`, !/\b(?:Planning|In Development|Beta|Live)\b/.test(await page.locator('main header').innerText()));

@@ -62,7 +62,7 @@ try {
 			if (response.request().isNavigationRequest()) receipt.responses.push({ profile: profile.name, url: response.url(), status: response.status() });
 		});
 		await page.goto(`${origin}/projects/bract`);
-		await page.getByRole('heading', { name: 'Setup & access' }).waitFor();
+		await page.getByRole('heading', { name: 'Getting started' }).waitFor();
 		check(`${profile.name}: no stage label`, !/\bPlanning\b/.test(await page.locator('main header').innerText()));
 		const mainText = await page.locator('main').innerText();
 		for (const copy of [
@@ -88,7 +88,7 @@ try {
 		await page.getByRole('link', { name: 'Check Inspekt setup & availability →', exact: true }).focus();
 		await page.keyboard.press('Enter');
 		await page.waitForURL(`${origin}/projects/inspekt#setup`);
-		await page.getByRole('heading', { name: 'Setup & access', exact: true }).waitFor();
+		await page.getByRole('heading', { name: 'Getting started', exact: true }).waitFor();
 		check(`${profile.name}: keyboard empty-state to real setup`, page.url().endsWith('#setup'));
 		const releaseLink = page.getByRole('link', { name: label, exact: true });
 		await releaseLink.focus();
@@ -113,7 +113,7 @@ try {
 			check('authoritative version has both package record and publication timestamp', metadata.name === '@aylith/inspekt-vite' && metadata.versions[version]?.version === version && !Number.isNaN(Date.parse(metadata.time[version])));
 			receipt.publicMetadata = { url: response.url(), checkedAt: new Date().toISOString(), status: response.status(), responseSha256: sha(bytes), name: metadata.name, version, publishedAt: metadata.time[version], integrity: metadata.versions[version].dist?.integrity };
 			await page.goBack();
-			await page.getByRole('heading', { name: 'Setup & access', exact: true }).waitFor();
+			await page.getByRole('heading', { name: 'Getting started', exact: true }).waitFor();
 			check('browser back from external metadata restores setup', page.url().endsWith('/projects/inspekt#setup'));
 		} else {
 			check('narrow: same authoritative HTTPS reference', await releaseLink.getAttribute('href') === publicUrl);
@@ -121,7 +121,7 @@ try {
 		await page.reload();
 		check(`${profile.name}: setup reload preserves release reference`, await page.getByRole('link', { name: label, exact: true }).getAttribute('href') === publicUrl);
 		await page.goto(`${origin}/projects/videx`);
-		check(`${profile.name}: restricted beta access unchanged`, /Access is restricted/.test(await page.locator('main').innerText()) && await page.locator('main a[href*="github.com/aylith-labs/videx"]').count() === 0);
+		check(`${profile.name}: restricted beta access unchanged`, /Requirements/.test(await page.locator('main').innerText()) && await page.locator('main a[href*="github.com/aylith-labs/videx"]').count() === 0);
 		await context.close();
 	}
 	check('no browser page errors', receipt.pageErrors.length === 0);
