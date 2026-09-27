@@ -1,14 +1,31 @@
 import type { UIMessage } from 'ai';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { OwnedSpeech, visibleVoiceContext } from './owned-speech';
+import { type OwnedAvailability, OwnedSpeech, visibleVoiceContext, watchOwnedAvailability } from './owned-speech';
 
-afterEach(() => vi.unstubAllGlobals());
+afterEach(() => { vi.unstubAllGlobals(); vi.useRealTimers(); });
 
 function turn(role: 'user' | 'assistant', content: string): UIMessage {
 	return { id: crypto.randomUUID(), role, parts: [{ type: 'text', text: content }] };
 }
 
 describe('owned voice fallback', () => {
+	it('observes a provider catalog that becomes ready after the first short refresh, then stops polling on cleanup', async () => {
+		vi.useFakeTimers();
+		const base: OwnedAvailability = { ready: true, ttsReady: true, cartesiaTtsReady: false, cartesiaDiscoveryPending: true, readyLanguages: ['en'], readyVoices: [{ id: 'piper', locale: 'en_US' }], maxRecordingSeconds: 30 };
+		let calls = 0;
+		const probe = vi.fn(async () => { calls++; return calls === 4 ? { ...base, cartesiaTtsReady: true, cartesiaDiscoveryPending: false } : base; });
+		const snapshots: OwnedAvailability[] = [];
+		const stop = watchOwnedAvailability(probe, (snapshot) => snapshots.push(snapshot));
+		await vi.advanceTimersByTimeAsync(5000);
+		expect(snapshots).toHaveLength(3);
+		expect(snapshots.at(-1)?.cartesiaDiscoveryPending).toBe(true);
+		await vi.advanceTimersByTimeAsync(12000);
+		expect(snapshots.at(-1)?.cartesiaTtsReady).toBe(true);
+		stop();
+		await vi.advanceTimersByTimeAsync(20000);
+		expect(probe).toHaveBeenCalledTimes(4);
+	});
+
 	it('does not treat a coarse Cartesia availability flag as a ready multilingual voice', async () => {
 		vi.stubGlobal('fetch', vi.fn(async () => new Response(JSON.stringify({
 			stt: { serverAvailable: true, readyLanguages: ['en', 'hu'] },

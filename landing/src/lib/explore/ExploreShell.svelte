@@ -12,7 +12,7 @@
 	import { resolveAiUrl } from '$lib/ask/config';
 	import { clearConversation, loadConversation, saveConversation } from '$lib/ask/history';
 	import { BrowserSpeech, type SpeechSnapshot } from '$lib/ask/browser-speech';
-	import { OwnedSpeech, type OwnedAvailability } from '$lib/ask/owned-speech';
+	import { OwnedSpeech, watchOwnedAvailability, type OwnedAvailability } from '$lib/ask/owned-speech';
 	import { resolveAylaAction } from './navigation';
 	import { browserStorage, rememberView } from '$lib/view-preference';
 
@@ -57,7 +57,7 @@
 	let speechProbeEpoch = 0;
 	let voiceMode = $derived(voicePreference === 'auto' ? (speechSnapshot.recognition === 'available' && speechSnapshot.localVoices.some((voice) => voice.lang.toLowerCase() === speechSnapshot.locale.toLowerCase()) ? 'browser' : ownedSnapshot.ready ? 'owned' : speechSnapshot.recognition === 'available' ? 'browser' : 'none') : voicePreference === 'browser' ? (speechSnapshot.recognition === 'available' ? 'browser' : 'none') : ownedSnapshot.ready ? 'owned' : 'none');
 	let voiceReady = $derived(ready && voiceMode !== 'none');
-	let cloudVoicePossible = $derived(voiceMode === 'owned' && voicePreference === 'auto' && ownedSnapshot.cartesiaTtsReady && !ownedVoiceId);
+	let cloudVoicePossible = $derived(voiceMode === 'owned' && voicePreference === 'auto' && (ownedSnapshot.cartesiaTtsReady || ownedSnapshot.cartesiaDiscoveryPending) && !ownedVoiceId);
 	let voiceActionLabel = $derived(activeVoice === 'owned' && speechState === 'listening' ? 'Finish speaking' : speechState === 'speaking' || speechState === 'thinking' ? 'Interrupt and speak again' : activeVoice === 'browser' && speechState === 'listening' ? 'Stop listening' : voiceMode === 'owned' ? cloudVoicePossible ? 'Speak via Aylith server; reply text may go to Cartesia for voice' : 'Speak via Aylith server' : voiceMode === 'browser' ? 'Speak on this device' : 'Speech unavailable');
 	let voicePhase = $derived(speechState === 'connecting' || speechState === 'listening' || speechState === 'thinking' || speechState === 'speaking' ? speechState : voiceTurn && (chat.status === 'submitted' || chat.status === 'streaming') ? 'thinking' : 'conversation');
 	let isAyla = $derived(page.url.pathname === '/ayla');
@@ -93,7 +93,6 @@
 
 	onMount(() => {
 		let active = true;
-		let discoveryTimer: ReturnType<typeof setTimeout> | undefined;
 		document.documentElement.classList.add('experience-mode');
 		speech = new BrowserSpeech((text) => {
 			if (!active || !ready || !text.trim()) return;
@@ -119,11 +118,8 @@
 			onAudioUnavailable: (language) => { speechError = `No Aylith server voice is ready for ${language || 'this language'}. The text answer remains here.`; },
 			onState: (state, detail) => { speechState = state; if (state === 'connecting' || state === 'listening' || state === 'thinking' || state === 'speaking') activeVoice = 'owned'; if (state === 'idle' || state === 'error') activeVoice = ''; if (detail) speechError = detail; }
 		});
-		void owned.probe().then((snapshot) => {
-			if (!active) return;
-			ownedSnapshot = snapshot;
-			if (snapshot.cartesiaDiscoveryPending) discoveryTimer = setTimeout(() => { void owned?.probe().then((fresh) => { if (active) ownedSnapshot = fresh; }); }, 1500);
-		});
+		const ownedClient = owned;
+		const stopAvailability = watchOwnedAvailability(() => ownedClient.probe(), (snapshot) => { if (active) ownedSnapshot = snapshot; });
 		localeInput = speech.locale;
 		const refreshSpeech = () => { void updateSpeechSnapshot(); };
 		refreshSpeech();
@@ -150,7 +146,7 @@
 			void goto(target).catch(() => { preservedVoiceRoute = ''; });
 		};
 		window.addEventListener('ayla:navigate', navigate);
-		return () => { active = false; if (discoveryTimer) clearTimeout(discoveryTimer); speechProbeEpoch++; document.documentElement.classList.remove('experience-mode'); document.removeEventListener('visibilitychange', visibility); globalThis.speechSynthesis?.removeEventListener('voiceschanged', refreshSpeech); window.removeEventListener('ayla:navigate', navigate); };
+		return () => { active = false; stopAvailability(); speechProbeEpoch++; document.documentElement.classList.remove('experience-mode'); document.removeEventListener('visibilitychange', visibility); globalThis.speechSynthesis?.removeEventListener('voiceschanged', refreshSpeech); window.removeEventListener('ayla:navigate', navigate); };
 	});
 
 	onDestroy(() => {

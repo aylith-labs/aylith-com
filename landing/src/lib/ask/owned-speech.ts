@@ -2,6 +2,21 @@ import type { UIMessage } from 'ai';
 
 type ContextTurn = { role: 'user' | 'assistant'; content: string };
 export type OwnedAvailability = { ready: boolean; ttsReady: boolean; cartesiaTtsReady: boolean; cartesiaDiscoveryPending: boolean; readyLanguages: string[]; readyVoices: { id: string; locale: string }[]; maxRecordingSeconds: number };
+/** Follow a cold provider catalog briefly; owned recognition remains usable throughout. */
+export function watchOwnedAvailability(probe: () => Promise<OwnedAvailability>, onSnapshot: (snapshot: OwnedAvailability) => void): () => void {
+	const delays = [1500, 3500, 12000]; // ~1.5s, 5s, and 17s after the first probe.
+	let active = true;
+	let next = 0;
+	let timer: ReturnType<typeof setTimeout> | undefined;
+	const refresh = async () => {
+		const snapshot = await probe();
+		if (!active) return;
+		onSnapshot(snapshot);
+		if (snapshot.cartesiaDiscoveryPending && next < delays.length) timer = setTimeout(() => { void refresh(); }, delays[next++]);
+	};
+	void refresh();
+	return () => { active = false; if (timer) clearTimeout(timer); };
+}
 type OwnedCallbacks = {
 	context: () => UIMessage[];
 	onTranscript: (text: string, language?: string) => void;
