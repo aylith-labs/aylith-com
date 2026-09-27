@@ -15,6 +15,7 @@
 		immersive?: boolean;
 		session?: Chat<UIMessage>;
 		showHistory?: boolean;
+		spotlight?: boolean;
 		showSpeak?: boolean;
 		speakAvailable?: boolean;
 		speechActive?: boolean;
@@ -39,6 +40,7 @@
 		immersive = false,
 		session,
 		showHistory = true,
+		spotlight = false,
 		showSpeak = false,
 		speakAvailable = false,
 		speechActive = false,
@@ -126,7 +128,7 @@
 </script>
 
 <div class="flex h-full flex-col">
-	<div bind:this={scroller} class="flex-1 space-y-5 overflow-y-auto px-1 py-4">
+	<div bind:this={scroller} class="flex-1 space-y-5 overflow-y-auto px-1 py-4 {spotlight ? 'invisible' : ''}" aria-hidden={spotlight ? 'true' : undefined}>
 		{#if chat.messages.length === 0}
 			<div class="mx-auto max-w-2xl text-center {showIntro ? 'pt-6' : 'pt-0'}">
 				{#if showIntro}
