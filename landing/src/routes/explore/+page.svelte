@@ -2,17 +2,29 @@
 	import Seo from '$lib/components/Seo.svelte';
 	import type { Project } from '$lib/types/project';
 	import { rankProjects } from '$lib/search/ranking';
+	import RichCombobox from '$lib/components/controls/RichCombobox.svelte';
+	import { categoryChoices } from '$lib/catalog/categories';
 	let { data } = $props();
 	let projects: Project[] = $derived(data.projects);
 	let query = $state('');
-	let results = $derived(rankProjects(projects, query).map((item) => item.project));
+	let activeCategory = $state('all');
+	let ranked = $derived(rankProjects(projects, query).map((item) => item.project));
+	let choices = $derived(categoryChoices(projects, ranked));
+	let results = $derived(ranked.filter((project) => activeCategory === 'all' || project.category === activeCategory));
 </script>
 
 <Seo title="Explore — Aylith" description="Find Aylith tools and read their stories." />
 <div class="mx-auto max-w-5xl px-5 py-4 pb-28 sm:px-10 sm:py-5">
 	<h1 class="text-3xl font-medium leading-tight tracking-tight sm:text-4xl">Explore Aylith</h1>
-	<label for="explore-search" class="sr-only">Find a project</label>
-	<input id="explore-search" type="search" bind:value={query} placeholder="Find a tool by name or purpose…" class="mt-4 w-full max-w-2xl rounded-xl border border-surface-300 bg-surface-50 px-4 py-3 text-surface-900 focus:border-accent-500 focus:outline-none dark:border-surface-700 dark:bg-surface-900 dark:text-warm-50" />
+	<div class="mt-4 flex flex-col gap-3 sm:flex-row sm:items-end">
+		<div class="min-w-0 flex-1">
+			<label for="explore-search" class="sr-only">Find a project</label>
+			<input id="explore-search" type="search" bind:value={query} placeholder="Find a tool by name or purpose…" class="h-12 w-full rounded-xl border border-surface-300 bg-surface-50 px-4 py-0 text-surface-900 focus:border-accent-500 focus:outline-none dark:border-surface-700 dark:bg-surface-900 dark:text-warm-50" />
+		</div>
+		<div class="w-full shrink-0 sm:w-60">
+			<RichCombobox id="explore-category" label="Category" value={activeCategory} options={choices} onSelect={(value) => (activeCategory = value)} searchable={false} showSelectedMeta hideLabel tall popupMode="floating" />
+		</div>
+	</div>
 	<p class="mt-3 text-xs uppercase tracking-[0.18em] text-surface-500">{results.length} projects</p>
 	<div class="mt-3 border-t border-surface-200 dark:border-surface-800">
 		{#each results as project (project.slug)}

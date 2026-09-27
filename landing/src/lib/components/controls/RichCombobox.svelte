@@ -20,6 +20,8 @@
 		popupMode?: 'inline' | 'floating';
 		compact?: boolean;
 		searchable?: boolean;
+		showSelectedMeta?: boolean;
+		tall?: boolean;
 	};
 
 	let {
@@ -34,7 +36,9 @@
 		hideLabel = false,
 		popupMode = 'inline',
 		compact = false,
-		searchable = true
+		searchable = true,
+		showSelectedMeta = false,
+		tall = false
 	}: Props = $props();
 	let root = $state<HTMLDivElement>();
 	let input = $state<HTMLInputElement>();
@@ -153,8 +157,8 @@
 			{disabled}
 			onclick={() => { if (open) closeList(); else openList(); }}
 			onkeydown={onKeydown}
-			class={`w-full min-w-0 rounded-xl border border-surface-300 bg-white px-3 pr-10 text-left text-sm text-surface-900 shadow-sm outline-none transition-colors focus:border-accent-500 focus:ring-2 focus:ring-accent-500/25 disabled:cursor-not-allowed disabled:opacity-50 dark:border-surface-600 dark:bg-surface-900 dark:text-warm-50 ${compact ? 'py-2' : 'py-2.5'}`}
-		>{selected?.label ?? placeholder}</button>{/if}
+			class={`w-full min-w-0 rounded-xl border border-surface-300 bg-white px-3 pr-10 text-left text-sm text-surface-900 shadow-sm outline-none transition-colors focus:border-accent-500 focus:ring-2 focus:ring-accent-500/25 disabled:cursor-not-allowed disabled:opacity-50 dark:border-surface-600 dark:bg-surface-900 dark:text-warm-50 ${compact ? 'py-2' : 'py-2.5'} ${tall ? 'h-12' : ''}`}
+		><span>{selected?.label ?? placeholder}</span>{#if showSelectedMeta && selected?.meta}<span class="ml-2 rounded-full bg-surface-100 px-1.5 py-0.5 text-xs tabular-nums text-surface-600 dark:bg-surface-800 dark:text-warm-300">{selected.meta}</span>{/if}</button>{/if}
 		<span class="pointer-events-none absolute inset-y-0 right-3 flex items-center text-surface-500 dark:text-warm-400" aria-hidden="true">⌄</span>
 	</div>
 	{#if open}
@@ -178,7 +182,7 @@
 					<p class="px-3 py-4 text-sm text-surface-600 dark:text-warm-300">{emptyLabel}</p>
 				{/each}
 			</div>
-			{#if options.length > 8}<p class="border-t border-surface-100 px-3 py-1.5 text-[11px] text-surface-500 dark:border-surface-700 dark:text-warm-400">{filtered.length} of {options.length} choices</p>{/if}
+			{#if searchable && options.length > 8}<p class="border-t border-surface-100 px-3 py-1.5 text-[11px] text-surface-500 dark:border-surface-700 dark:text-warm-400">{filtered.length} of {options.length} choices</p>{/if}
 		</div>
 	{/if}
 </div>

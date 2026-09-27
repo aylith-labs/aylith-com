@@ -5,6 +5,8 @@
 	import type { Project } from '$lib/types/project';
 	import { rankProjects } from '$lib/search/ranking';
 	import Seo from '$lib/components/Seo.svelte';
+	import RichCombobox from '$lib/components/controls/RichCombobox.svelte';
+	import { categoryChoices } from '$lib/catalog/categories';
 
 	let { data } = $props();
 	let projects: Project[] = $derived(data.projects);
@@ -13,23 +15,6 @@
 	let activeCategory = $state('all');
 	let page = $state(1);
 	const pageSize = 12;
-
-	// The seven curated categories.
-	const baseCategories = [
-		{ key: 'all', label: 'All' },
-		{ key: 'ai-infrastructure', label: 'AI Infrastructure' },
-		{ key: 'developer-tools', label: 'Developer Tools' },
-		{ key: 'design-tools', label: 'Design Tools' },
-		{ key: 'productivity', label: 'Productivity' },
-		{ key: 'data-tools', label: 'Data & Analytics' },
-		{ key: 'wellness', label: 'Wellness' },
-		{ key: 'testing', label: 'Testing' }
-	];
-
-	let hasUnsorted = $derived(projects.some((p) => p.category === 'uncategorized'));
-	let categories = $derived(
-		hasUnsorted ? [...baseCategories, { key: 'uncategorized', label: 'Unsorted' }] : baseCategories
-	);
 
 	// Natural language ranked results
 	let rankedResults = $derived(rankProjects(projects, searchQuery));
@@ -43,16 +28,7 @@
 	let pageCount = $derived(Math.max(1, Math.ceil(filtered.length / pageSize)));
 	$effect(() => { searchQuery; activeCategory; page = 1; });
 
-	// Dynamic counts per category reflecting search matches
-	let counts = $derived.by(() => {
-		const base = rankedResults.map((r) => r.project);
-		const map: Record<string, number> = { all: base.length };
-		for (const cat of categories) {
-			if (cat.key === 'all') continue;
-			map[cat.key] = base.filter((p) => p.category === cat.key).length;
-		}
-		return map;
-	});
+	let choices = $derived(categoryChoices(projects, rankedResults.map((result) => result.project)));
 
 	function handleKeyDown(event: KeyboardEvent) {
 		if (event.key === 'Enter' && searchQuery.trim()) {
@@ -80,13 +56,13 @@
 				All Projects
 			</h1>
 			<p class="mt-3 text-lg text-surface-500 dark:text-warm-300">
-				The complete catalog — {projects.length} entries. A listing does not establish public availability.
-				Open a product for setup instructions and access limits.
+				Explore Aylith by category, or search for the work you want to do.
 			</p>
 		</div>
 
-		<!-- Search Input / Prompt Bar -->
-		<div class="mt-8 max-w-2xl" use:reveal={{ delay: 30 }}>
+		<!-- Search and category filter -->
+		<div class="mt-8 flex flex-col gap-3 sm:flex-row sm:items-start" use:reveal={{ delay: 30 }}>
+		<div class="min-w-0 flex-1">
 			<div class="relative flex items-center">
 				<div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-surface-400 dark:text-surface-500">
 					<svg class="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -100,7 +76,7 @@
 					aria-label="Search catalog"
 					onkeydown={handleKeyDown}
 					placeholder="Search tools by keyword or prompt (press Enter to ask assistant)…"
-					class="w-full rounded-2xl border border-surface-200/80 bg-white/80 py-3.5 pr-28 pl-11 text-[0.95rem] text-surface-900 placeholder:text-surface-400 focus:border-accent-500 focus:bg-white focus:ring-4 focus:ring-accent-500/10 focus:outline-none dark:border-surface-800 dark:bg-surface-900/60 dark:text-warm-50 dark:placeholder:text-warm-500 dark:focus:border-accent-400 dark:focus:bg-surface-900"
+					class="h-12 w-full rounded-2xl border border-surface-200/80 bg-white/80 py-0 pr-28 pl-11 text-[0.95rem] text-surface-900 placeholder:text-surface-400 focus:border-accent-500 focus:bg-white focus:ring-4 focus:ring-accent-500/10 focus:outline-none dark:border-surface-800 dark:bg-surface-900/60 dark:text-warm-50 dark:placeholder:text-warm-500 dark:focus:border-accent-400 dark:focus:bg-surface-900"
 				/>
 				<div class="absolute inset-y-0 right-0 flex items-center gap-1.5 pr-3">
 					{#if searchQuery.trim()}
@@ -137,26 +113,9 @@
 				</div>
 			{/if}
 		</div>
-
-		<div class="mt-8 flex flex-wrap gap-2" use:reveal={{ delay: 100 }}>
-			{#each categories as cat (cat.key)}
-				<button
-					onclick={() => (activeCategory = cat.key)}
-					aria-pressed={activeCategory === cat.key}
-					class="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-medium transition-colors {activeCategory === cat.key
-						? 'bg-accent-selected text-on-accent'
-						: 'bg-surface-100 text-surface-500 hover:bg-surface-200 hover:text-surface-700 dark:bg-surface-800 dark:text-warm-400 dark:hover:bg-surface-700 dark:hover:text-warm-200'}"
-				>
-					{cat.label}
-					<span
-						class="rounded-full px-1.5 text-xs tabular-nums {activeCategory === cat.key
-							? 'bg-black/15 text-on-accent'
-							: 'bg-surface-200/70 text-surface-500 dark:bg-surface-700/70 dark:text-warm-400'}"
-					>
-						{counts[cat.key] ?? 0}
-					</span>
-				</button>
-			{/each}
+		<div class="w-full shrink-0 sm:w-60">
+			<RichCombobox id="catalog-category" label="Category" value={activeCategory} options={choices} onSelect={(value) => (activeCategory = value)} searchable={false} showSelectedMeta hideLabel tall popupMode="floating" />
+		</div>
 		</div>
 
 		<!-- Project Grid -->
@@ -176,7 +135,7 @@
 		{:else}
 			<div class="mt-12 rounded-2xl border border-dashed border-surface-200 p-12 text-center dark:border-surface-800" use:reveal={{ delay: 0 }}>
 				<p class="text-base font-medium text-surface-700 dark:text-warm-200">
-					No tools matched "{searchQuery}" in {categories.find((c) => c.key === activeCategory)?.label || 'selected category'}.
+					No tools matched "{searchQuery}" in {choices.find((c) => c.value === activeCategory)?.label || 'selected category'}.
 				</p>
 				<p class="mt-2 text-sm text-surface-400 dark:text-warm-400">
 					Try a broader query or ask the AI assistant directly.
