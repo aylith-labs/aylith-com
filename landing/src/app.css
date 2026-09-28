@@ -197,6 +197,22 @@ h1, h2, h3, h4, h5, h6 {
 .dark .ayla-aperture-cut { fill: var(--color-surface-950); }
 .dark #explore-content { color-scheme: dark; scrollbar-color: var(--color-surface-700) var(--color-surface-950); }
 
+/* A translated section that just got better flashes for a second, so the reader
+   sees what changed under them. Reduced motion collapses it to an instant, and the
+   "Translation updates: Quietly" setting stops the class being added at all. */
+@keyframes translation-updated {
+	from {
+		background-color: color-mix(in oklch, var(--color-accent-300) 45%, transparent);
+	}
+	to {
+		background-color: transparent;
+	}
+}
+.translation-updated {
+	border-radius: 0.25rem;
+	animation: translation-updated 1s ease-out;
+}
+
 /* Motion gating is driven by html[data-motion] (set before paint in app.html and kept
    current by the motion store), so the design system can override the system setting for
    preview. The media query only governs the no-JS / pre-script case, where the attribute

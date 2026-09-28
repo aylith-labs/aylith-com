@@ -2,10 +2,13 @@
 	import '../app.css';
 	import { browser } from '$app/environment';
 	import { page } from '$app/state';
+	import { afterNavigate } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import Navbar from '$lib/components/layout/Navbar.svelte';
 	import Footer from '$lib/components/layout/Footer.svelte';
 	import ExploreShell from '$lib/explore/ExploreShell.svelte';
+	import TranslationStatus from '$lib/components/layout/TranslationStatus.svelte';
+	import { translation } from '$lib/translate/translation.svelte';
 	import { motion } from '$lib/stores/motion.svelte';
 	import { theme } from '$lib/stores/theme.svelte';
 
@@ -14,10 +17,17 @@
 	onMount(() => {
 		const stopMotion = motion.init();
 		const stopTheme = theme.init();
+		void translation.checkAvailable();
 		return () => {
 			stopMotion();
 			stopTheme();
 		};
+	});
+
+	// Every page, including the first, is translated into the reader's language
+	// once it has rendered.
+	afterNavigate(() => {
+		void translation.apply();
 	});
 
 	if (browser) {
@@ -77,3 +87,5 @@
 	{/if}
 </div>
 {/if}
+
+<TranslationStatus />

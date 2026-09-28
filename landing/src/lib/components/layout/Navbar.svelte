@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/state';
+	import LanguagePicker from './LanguagePicker.svelte';
 	import SettingsMenu from './SettingsMenu.svelte';
 	import ViewSwitcher from './ViewSwitcher.svelte';
 	import Mark from '$lib/components/brand/Mark.svelte';
@@ -46,6 +47,7 @@
 
 			</div>
 			<div class="flex items-center gap-1">
+				<LanguagePicker />
 				<ViewSwitcher />
 				<SettingsMenu />
 				<button

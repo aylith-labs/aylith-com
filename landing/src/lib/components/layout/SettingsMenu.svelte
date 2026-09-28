@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { theme, type ThemePreference } from '$lib/stores/theme.svelte';
 	import { motion, type MotionPreference } from '$lib/stores/motion.svelte';
+	import { translation } from '$lib/translate/translation.svelte';
 
 	let open = $state(false);
 	let container: HTMLElement;
@@ -18,6 +19,10 @@
 		{ value: 'system', label: 'System' },
 		{ value: 'reduced', label: 'Reduced' },
 		{ value: 'full', label: 'Full' }
+	];
+	const highlightOptions = [
+		{ value: 'on', label: 'Flash' },
+		{ value: 'off', label: 'Quietly' }
 	];
 	const links = [
 		{ href: '/design', label: 'Design system', external: false },
@@ -97,6 +102,11 @@
 		>
 			{@render segment('Theme', themeOptions, theme.preference, (value) => theme.set(value as ThemePreference))}
 			{@render segment('Motion', motionOptions, motion.preference, (value) => motion.set(value as MotionPreference))}
+			{#if translation.available}
+				{@render segment('Translation updates', highlightOptions, translation.highlight ? 'on' : 'off', (value) =>
+					translation.setHighlight(value === 'on')
+				)}
+			{/if}
 
 			<div class="my-2 border-t border-surface-200/70 dark:border-surface-700/60"></div>
 
