@@ -39,7 +39,7 @@
 	function clearFilters() { query = ''; brand = ''; kind = ''; status = ''; }
 </script>
 
-<Seo title="Brand assets — Aylith" description="Browse Aylith, shefrd, personal X, and Stith brand assets in a grid, list, or dated journey. Logos, avatars, banners, and their history." />
+<Seo title="Brand assets — Aylith" description="Browse Aylith, shefrd, and personal X brand assets in a grid, list, or dated journey. Logos, avatars, banners, and their history." />
 
 {#snippet badge(asset: Asset)}
 	<span class="rounded-full border border-surface-200 px-2.5 py-1 text-xs font-medium text-surface-700 dark:border-surface-700 dark:text-warm-200">{statusLabels[asset.status]}</span>
@@ -118,7 +118,7 @@
 			</section>
 		{/each}
 	{/if}
-	<aside class="mt-12 border-t border-surface-200 pt-6 text-sm text-surface-500 dark:border-surface-700 dark:text-warm-400"><h2 class="font-semibold text-surface-700 dark:text-warm-200">About the archive</h2><p class="mt-2 max-w-3xl">{data.catalog.datePolicy} “In use on X” reflects the profile verification recorded in each asset’s history. Personal banner selection was not recorded; those variants remain explorations. Stith assets are candidates, with no X selection recorded.</p><div class="mt-4 flex flex-wrap gap-5"><a href="https://media.aylith.com/aylith-com/brand/2026-10-04-social-library/catalog.json" class="underline">Download asset catalog ↗</a><a href="/design" class="underline">Design system ↗</a></div></aside>
+	<aside class="mt-12 border-t border-surface-200 pt-6 text-sm text-surface-500 dark:border-surface-700 dark:text-warm-400"><h2 class="font-semibold text-surface-700 dark:text-warm-200">About the archive</h2><p class="mt-2 max-w-3xl">{data.catalog.datePolicy} “In use on X” reflects the profile verification recorded in each asset’s history. Personal banner selection was not recorded; those variants remain explorations.</p><div class="mt-4 flex flex-wrap gap-5"><a href="https://media.aylith.com/aylith-com/brand/2026-10-04-social-library/catalog-2026-10-04-pruned.json" class="underline">Download asset catalog ↗</a><a href="/design" class="underline">Design system ↗</a></div></aside>
 </section>
 
 <style>
@@ -132,4 +132,5 @@
 	:global(.dark) .asset-preview { background:var(--color-surface-800); }
 	button, a, input, select, summary { outline-offset:4px; }
 </style>
+
 
