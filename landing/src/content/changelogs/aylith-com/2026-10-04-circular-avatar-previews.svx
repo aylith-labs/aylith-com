@@ -1,0 +1,22 @@
+---
+title: Circular avatar previews keep a square crop
+date: '2026-10-04'
+tags:
+  - fixed
+summary: Circular avatar previews now clip a square image rather than rounding a rectangular image box.
+---
+<script>
+  import ThemedShot from '$lib/components/changelog/ThemedShot.svelte';
+</script>
+
+The circular preview in [Brand assets](/brand?view=list) now uses a square, centered crop for logos and avatars across grid, list, and journey views. Previously, the list thumbnail box was wider than it was tall, so rounded corners did not produce a circular image.
+
+Turning the preview off restores the full image at its original proportions. Banners remain uncropped.
+
+<ThemedShot
+  light="https://media.aylith.com/aylith-com/media/avatar-circle-fix-2026-10-04-light.png"
+  dark="https://media.aylith.com/aylith-com/media/avatar-circle-fix-2026-10-04-dark.png"
+  alt="List view with three correctly circular avatar previews."
+  width={2720}
+  height={1800}
+/>

@@ -62,7 +62,13 @@
 	</details>
 {/snippet}
 {#snippet preview(asset: Asset, small = false)}
-	<a href={asset.url} class="asset-preview" class:small aria-label={`Open ${asset.title}`}><img src={asset.url} alt={asset.title} loading="lazy" width={asset.width} height={asset.height} class="max-h-full max-w-full object-contain" class:rounded-full={circular && (asset.kind === 'logo' || asset.kind === 'avatar')} /></a>
+	<a href={asset.url} class="asset-preview" class:small aria-label={`Open ${asset.title}`}>
+		{#if circular && (asset.kind === 'logo' || asset.kind === 'avatar')}
+			<span class="avatar-crop"><img src={asset.url} alt={asset.title} loading="lazy" width={asset.width} height={asset.height} /></span>
+		{:else}
+			<img src={asset.url} alt={asset.title} loading="lazy" width={asset.width} height={asset.height} class="uncropped" />
+		{/if}
+	</a>
 {/snippet}
 
 <section class="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
@@ -127,8 +133,11 @@
 	.view-button { border:1px solid var(--color-surface-300); border-radius:.5rem; padding:.5rem 1rem; font-size:.875rem; color:var(--color-surface-700); }
 	:global(.dark) .view-button { color:var(--color-warm-200); border-color:var(--color-surface-600); }
 	.view-button[aria-pressed='true'] { background:var(--color-accent-selected); color:var(--color-on-accent); border-color:transparent; }
-	.asset-preview { display:flex; height:13rem; align-items:center; justify-content:center; border-radius:.75rem; padding:.75rem; background:var(--color-surface-100); }
-	.asset-preview.small { height:6rem; width:8rem; flex-shrink:0; padding:.5rem; }
+	.asset-preview { --preview-size:11.5rem; display:flex; height:13rem; align-items:center; justify-content:center; border-radius:.75rem; padding:.75rem; background:var(--color-surface-100); }
+	.asset-preview.small { --preview-size:5rem; height:6rem; width:8rem; flex-shrink:0; padding:.5rem; }
+	.uncropped { display:block; width:auto; height:auto; max-width:100%; max-height:100%; object-fit:contain; }
+	.avatar-crop { display:block; flex:none; width:min(100%, var(--preview-size)); aspect-ratio:1; overflow:hidden; border-radius:50%; }
+	.avatar-crop img { display:block; width:100%; height:100%; object-fit:cover; }
 	:global(.dark) .asset-preview { background:var(--color-surface-800); }
 	button, a, input, select, summary { outline-offset:4px; }
 </style>
