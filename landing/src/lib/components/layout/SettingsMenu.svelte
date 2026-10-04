@@ -25,6 +25,7 @@
 		{ value: 'off', label: 'Quietly' }
 	];
 	const links = [
+		{ href: '/brand', label: 'Brand assets', external: false },
 		{ href: '/design', label: 'Design system', external: false },
 		{ href: 'https://github.com/aylith-labs', label: 'GitHub', external: true }
 	];

@@ -1,0 +1,22 @@
+---
+title: A home for brand assets
+date: '2026-10-04'
+tags:
+  - added
+summary: A dedicated brand page brings together Aylith logos, avatar previews, and original explorations.
+---
+<script>
+  import ThemedShot from '$lib/components/changelog/ThemedShot.svelte';
+</script>
+
+The [Brand assets page](/brand) brings together the selected Aylith social avatar and the retained Inner ascent alternative. Switch to a circular preview, open the full-resolution PNGs, or inspect the original concept sheets.
+
+Find it in the footer and site menu. Source images remain in the central media library.
+
+<ThemedShot
+  light="https://media.aylith.com/aylith-com/media/brand-assets-2026-10-04-light.png"
+  dark="https://media.aylith.com/aylith-com/media/brand-assets-2026-10-04-dark.png"
+  alt="Aylith Brand assets page showing the selected constellation logo and Inner ascent alternative."
+  width={2720}
+  height={1800}
+/>

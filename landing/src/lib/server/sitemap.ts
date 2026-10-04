@@ -3,7 +3,7 @@ import { getProjects } from '$lib/server/markdown';
 
 export const SITE_ORIGIN = 'https://aylith.com';
 
-const STATIC_PATHS = ['/', '/about', '/projects', '/design'];
+const STATIC_PATHS = ['/', '/about', '/projects', '/design', '/brand'];
 
 /** Every prerendered, publicly linked page. Kept in step with the routes that emit HTML. */
 export function sitemapPaths(): string[] {

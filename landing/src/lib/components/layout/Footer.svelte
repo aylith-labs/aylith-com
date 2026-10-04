@@ -42,6 +42,7 @@
 							Design system
 						</a>
 					</li>
+					<li><a href="/brand" class="text-sm text-surface-600 transition-colors hover:text-accent-600 dark:text-warm-300 dark:hover:text-accent-400">Brand assets</a></li>
 					<li>
 						<a href="https://github.com/aylith-labs" class="text-sm text-surface-600 transition-colors hover:text-accent-600 dark:text-warm-300 dark:hover:text-accent-400">
 							GitHub
