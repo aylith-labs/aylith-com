@@ -1,0 +1,24 @@
+---
+title: Brand assets, with a history
+date: '2026-10-04'
+tags:
+  - added
+summary: Browse 47 brand and X assets in grid, list, and journey views, with dates and provenance.
+---
+<script>
+  import ThemedShot from '$lib/components/changelog/ThemedShot.svelte';
+</script>
+
+The [brand library](/brand) now brings together Aylith and shefrd X logos and banners, personal profile variants, Stith candidates, and original concept sheets.
+
+Switch between **Grid**, **List**, and **Journey timeline**. Search and collection, type, and status filters stay consistent across views, and each filtered view has a shareable URL.
+
+Each asset shows when it entered the library, with earlier records and profile decisions attached to their evidence. Unknown creation dates stay unknown. The journey includes the September notes collection and October profile updates.
+
+<ThemedShot
+  light="https://media.aylith.com/aylith-com/media/brand-library-2026-10-04-light.png"
+  dark="https://media.aylith.com/aylith-com/media/brand-library-2026-10-04-dark.png"
+  alt="Brand library filtered to verified X assets, with grid, list, and journey controls and asset history panels."
+  width={2720}
+  height={1800}
+/>
