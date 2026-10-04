@@ -124,7 +124,7 @@
 			</section>
 		{/each}
 	{/if}
-	<aside class="mt-12 border-t border-surface-200 pt-6 text-sm text-surface-500 dark:border-surface-700 dark:text-warm-400"><h2 class="font-semibold text-surface-700 dark:text-warm-200">About the archive</h2><p class="mt-2 max-w-3xl">{data.catalog.datePolicy} “In use on X” reflects the profile verification recorded in each asset’s history. Personal banner selection was not recorded; those variants remain explorations.</p><div class="mt-4 flex flex-wrap gap-5"><a href="https://media.aylith.com/aylith-com/brand/2026-10-04-social-library/catalog-2026-10-04-pruned-v2.json" class="underline">Download asset catalog ↗</a><a href="/design" class="underline">Design system ↗</a></div></aside>
+	<aside class="mt-12 border-t border-surface-200 pt-6 text-sm text-surface-500 dark:border-surface-700 dark:text-warm-400"><h2 class="font-semibold text-surface-700 dark:text-warm-200">About the archive</h2><p class="mt-2 max-w-3xl">{data.catalog.datePolicy} “In use on X” reflects the profile verification recorded in each asset’s history. Personal banner selection was not recorded; those variants remain explorations.</p><div class="mt-4 flex flex-wrap gap-5"><a href="https://media.aylith.com/aylith-com/brand/2026-10-04-social-library/catalog-2026-10-04-pruned-v3.json" class="underline">Download asset catalog ↗</a><a href="/design" class="underline">Design system ↗</a></div></aside>
 </section>
 
 <style>
@@ -141,6 +141,7 @@
 	:global(.dark) .asset-preview { background:var(--color-surface-800); }
 	button, a, input, select, summary { outline-offset:4px; }
 </style>
+
 
 
 
