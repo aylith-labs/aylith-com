@@ -21,6 +21,7 @@
 	import { deleteConversationSession, adoptGuestConversation, clearConversation, guestConversationScope, listConversationSessions, reopenConversation, loadConversation, saveConversation } from '$lib/ask/history';
 	import { BrowserSpeech, matchingVoiceLocale, type SpeechSnapshot } from '$lib/ask/browser-speech';
 	import {ManagedSpeech}from '$lib/ask/managed-speech';
+	import { conversationalRequest, selectServerVoice } from '$lib/ask/voice-selection';
 	import { OwnedSpeech, watchOwnedAvailability, type OwnedAvailability } from '$lib/ask/owned-speech';
 	import { resolveAylaAction } from './navigation';
 	import AylaScene from './AylaScene.svelte';
@@ -79,13 +80,15 @@
 	let activeVoice = $state<'browser' | 'owned' | 'managed' | ''>('');
 	let ownedVoiceId = $state('');
 	let serverLanguage = $state('auto');
+	let managedSelection=$derived(conversationalRequest(conversationalVoice,serverLanguage,ownedVoiceId));
+	let managedSelected=$derived(managedSelection!==null);
 	let serverVoiceStatus = $state('');
 	let speechSnapshot = $state<SpeechSnapshot>({ locale: '', recognition: 'unavailable', localVoices: [] });
 	let matchingLocalVoices = $derived(matchingVoiceLocale(speechSnapshot.localVoices, speechSnapshot.locale));
 	let localLanguageChoices = $derived(languageChoices([...SPEECH_LANGUAGE_CODES, speechSnapshot.locale, ...speechSnapshot.localVoices.map((voice) => voice.lang)].filter(Boolean), typeof navigator === 'undefined' ? 'en' : navigator.language));
 	let localVoiceChoices = $derived([{ value: '', label: 'Automatic local voice' }, ...voiceChoices(matchingLocalVoices.map((voice) => ({ value: voice.name, name: voice.name, locale: voice.lang })), typeof navigator === 'undefined' ? 'en' : navigator.language)]);
 	let serverLanguageChoices = $derived([{ value: 'auto', label: 'Detect language' }, ...languageChoices([...ownedSnapshot.readyLanguages,...(conversationalVoice?[conversationalVoice.locale]:[])], typeof navigator === 'undefined' ? 'en' : navigator.language)]);
-	let serverVoiceChoices = $derived([{ value: '', label: 'Automatic language match' }, ...(conversationalVoice?[{value:conversationalVoice.id,label:conversationalVoice.label}]:[]), ...voiceChoices(ownedSnapshot.readyVoices.map((voice) => ({ value: voice.id, name: displayVoice(voice.id, voice.locale), locale: voice.locale })), typeof navigator === 'undefined' ? 'en' : navigator.language)]);
+	let serverVoiceChoices = $derived([{ value: '', label: managedSelected ? `Automatic · ${conversationalVoice?.label}` : 'Automatic language match' }, ...(conversationalVoice?voiceChoices([{value:conversationalVoice.id,name:conversationalVoice.label,locale:conversationalVoice.locale}],typeof navigator === 'undefined' ? 'en' : navigator.language):[]), ...voiceChoices(ownedSnapshot.readyVoices.map((voice) => ({ value: voice.id, name: displayVoice(voice.id, voice.locale), locale: voice.locale })), typeof navigator === 'undefined' ? 'en' : navigator.language)]);
 	let speechState = $state<'idle' | 'connecting' | 'listening' | 'thinking' | 'speaking' | 'error'>('idle');
 	let speechError = $state('');
 	let localeInput = $state('');
@@ -104,7 +107,6 @@
 	let localStarting = false;
 	let voiceMode = $derived(voicePreference === 'auto' ? (speechSnapshot.recognition === 'available' && matchingLocalVoices.length > 0 ? 'browser' : ownedSnapshot.ready ? 'owned' : speechSnapshot.recognition === 'available' ? 'browser' : 'none') : voicePreference === 'browser' ? (speechSnapshot.recognition === 'available' ? 'browser' : 'none') : ownedSnapshot.ready ? 'owned' : 'none');
 	let serverPreferences=$derived(voiceMode==='owned'||conversationalVoice!==null);
-	let managedSelected=$derived(conversationalVoice!==null&&ownedVoiceId===conversationalVoice.id&&serverLanguage===conversationalVoice.locale);
 	let voiceReady = $derived(ready && speechPolicyReady && (managedSelected||voiceMode !== 'none'));
 	let cloudVoicePossible = $derived(voiceMode === 'owned' && voicePreference === 'auto' && (ownedSnapshot.cartesiaTtsReady || ownedSnapshot.cartesiaDiscoveryPending) && !ownedVoiceId);
 	let voiceActionLabel = $derived(activeVoice === 'managed' ? 'End voice conversation' : activeVoice === 'owned' && speechState === 'listening' ? 'Finish speaking' : speechState === 'speaking' || speechState === 'thinking' ? 'Interrupt and speak again' : activeVoice === 'browser' && speechState === 'listening' ? 'Stop listening' : managedSelected || voiceMode !== 'none' ? 'Speak to Ayla' : 'Speech unavailable');
@@ -363,10 +365,11 @@
 		if (activeVoice === 'browser' && speechState === 'listening') { speech?.stop(); activeVoice = ''; voiceTurn = false; return; }
 		if (activeVoice) { speech?.stop(); await owned?.stop();await managed?.stop(); activeVoice = ''; voiceTurn = false; chat.stop(); }
 		if (!await refreshSpeechPolicy() || disposed || authCardOpen) return;
-		if(managedSelected&&conversationalVoice&&managed){const initiatingIdentity=identityEpoch;activeVoice='managed';speechError='';try{await managed.start({language:serverLanguage,voiceId:ownedVoiceId,prompt:latestRequest.slice(0,600),context:JSON.stringify(currentContext()).slice(0,600)},()=>initiatingIdentity===identityEpoch&&ready);}catch{if(initiatingIdentity!==identityEpoch)return;activeVoice='';speechError='This voice is temporarily unavailable. Choose another voice or continue with text.';}return;}
+		if(managedSelection&&conversationalVoice&&managed){const initiatingIdentity=identityEpoch;activeVoice='managed';speechError='';try{await managed.start({language:managedSelection.language,voiceId:managedSelection.voiceId,prompt:latestRequest.slice(0,600),context:JSON.stringify(currentContext()).slice(0,600)},()=>initiatingIdentity===identityEpoch&&ready);}catch{if(initiatingIdentity!==identityEpoch)return;activeVoice='';speechError='This voice is temporarily unavailable. Choose another voice or continue with text.';}return;}
 		if (voiceMode === 'browser') { activeVoice = 'browser'; await startLocalSpeech(); if (speechState === 'error') activeVoice = ''; return; }
 		if (voiceMode !== 'owned' || !owned) return;
 		activeVoice = 'owned'; ownedAnswerId = ''; ownedAnswerFinal = false; serverVoiceStatus = ''; speechError = '';
+		if (ownedVoiceId === conversationalVoice?.id) ownedVoiceId = '';
 		owned.voiceId = ownedVoiceId; owned.language = serverLanguage;
 		owned.ttsPreference = cloudVoicePossible ? 'cartesia_then_owned' : 'owned';
 		try { await owned.start(); }
@@ -526,7 +529,7 @@
 				<div bind:this={voiceSettingsPanel} id="ayla-voice-settings" tabindex="-1" class="absolute inset-x-3 top-14 z-40 grid max-h-[calc(100svh-8rem)] content-start gap-4 overflow-y-auto overscroll-contain rounded-2xl border border-surface-200 bg-white p-5 text-sm shadow-[0_22px_70px_-18px_rgba(36,22,18,.5)] outline-none dark:border-surface-700 dark:bg-surface-900 sm:inset-x-auto sm:right-5 sm:w-[min(27rem,calc(100vw-2rem))]" role="dialog" aria-label="Voice settings">
 					<div class="flex items-start justify-between gap-3"><div><p class="text-xs font-semibold uppercase tracking-[0.16em] text-accent-700 dark:text-accent-300">Ayla preferences</p><h2 class="mt-1 text-xl font-semibold tracking-tight">Voice settings</h2></div><button onclick={() => { voiceSettings = false; voiceSettingsTrigger?.focus(); }} aria-label="Close voice settings" class="rounded-lg border border-surface-200 px-2 py-1 dark:border-surface-700">Close</button></div>
 					<RichCombobox id="ayla-language" label="Language" value={serverPreferences ? serverLanguage : (speechSnapshot.locale || localeInput)} options={serverPreferences ? serverLanguageChoices : localLanguageChoices} onSelect={(value) => { stopAllVoice(); serverLanguage = value.split('-')[0]; ownedVoiceId = ''; localeInput = value; if (value !== 'auto') void applyLocale(); }} />
-					<RichCombobox id="ayla-voice" label="Voice" value={serverPreferences ? ownedVoiceId : selectedVoice} options={serverPreferences ? serverVoiceChoices : [{value: '', label: 'Automatic voice'}, ...localVoiceChoices.slice(1)]} onSelect={(value) => { stopAllVoice(); if (serverPreferences) ownedVoiceId = value; else { selectedVoice = value; if (speech) speech.voiceName = value; } }} />
+					<RichCombobox id="ayla-voice" label="Voice" value={serverPreferences ? ownedVoiceId : selectedVoice} options={serverPreferences ? serverVoiceChoices : [{value: '', label: 'Automatic voice'}, ...localVoiceChoices.slice(1)]} onSelect={(value) => { stopAllVoice(); if (serverPreferences) { const selection = selectServerVoice(conversationalVoice, serverLanguage, value); ownedVoiceId = selection.voice; if (selection.language !== serverLanguage) { serverLanguage = selection.language; localeInput = selection.language; void applyLocale(); } } else { selectedVoice = value; if (speech) speech.voiceName = value; } }} />
 					{#if voiceMode !== 'owned' && speechSnapshot.recognition === 'downloadable'}<button onclick={installLocalPack} disabled={installing} class="w-fit rounded-lg border border-surface-300 px-3 py-2 dark:border-surface-600">{installing ? 'Installing language…' : 'Install language'}</button>{/if}
 					{#key authSubject}<AylaAdministration {apiUrl} onPolicyChange={() => { stopAllVoice(); void refreshSpeechPolicy(); }} />{/key}
 				</div>
