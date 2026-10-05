@@ -21,7 +21,7 @@
 		onStatus: (name: string, subject?: string, state?: 'checking' | 'guest' | 'authenticated' | 'signed-in' | 'signed-out', conversationIdentity?:string) => void;
 	} = $props();
 
-	let loginProfile = $state(untrack(() => ({ name: authPath === '/api/auth' ? 'Ayla' : 'Sign in', endorsement: 'Aylith' }))); 
+	let loginProfile = $state(untrack(() => ({ name: authPath === '/api/auth' ? 'Ayla' : 'Sign in', endorsement: 'Aylith', productId: '' }))); 
 	let preparedFlow = false;
 	let originalRedirect = '';
 	let appearanceIdentity = $state('');
@@ -101,7 +101,7 @@
 			const profile = await presentation.json() as { product?: { id?: string; name?: string; endorsement?: string; style?: string } };
 			if (profile.product?.id !== applicationId || typeof profile.product.name !== 'string' || !profile.product.name.trim() || profile.product.name.length > 80 || /[<>\x00-\x1f]/.test(profile.product.name) || profile.product.endorsement !== 'Aylith' || profile.product.style !== 'warm-stone') throw new Error('Unknown installed sign-in presentation.');
 			if (epoch !== refreshEpoch || controller.signal.aborted) return;
-			loginProfile = { name: profile.product.name, endorsement: profile.product.endorsement };
+			loginProfile = { name: profile.product.name, endorsement: profile.product.endorsement, productId: applicationId };
 			let verifiedName = '';
 			let verifiedSubject = '';let verifiedConversationIdentity='';
 			if (state.authenticated) {
@@ -281,7 +281,7 @@
 {#if open}
 	<div bind:this={panel} onkeydown={keepFocus} role="dialog" tabindex="-1" aria-modal="true" class="absolute inset-x-2 top-4 z-40 mx-auto w-[min(100%,28rem)] max-h-[calc(100%-2rem)] overflow-y-auto rounded-3xl border border-surface-200 bg-white p-5 shadow-[0_26px_80px_-28px_rgba(49,30,20,.6)] dark:border-surface-700 dark:bg-surface-900 sm:p-7" aria-label={`${loginProfile.name} sign in`}>
 		<div class="mb-5 flex items-start justify-between gap-4">
-			<LoginBrand name={loginProfile.name} endorsement={loginProfile.endorsement} heading={step === 'complete' ? 'You’re signed in' : step === 'totp' ? 'One more check' : 'Sign in here'} />
+			<LoginBrand productId={loginProfile.productId} name={loginProfile.name} endorsement={loginProfile.endorsement} heading={step === 'complete' ? 'You’re signed in' : step === 'totp' ? 'One more check' : 'Sign in here'} />
 			<button type="button" onclick={dismiss} aria-label="Close sign in" class="min-h-11 rounded-full px-3 py-2 text-sm text-surface-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-500 dark:text-warm-300">Close</button>
 		</div>
 		{#if checking}<p class="text-sm text-surface-600 dark:text-warm-300">Checking secure sign-in…</p>
