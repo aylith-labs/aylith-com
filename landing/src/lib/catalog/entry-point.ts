@@ -18,6 +18,7 @@ const roots: Readonly<Record<string, string>> = Object.freeze({
 	dictaro: 'https://dictaro.aylith.com/',
 	'agent-quota': 'https://agent-quota.aylith.com/',
 	daylog: 'https://daylog.aylith.com/',
+	pintle: 'https://pintle.aylith.com/',
 });
 export function verifiedProductEntry(slug: string): string | undefined {
 	return Object.hasOwn(roots, slug) ? roots[slug] : undefined;
@@ -25,7 +26,7 @@ export function verifiedProductEntry(slug: string): string | undefined {
 
 /** Public-home role is distinct from the signed-in product entry. The verified owner homepages below include their real public acquisition
  * actions; a private repository does not prevent a public package download. Contactly root is session-dependent. */
-const publicHomes: Readonly<Record<string,string>> = Object.freeze({linkstash:'https://linkstash.aylith.com/home',proomptal:'https://proomptal.aylith.com/home',brainstash:'https://brainstash.aylith.com/home',inspekt:'https://inspekt.aylith.com/home/',specwatch:'https://specwatch.aylith.com/home/',bindlume:'https://bindlume.aylith.com/home',lintel:'https://lintel.aylith.com/',mullion:'https://mullion.aylith.com/',torbie:'https://torbie.aylith.com/',tuilith:'https://tuilith.aylith.com/home/',githerald:'https://githerald.aylith.com/home/',dictaro:'https://dictaro.aylith.com/home/','agent-quota':'https://agent-quota.aylith.com/home/',daylog:'https://daylog.aylith.com/home/'});
+const publicHomes: Readonly<Record<string,string>> = Object.freeze({linkstash:'https://linkstash.aylith.com/home',proomptal:'https://proomptal.aylith.com/home',brainstash:'https://brainstash.aylith.com/home',inspekt:'https://inspekt.aylith.com/home/',specwatch:'https://specwatch.aylith.com/home/',bindlume:'https://bindlume.aylith.com/home',lintel:'https://lintel.aylith.com/',mullion:'https://mullion.aylith.com/',torbie:'https://torbie.aylith.com/',tuilith:'https://tuilith.aylith.com/home/',githerald:'https://githerald.aylith.com/home/',dictaro:'https://dictaro.aylith.com/home/','agent-quota':'https://agent-quota.aylith.com/home/',daylog:'https://daylog.aylith.com/home/',pintle:'https://pintle.aylith.com/home/'});
 export function productWebsitePreview(project: {slug:string;websiteUrl?:string}): string | undefined {
  if(Object.hasOwn(publicHomes,project.slug)) return publicHomes[project.slug];
  if(!project.websiteUrl) return undefined;

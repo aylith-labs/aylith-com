@@ -49,6 +49,8 @@ it('keeps the seven newly verified product roots distinct from public home previ
   expect(verifiedProductEntry(slug)).toBe(`https://${slug}.aylith.com/`);
   expect(productWebsitePreview({slug})).toBe(`https://${slug}.aylith.com/home/`);
  }
- expect(verifiedProductEntry('pintle')).toBeUndefined();
+ expect(verifiedProductEntry('pintle')).toBe('https://pintle.aylith.com/');
+ expect(productWebsitePreview({slug:'pintle'})).toBe('https://pintle.aylith.com/home/');
+ expect(verifiedProductEntry('clipwell')).toBeUndefined();
  expect(verifiedProductEntry('cohesa')).toBeUndefined();
 });
