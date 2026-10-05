@@ -51,6 +51,7 @@ it('keeps the seven newly verified product roots distinct from public home previ
  }
  expect(verifiedProductEntry('pintle')).toBe('https://pintle.aylith.com/');
  expect(productWebsitePreview({slug:'pintle'})).toBe('https://pintle.aylith.com/home/');
- expect(verifiedProductEntry('clipwell')).toBeUndefined();
+ expect(verifiedProductEntry('clipwell')).toBe('https://clipwell.aylith.com/');
+ expect(productWebsitePreview({slug:'clipwell'})).toBe('https://clipwell.aylith.com/home/');
  expect(verifiedProductEntry('cohesa')).toBeUndefined();
 });
