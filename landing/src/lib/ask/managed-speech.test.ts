@@ -1,4 +1,4 @@
-import{afterEach,expect,it,vi}from 'vitest';import{ManagedSpeech}from './managed-speech';
+import{afterEach,expect,it,vi}from 'vitest';import{ManagedSpeech,ManagedVoiceLimit,ownedAdmissionFallback}from './managed-speech';
 
 afterEach(()=>vi.unstubAllGlobals());
 it('Stop during pending microphone permission closes late tracks and preserves selected language/voice and typed request',async()=>{
@@ -37,4 +37,19 @@ it('a delayed old AudioContext close cannot let an older Start overwrite the new
  const speech=new ManagedSpeech('https://ai.example.test',{onState:()=>{},onTranscript:()=>{}}),request={language:'hu',voiceId:'native-hu'};const first=speech.start(request);while(!mics)await new Promise(resolve=>setTimeout(resolve,0));
  const older=speech.start(request);await closing;const newer=speech.start(request);await secondPermission;releaseClose();await Promise.race([older,new Promise(resolve=>setTimeout(resolve,5))]);
  try{expect(fetcher).toHaveBeenCalledTimes(2);}finally{await speech.stop();for(const resolve of permissions)resolve({getTracks:()=>[{stop:()=>{}}]}as unknown as MediaStream);await Promise.all([first,newer,older]);}
+});
+
+it.each([{status:429,body:{error:'rate_limited'},limited:true},{status:401,body:{error:'invalid_session'},limited:false},{status:403,body:{error:'forbidden'},limited:false},{status:429,body:{error:'unknown'},limited:false},{status:503,body:{error:'unavailable'},limited:false}])('only a validated admission rate limit allows owned fallback ($status/$body.error)',async({status,body,limited})=>{
+ const microphone=vi.fn();vi.stubGlobal('navigator',{mediaDevices:{getUserMedia:microphone}});vi.stubGlobal('fetch',async()=>new Response(JSON.stringify(body),{status}));
+ const speech=new ManagedSpeech('https://ai.example.test',{onState:()=>{},onTranscript:()=>{}});let error:unknown;try{await speech.start({language:'en',voiceId:'verified-managed'});}catch(cause){error=cause;}
+ expect(error instanceof ManagedVoiceLimit).toBe(limited);expect(microphone).not.toHaveBeenCalled();
+});
+
+it('owned admission fallback preserves operator mode, ready state, supported language and registered voice identity',()=>{
+ const voices=[{id:'owned-hu',locale:'hu'},{id:'owned-en',locale:'en-US'}];const limited=new ManagedVoiceLimit();
+ expect(ownedAdmissionFallback(limited,'owned',true,'en',voices)).toEqual(voices[1]);
+ expect(ownedAdmissionFallback(limited,'browser',true,'en',voices)).toBeUndefined();
+ expect(ownedAdmissionFallback(limited,'owned',false,'en',voices)).toBeUndefined();
+ expect(ownedAdmissionFallback(limited,'owned',true,'de',voices)).toBeUndefined();
+ expect(ownedAdmissionFallback(new Error('invalid_session'),'owned',true,'en',voices)).toBeUndefined();
 });

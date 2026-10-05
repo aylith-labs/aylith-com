@@ -20,7 +20,7 @@
 	import { resolveAiUrl } from '$lib/ask/config';
 	import { deleteConversationSession, adoptGuestConversation, clearConversation, guestConversationScope, listConversationSessions, reopenConversation, loadConversation, saveConversation } from '$lib/ask/history';
 	import { BrowserSpeech, matchingVoiceLocale, type SpeechSnapshot } from '$lib/ask/browser-speech';
-	import {ManagedSpeech}from '$lib/ask/managed-speech';
+	import {ManagedSpeech,ownedAdmissionFallback}from '$lib/ask/managed-speech';
 	import { conversationalRequest, selectServerVoice } from '$lib/ask/voice-selection';
 	import { OwnedSpeech, watchOwnedAvailability, type OwnedAvailability } from '$lib/ask/owned-speech';
 	import { resolveAylaAction } from './navigation';
@@ -83,6 +83,7 @@
 	let managedSelection=$derived(conversationalRequest(conversationalVoice,serverLanguage,ownedVoiceId));
 	let managedSelected=$derived(managedSelection!==null);
 	let serverVoiceStatus = $state('');
+ let voiceNotice = $state('');
 	let speechSnapshot = $state<SpeechSnapshot>({ locale: '', recognition: 'unavailable', localVoices: [] });
 	let matchingLocalVoices = $derived(matchingVoiceLocale(speechSnapshot.localVoices, speechSnapshot.locale));
 	let localLanguageChoices = $derived(languageChoices([...SPEECH_LANGUAGE_CODES, speechSnapshot.locale, ...speechSnapshot.localVoices.map((voice) => voice.lang)].filter(Boolean), typeof navigator === 'undefined' ? 'en' : navigator.language));
@@ -365,7 +366,7 @@
 		if (activeVoice === 'browser' && speechState === 'listening') { speech?.stop(); activeVoice = ''; voiceTurn = false; return; }
 		if (activeVoice) { speech?.stop(); await owned?.stop();await managed?.stop(); activeVoice = ''; voiceTurn = false; chat.stop(); }
 		if (!await refreshSpeechPolicy() || disposed || authCardOpen) return;
-		if(managedSelection&&conversationalVoice&&managed){const initiatingIdentity=identityEpoch;activeVoice='managed';speechError='';try{await managed.start({language:managedSelection.language,voiceId:managedSelection.voiceId,prompt:latestRequest.slice(0,600),context:JSON.stringify(currentContext()).slice(0,600)},()=>initiatingIdentity===identityEpoch&&ready);}catch{if(initiatingIdentity!==identityEpoch)return;activeVoice='';speechError='This voice is temporarily unavailable. Choose another voice or continue with text.';}return;}
+		if(managedSelection&&conversationalVoice&&managed){const selectedLabel=conversationalVoice.label,initiatingIdentity=identityEpoch;activeVoice='managed';speechError='';try{await managed.start({language:managedSelection.language,voiceId:managedSelection.voiceId,prompt:latestRequest.slice(0,600),context:JSON.stringify(currentContext()).slice(0,600)},()=>initiatingIdentity===identityEpoch&&ready);}catch(cause){if(initiatingIdentity!==identityEpoch||!ready||authCardOpen||disposed)return;activeVoice='';const fallback=ownedAdmissionFallback(cause,voiceMode,ownedSnapshot.ready&&ownedSnapshot.ttsReady,serverLanguage,ownedSnapshot.readyVoices);if(owned&&fallback){voiceNotice=`Using ${displayVoice(fallback.id,fallback.locale)} while ${selectedLabel} is busy or at its session limit.`;ownedVoiceId=fallback.id;owned.voiceId=fallback.id;owned.language=serverLanguage;owned.ttsPreference='owned';activeVoice='owned';ownedAnswerId='';ownedAnswerFinal=false;speechError='';try{await owned.start();}catch(error){if(initiatingIdentity!==identityEpoch||disposed||!ready)return;activeVoice='';voiceNotice='';speechError=error instanceof Error?error.message:'Voice could not start.';speechState='error';}}else{speechError='This voice is temporarily unavailable. Choose another voice or continue with text.';}}return;}
 		if (voiceMode === 'browser') { activeVoice = 'browser'; await startLocalSpeech(); if (speechState === 'error') activeVoice = ''; return; }
 		if (voiceMode !== 'owned' || !owned) return;
 		activeVoice = 'owned'; ownedAnswerId = ''; ownedAnswerFinal = false; serverVoiceStatus = ''; speechError = '';
@@ -377,6 +378,7 @@
 	}
 
 	function stopAllVoice() {
+ voiceNotice='';
 		if (!ownedAnswerFinal && ownedAnswerId) interruptedAnswerId = ownedAnswerId;
 		localStarting = false;
 		speech?.stop(); const stopping=[owned?.stop(),managed?.stop()]; activeVoice = ''; voiceTurn = false; ownedAnswerFinal = true; serverVoiceStatus = '';
@@ -534,7 +536,8 @@
 					{#key authSubject}<AylaAdministration {apiUrl} onPolicyChange={() => { stopAllVoice(); void refreshSpeechPolicy(); }} />{/key}
 				</div>
 			{/if}
-			{#if speechError && !isImmersive}<p class="relative px-2 pb-1 text-xs text-red-700 dark:text-red-300" role="alert">{speechError}</p>{/if}
+			{#if voiceNotice && !isImmersive}<p role="status" class="relative px-2 pb-1 text-xs">{voiceNotice}</p>{/if}
+ {#if speechError && !isImmersive}<p class="relative px-2 pb-1 text-xs text-red-700 dark:text-red-300" role="alert">{speechError}</p>{/if}
 			<div class="relative min-h-0 flex-1">
 				{#if historyOpen && conversationScope}<nav aria-label="Local conversations" class="relative z-10 flex max-h-[45svh] flex-wrap gap-2 overflow-y-auto py-2" inert={authCardOpen}><button onclick={newConversation} class="rounded-lg border border-surface-300 px-3 py-2 text-sm dark:border-surface-600">New conversation</button><label class="w-full text-sm">Search conversation titles<input aria-label="Search conversations" type="search" maxlength="200" value={historyQuery} oninput={(event)=>{historyQuery=event.currentTarget.value;historyPage=0;}} class="mt-1 min-h-11 w-full rounded-lg border border-surface-300 bg-transparent px-3 dark:border-surface-600" /></label><p class="w-full text-xs" aria-live="polite">{filteredSessions.length} conversations · Page {visibleHistoryPage+1} of {historyPageCount}</p>{#each visibleSessions as item}{@const text=historyHighlight(item.title)}<button data-conversation-session={item.id} aria-current={item.current?'true':undefined} disabled={item.current} onclick={()=>{void chooseConversation(item.id);}} class="rounded-lg border border-surface-300 px-3 py-2 text-sm disabled:opacity-60 dark:border-surface-600">{text.before}{#if text.match}<mark>{text.match}</mark>{/if}{text.after}{item.current?' · Current':''}</button><button data-delete-session={item.id} disabled={deletingHistory} aria-label={'Delete '+item.title} onclick={()=>pendingDelete=item.id} class="rounded-lg px-3 py-2 text-sm">Delete</button>{/each}{#if pendingDelete}<div role="group" aria-label="Confirm local conversation deletion" class="w-full"><p>Delete this conversation from this device? Provider records are unaffected.</p><button onclick={()=>{void confirmConversationDelete();}} class="min-h-11 px-3">Delete from this device</button><button onclick={()=>pendingDelete=null} class="min-h-11 px-3">Cancel deletion</button></div>{/if}{#if !filteredSessions.length}<p>No matching conversations.</p>{/if}<div class="flex w-full gap-2"><button disabled={visibleHistoryPage===0} onclick={()=>historyPage=visibleHistoryPage-1} class="min-h-11 rounded-lg border border-surface-300 px-3 text-sm disabled:opacity-50 dark:border-surface-600">Previous conversations</button><button disabled={visibleHistoryPage+1>=historyPageCount} onclick={()=>historyPage=visibleHistoryPage+1} class="min-h-11 rounded-lg border border-surface-300 px-3 text-sm disabled:opacity-50 dark:border-surface-600">Next conversations</button></div>{#if historyError}<p role="alert">{historyError}</p>{/if}</nav>{/if}
 				<AylaSignIn {apiUrl} open={authCardOpen} onClose={closeSignIn} onStatus={onIdentityStatus} />
@@ -561,7 +564,7 @@
 				{/if}
 			</div>
 			{#if managedOffer&&!authCardOpen}<ManagedActionPane action={managedOffer} catalogSlugs={projects.map(p=>p.slug)} requestedSignIn={managedOffer.type==='show_login'&&managedOffer.requestId===managedRequestId} stopVoice={stopAllVoice} onSignIn={openSignIn} onNavigate={(action)=>window.dispatchEvent(new CustomEvent('ayla:navigate',{detail:action}))} onDismiss={()=>managedOffer=null}/>{/if}
-			{#if isImmersive}<div inert={authCardOpen} class="relative flex justify-center gap-4 pb-4"><button onclick={() => { void toggleVoice(); }} disabled={!voiceReady && !activeVoice} aria-label={voiceActionLabel} class="ayla-immersive-control" title={voiceActionLabel}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3m-4 0h8"/></svg><span>Mic</span></button><button bind:this={chatTrigger} onclick={() => chatIslandOpen = !chatIslandOpen} aria-expanded={chatIslandOpen} aria-controls="ayla-immersive-composer" class="ayla-immersive-control"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 5h16v11H8l-4 3V5Z"/></svg><span>Chat</span></button></div>{/if}
+			{#if isImmersive}{#if voiceNotice}<p role="status" class="relative z-10 px-4 pb-2 text-center text-xs text-surface-600 dark:text-warm-300">{voiceNotice}</p>{/if}<div inert={authCardOpen} class="relative flex justify-center gap-4 pb-4"><button onclick={() => { void toggleVoice(); }} disabled={!voiceReady && !activeVoice} aria-label={voiceActionLabel} class="ayla-immersive-control" title={voiceActionLabel}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3m-4 0h8"/></svg><span>Mic</span></button><button bind:this={chatTrigger} onclick={() => chatIslandOpen = !chatIslandOpen} aria-expanded={chatIslandOpen} aria-controls="ayla-immersive-composer" class="ayla-immersive-control"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 5h16v11H8l-4 3V5Z"/></svg><span>Chat</span></button></div>{/if}
 		</section>
 		{/if}
 	</div>

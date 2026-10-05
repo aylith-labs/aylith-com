@@ -1,5 +1,12 @@
 import {type ManagedAction, managedAction} from './managed-actions';
 
+export class ManagedVoiceLimit extends Error { constructor(){super('This voice is busy or has reached its session limit.');} }
+
+export function ownedAdmissionFallback(cause:unknown,mode:string,ready:boolean,language:string,voices:{id:string;locale:string}[]) {
+ if(!(cause instanceof ManagedVoiceLimit)||mode!=='owned'||!ready)return undefined;
+ return voices.find(voice=>voice.locale.split('-')[0]===language);
+}
+
 type Callbacks={onState:(state:'idle'|'connecting'|'listening'|'thinking'|'speaking'|'error',detail?:string)=>void;onTranscript:(role:'user'|'assistant',text:string,requestId?:string)=>void;onRequest?:(requestId:string)=>void;onSummary?:(summary:string,requestId:string)=>void;onAction?:(action:ManagedAction,requestId:string)=>void};
 type Session={epoch:number;abort:AbortController;socket?:WebSocket;stream?:MediaStream;input?:AudioContext;output?:AudioContext;capture?:AudioWorkletNode;playing:Set<AudioBufferSourceNode>;next:number;reject?:()=>void;timer?:ReturnType<typeof setTimeout>};
 /** Duplex managed transport. It is separate from OwnedSpeech's turn protocol. */
@@ -11,7 +18,7 @@ export class ManagedSpeech {
   const current=()=>this.session===session&&this.epoch===epoch&&identityCurrent();
   try{
    const response=await fetch(`${this.apiUrl}/api/auth/voice-agent/session`,{method:'POST',credentials:'include',signal:session.abort.signal,headers:{'Content-Type':'application/json'},body:JSON.stringify(request)});
-   if(!current())return;if(!response.ok)throw new Error('This voice is unavailable. Try another voice.');
+   if(!current())return;if(!response.ok){if(response.status===429){const failure=await response.json().catch(()=>null);if(!current())return;if(failure?.error==='rate_limited')throw new ManagedVoiceLimit();}throw new Error('This voice is unavailable. Try another voice.');}
    const grant=await response.json() as {url:string;maxSeconds:number;sampleRate:number};if(!current())return;
    const url=new URL(grant.url),api=new URL(this.apiUrl);if(url.protocol!=='wss:'||url.host!==api.host||url.pathname!=='/api/voice/agent/ws'||grant.sampleRate!==16000||!Number.isInteger(grant.maxSeconds)||grant.maxSeconds<15||grant.maxSeconds>120)throw new Error('Voice connection is unavailable.');
    session.output=new AudioContext({sampleRate:16000});await session.output.resume();if(!current())return;
