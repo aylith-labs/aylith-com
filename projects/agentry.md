@@ -25,16 +25,19 @@ gradientTo: '#5eead4'
 repoUrl: 'https://github.com/aylith-labs/agentry'
 sourcePublic: false
 order: 17
+websiteUrl: 'https://agentry.aylith.com/'
 onboarding:
-  access: restricted
+  access: public-app
+  url: 'https://agentry.aylith.com/home/'
   prerequisites:
-    - Run the Bun web and API workspaces with a local SQLite database
-    - Create an account with email and password
-  limitations:
-    - No hosted Agentry origin or public install path has been verified
+    - Open the hosted app and create an account with email and password
     - >-
-      Google OAuth exists in the API but has no verified web sign-in path;
-      email/password is the current page flow
+      Running the private canonical source locally requires repository
+      authorization, Bun and SQLite
+  limitations:
+    - >-
+      Google sign-in requires an operator-configured provider; email/password is
+      available directly
     - >-
       Prompt search and agent definition history are distinct; prompts do not
       have saved versions or portable export
@@ -57,4 +60,4 @@ Prompts and agent definitions live in scattered chats and files. Agentry collect
 
 ## Current boundary
 
-Agentry runs from source with local database setup; no hosted app deployment has been verified. Email/password sign-in works in source. Google OAuth is optional at the API, but the former web button targeted an unmatched route and was withdrawn until its navigation can be repaired and checked. Search is implemented for prompts, while version snapshots and restore apply to agent definitions. Collection references need additional item-visibility checks before the app can make a blanket privacy claim about all cross-linked drafts.
+Use the [hosted library](https://agentry.aylith.com/) to save and revise prompts and agent definitions. Email/password sign-in is available; optional Google sign-in depends on operator configuration. Search applies to prompts, while version snapshots and restore apply to agent definitions. Prompts do not have saved versions or portable export.

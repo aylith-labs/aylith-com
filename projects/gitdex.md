@@ -22,6 +22,7 @@ gradientTo: '#94a3b8'
 repoUrl: 'https://github.com/aylith-labs/gitdex'
 sourcePublic: false
 order: 19
+websiteUrl: 'https://gitdex.aylith.com/'
 onboarding:
   access: restricted
   prerequisites:

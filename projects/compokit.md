@@ -1,18 +1,14 @@
 ---
 name: Compokit
-tagline: AI design-to-code that speaks your component language
+tagline: Generate a starting point from your component library
 description: >-
-  A planned design-to-code workflow using your existing component library and
-  design tokens. Generated output still needs human review and validation.
+  A local component-aware CLI that scans your library and design tokens, matches
+  a request by keywords, and emits code for review in your project.
 category: design-tools
 features:
-  - Ingests your component library and design tokens
-  - Generates code using your actual components
-  - Planned incremental diffs when designs update
-  - Planned accessibility checks and test assistance; not a compliance guarantee
-  - >-
-    Component scanning for React, Vue and Svelte; other framework support is
-    unverified
+  - 'Scan local React, Vue and Svelte components and CSS custom properties'
+  - Match requests by keywords and generate framework-specific component imports
+  - Require explicit values for required string props before writing output
 targetUser: Design-heavy product teams with established component libraries
 featured: false
 icon: >-
@@ -26,37 +22,33 @@ gradientTo: '#f472b6'
 repoUrl: 'https://github.com/aylith-labs/compokit'
 sourcePublic: false
 order: 1
+websiteUrl: 'https://compokit.aylith.com/'
 onboarding:
-  access: restricted
+  access: public-download
+  url: 'https://compokit.aylith.com/home/#install'
   prerequisites:
+    - Node.js 22 or newer and npm
+    - A local component library to scan
     - >-
-      Authorized access to the private source repository is required for
-      development setup
+      The public CLI archive does not require repository access; building the
+      private canonical source requires authorization
   limitations:
-    - No public installation or hosted-service access route has been verified
     - >-
-      Public product notes below describe the direction, not a release or access
-      entitlement
+      Generated imports and code must be reviewed and typechecked in the target
+      project
+    - >-
+      Required string props need one explicit quoted value; unsupported required
+      prop types need manual completion
 ---
 
-## Vision
+## Scan your existing vocabulary
 
-Compokit explores generation constrained by an existing component vocabulary. The goal is code that fits the host design system. First-pass review acceptance and reduced rework have not been established by a reproducible evaluation.
+Scan a local component directory and CSS custom properties, then inspect the resulting design-system JSON. Matching uses keywords and returns a reviewable starting point using your component names.
 
-## Public overview
+## Install and generate locally
 
-The [static Compokit overview](https://aylith-labs.github.io/compokit/) explains the source-run scan, keyword matching, and reviewable generation flow. It is an informational page, not a hosted scanner, account, or public installation route.
+The [public homepage and CLI download](https://compokit.aylith.com/home/#install) provide a bundled npm archive and checksum. Install the downloaded archive with npm, scan your library, and provide explicit required string values in a generation request. No provider key is required for this local CLI flow.
 
-## The Problem
+## Review in the target project
 
-Translating a design into an existing component library can involve manual matching and cleanup. How much work this saves depends on the design, library and task; this entry does not establish a competitor-wide rework rate.
-
-## Intended direction
-
-- **Your components, not generic HTML**: Scan and match existing components and tokens; model training is not established
-- **Incremental diffs (planned)**: Explore a diff against existing code when a design changes, rather than promising complete regeneration support
-- **Quality checks**: Accessibility checks and test assistance do not establish compliance, correctness or automatic review approval
-
-## Evidence still needed
-
-Use a fixed, versioned set of designs and component libraries. Record generated output, failed cases, manual edits, review acceptance and accessibility checks with a stated rubric. Compare matched baselines and repeated runs before publishing completion percentages or time savings. No such benchmark is supplied by this catalog entry.
+Generated output must be checked against your actual library and project configuration. Missing or conflicting required string values fail before output is written. This CLI flow does not establish automatic design fidelity, accessibility compliance or a benchmarked reduction in review work.

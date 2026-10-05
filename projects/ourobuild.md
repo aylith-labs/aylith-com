@@ -22,6 +22,7 @@ gradientTo: '#a78bfa'
 repoUrl: 'https://github.com/aylith-labs/ourobuild'
 sourcePublic: false
 order: 10
+websiteUrl: 'https://ourobuild.aylith.com/'
 ---
 
 ## Current scope
