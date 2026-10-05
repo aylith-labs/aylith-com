@@ -279,7 +279,7 @@
 {#if !open}<AppearancePreferences {apiUrl} {authPath} identity={appearanceIdentity} />{/if}
 
 {#if open}
-	<div bind:this={panel} onkeydown={keepFocus} role="dialog" tabindex="-1" aria-modal="true" class="absolute inset-x-2 top-4 z-40 mx-auto w-[min(100%,28rem)] max-h-[calc(100%-2rem)] overflow-y-auto rounded-3xl border border-surface-200 bg-white p-5 shadow-[0_26px_80px_-28px_rgba(49,30,20,.6)] dark:border-surface-700 dark:bg-surface-900 sm:p-7" aria-label={`${loginProfile.name} sign in`}>
+	<div bind:this={panel} onkeydown={keepFocus} role="dialog" tabindex="-1" aria-modal="true" class="absolute inset-x-2 top-4 z-40 mx-auto w-[min(calc(100%-1rem),28rem)] max-h-[calc(100%-2rem)] overflow-y-auto rounded-3xl border border-surface-200 bg-white p-5 shadow-[0_26px_80px_-28px_rgba(49,30,20,.6)] dark:border-surface-700 dark:bg-surface-900 sm:p-7" aria-label={`${loginProfile.name} sign in`}>
 		<div class="mb-5 flex items-start justify-between gap-4">
 			<LoginBrand productId={loginProfile.productId} name={loginProfile.name} endorsement={loginProfile.endorsement} heading={step === 'complete' ? 'You’re signed in' : step === 'totp' ? 'One more check' : 'Sign in here'} />
 			<button type="button" onclick={dismiss} aria-label="Close sign in" class="min-h-11 rounded-full px-3 py-2 text-sm text-surface-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-500 dark:text-warm-300">Close</button>
