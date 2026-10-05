@@ -69,7 +69,7 @@
 			</svg>
 		</a>
 		<a
-			href="/#method"
+			href="/web#method"
 			class="btn-press inline-flex items-center gap-2 rounded-xl border border-surface-200 bg-white/80 px-6 py-3.5 text-sm font-semibold text-surface-700 backdrop-blur-sm hover:border-surface-300 dark:border-surface-700 dark:bg-surface-800/60 dark:text-warm-200 dark:hover:border-surface-600"
 		>
 			Read the method

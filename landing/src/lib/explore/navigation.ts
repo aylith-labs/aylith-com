@@ -6,9 +6,9 @@ export function resolveAylaAction(value: unknown, catalogSlugs: readonly string[
 	if (!value || typeof value !== 'object') return null;
 	const action = value as Record<string, unknown>;
 	if (action.type === 'open_experience') {
-		if (action.experience === 'classic') return '/?view=classic';
+		if (action.experience === 'classic') return '/classic';
 		if (action.experience === 'explore') return '/explore';
-		if (action.experience === 'ayla') return '/ayla';
+		if (action.experience === 'ayla') return '/';
 		return null;
 	}
 	if (action.type !== 'open_project' || typeof action.slug !== 'string' || typeof action.view !== 'string') return null;

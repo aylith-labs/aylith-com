@@ -1,0 +1,12 @@
+{
+  "repository": "aylith-labs/aylith-media",
+  "commit": "8dd1cca413b4cbcabffa7f82019706312c7f8d76",
+  "path": "media/aylith-com/brand/2026-10-04-social-library/catalog-2026-10-04-pruned-v3.json",
+  "Gitblob": "affa02ef875e994dff3384a2cf12c9e7d974bc6b",
+  "bytes": 22347,
+  "sha256": "9ba5b6aaba6499e48e674484795649a9b8cfae9462c50d92497ba10f475cea85",
+  "assets": 27,
+  "acquisition": "Purpose-built GitHub fetch_file base64 at pinned commit; preserves original CRLF. No rejected CDN request retried.",
+  "sourceAuthority": "Current canonical infra stacks/media README names aylith-media sole owner; versioned catalog matches canonical brand load URL.",
+  "remoteMedia": "Original URLs unchanged; remote image availability remains separate from local build closure."
+}

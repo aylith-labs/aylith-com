@@ -17,9 +17,8 @@ export const SPEECH_LANGUAGE_CODES =
   );
 
 export const VIEW_CHOICES: RichChoice[] = [
-  { value: 'classic', label: 'Classic', description: 'The original, focused Aylith view' },
-  { value: 'explore', label: 'Explore', description: 'Browse projects with Ayla nearby' },
-  { value: 'ayla', label: 'Ayla', description: 'Open the full conversation' },
+	{ value: 'explore', label: 'Web', description: 'Browse projects with Ayla nearby' },
+	{ value: 'ayla', label: 'Ayla', description: 'Open the full conversation' },
 ];
 
 export const VOICE_ROUTE_CHOICES: RichChoice[] = [

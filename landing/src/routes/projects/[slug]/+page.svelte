@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { verifiedProductEntry } from '$lib/catalog/entry-point';
 	import type { Project } from '$lib/types/project';
 	import Seo from '$lib/components/Seo.svelte';
 	import ThemedShot from '$lib/components/changelog/ThemedShot.svelte';
@@ -6,6 +7,7 @@
 	import { hasPublicOnboarding, hasSetupDetails } from '$lib/catalog/availability';
 	let { data } = $props();
 	let project: Project = $derived(data.project);
+	let entryUrl = $derived(verifiedProductEntry(project.slug));
 	let hero = $derived(getHero(project.slug));
 	let hasSetup = $derived(hasSetupDetails(project));
 </script>
@@ -18,6 +20,7 @@
 		<h1 class="text-4xl font-bold tracking-tight text-surface-900 sm:text-5xl dark:text-warm-50">{project.name}</h1>
 		<p class="mt-4 text-xl text-surface-700 dark:text-warm-200">{project.tagline}</p>
 		<p class="mt-4 max-w-3xl text-surface-600 dark:text-warm-300">{project.description}</p>
+		{#if entryUrl}<a href={entryUrl} class="mt-5 mr-5 inline-block rounded-xl bg-accent-selected px-5 py-3 font-semibold text-on-accent">Visit {project.name} →</a>{/if}
 		<a class="mt-5 inline-block text-accent-700 underline dark:text-accent-400" href="/projects/{project.slug}/changelog">View the changelog →</a>
 	</header>
 

@@ -11,10 +11,10 @@ describe('Ayla navigation action', () => {
 			.toBe('/explore/daylog/website');
 	});
 
-	it('opens only the named site experience, preserving explicit Classic intent', () => {
+	it('opens named site experiences at their current routes', () => {
 		expect(resolveAylaAction({ type: 'open_experience', experience: 'explore' }, catalog)).toBe('/explore');
-		expect(resolveAylaAction({ type: 'open_experience', experience: 'classic' }, catalog)).toBe('/?view=classic');
-		expect(resolveAylaAction({ type: 'open_experience', experience: 'ayla' }, catalog)).toBe('/ayla');
+		expect(resolveAylaAction({ type: 'open_experience', experience: 'classic' }, catalog)).toBe('/classic');
+		expect(resolveAylaAction({ type: 'open_experience', experience: 'ayla' }, catalog)).toBe('/');
 		expect(resolveAylaAction({ type: 'open_experience', experience: 'https://evil.test' }, catalog)).toBeNull();
 		expect(resolveAylaAction({ type: 'open_experience', experience: '../classic' }, catalog)).toBeNull();
 	});

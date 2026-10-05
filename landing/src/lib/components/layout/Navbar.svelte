@@ -12,13 +12,13 @@
 	let mobileMenuOpen = $state(false);
 
 	const navLinks = [
-		{ href: '/', label: 'Home' },
-		{ href: '/projects', label: 'Projects' },
+		{ href: '/classic', label: 'Home' },
+		{ href: '/classic#catalog', label: 'Products' },
 		{ href: '/about', label: 'About' }
 	] as const;
 
 	function isActive(href: string): boolean {
-		if (href === '/') return page.url.pathname === '/';
+		if (href === '/classic') return page.url.pathname === '/classic';
 		return page.url.pathname.startsWith(href);
 	}
 </script>

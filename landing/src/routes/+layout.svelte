@@ -70,7 +70,9 @@
 	<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
 </svelte:head>
 
-{#if page.url.pathname === '/ayla' || page.url.pathname.startsWith('/explore')}
+{#if page.url.pathname === '/login' || page.url.pathname.startsWith('/login/')}
+	{@render children()}
+{:else if page.url.pathname === '/' || page.url.pathname === '/ayla' || page.url.pathname === '/ayla/immersive' || (page.url.pathname.startsWith('/explore/') && page.url.pathname !== '/explore/')}
 	<ExploreShell projects={data.navProjects}>{@render children()}</ExploreShell>
 {:else}
 <div class="flex flex-col {page.url.pathname === '/workspace' ? 'h-svh overflow-hidden' : 'min-h-screen'}">

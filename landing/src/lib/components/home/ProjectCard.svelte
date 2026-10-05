@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { verifiedProductEntry } from '$lib/catalog/entry-point';
 	import type { Project } from '$lib/types/project';
 	import { tilt } from '$lib/actions/tilt';
 	import { tokenize } from '$lib/search/ranking';
@@ -11,6 +12,7 @@
 		searchQuery?: string;
 	} = $props();
 
+	let entryUrl = $derived(verifiedProductEntry(project.slug));
 	const categoryLabels: Record<string, string> = {
 		'ai-infrastructure': 'AI Infrastructure',
 		'developer-tools': 'Developer Tools',
@@ -50,12 +52,12 @@
 	}
 </script>
 
-<a
-	href="/projects/{project.slug}"
+<article
 	class="group relative flex flex-col overflow-hidden rounded-2xl border border-surface-200/60 bg-white transition-all duration-300 hover:border-surface-300 dark:border-surface-800/60 dark:bg-surface-900/50 dark:hover:border-surface-700"
 	use:tilt={{ max: 4, scale: 1.01 }}
 	onmousemove={handleMouseMove}
 >
+	<a href={entryUrl ?? `/projects/${project.slug}`} aria-label={entryUrl ? `Visit ${project.name}` : `Product details: ${project.name}`} class="relative flex flex-1 flex-col rounded-2xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-500">
 	<!-- Cursor glow -->
 	<div
 		class="pointer-events-none absolute -inset-px rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100"
@@ -118,4 +120,6 @@
 			<span class="text-sm text-surface-300 transition-transform duration-300 group-hover:translate-x-1 dark:text-surface-600">&rarr;</span>
 		</div>
 	</div>
-</a>
+	</a>
+	{#if entryUrl}<a href="/projects/{project.slug}" class="relative border-t border-surface-200 px-6 py-3 text-sm underline dark:border-surface-700">Product details</a>{/if}
+</article>

@@ -34,3 +34,11 @@ describe('public showcase availability', () => {
 		}
 	});
 });
+
+it('keeps verified app entries at the root and their public website previews at home', async () => {
+ const {verifiedProductEntry,productWebsitePreview}=await import('./entry-point');
+ for(const slug of ['linkstash','proomptal','brainstash']) {
+  expect(verifiedProductEntry(slug)).toBe(`https://${slug}.aylith.com/`);
+  expect(productWebsitePreview({slug})).toBe(`https://${slug}.aylith.com/home`);
+ }
+});

@@ -1,0 +1,240 @@
+{
+  "capturedAt": "2026-10-04T18:10:46.740Z",
+  "owners": [
+    {
+      "slug": "agent-quota",
+      "sourceCommit": "6e60bde1ee721b1bf49e1d3fefa58ffa96fdd30f",
+      "manifestGitBlob": "5b82db4a69ef7d47ec44ba02ed00768be4169f7f"
+    },
+    {
+      "slug": "agentry",
+      "sourceCommit": "08ed8864f669aa931ac93b1d5bb17d5830f097c1",
+      "manifestGitBlob": "54c2c464c118eeddb0610460e17a6f751e60e8bc"
+    },
+    {
+      "slug": "apiflip",
+      "sourceCommit": "85b8e2f256b70e300d54c430c0afbc1ed7aed221",
+      "manifestGitBlob": "2f319f59fcffa450a83feb7f7d8e7b680346445e"
+    },
+    {
+      "slug": "augur",
+      "sourceCommit": "979eace56269fbf0ca1b73bdf48cd439cbf65c50",
+      "manifestGitBlob": "93ba69ee898897b8901a4eedb73fdbb1fb2311cc"
+    },
+    {
+      "slug": "bindlume",
+      "sourceCommit": "57be87a2a9da25bd3f4b2fe56bb22a45a535edc3",
+      "manifestGitBlob": "63e46f597841ac0348d3a255fdc0950f2384bcde"
+    },
+    {
+      "slug": "bract",
+      "sourceCommit": "b68d8aacc433261314c5a62bf684dd52709f950a",
+      "manifestGitBlob": "26246dedfaa8ef02241b1ea898ed5c40f32b148e"
+    },
+    {
+      "slug": "brainstash",
+      "sourceCommit": "bae68453705fc2c8cf1af4b6ff10c0a1c842f780",
+      "manifestGitBlob": "02e7fe98fe3f962029c2610b8ce9e00c2d505c4f"
+    },
+    {
+      "slug": "clipwell",
+      "sourceCommit": "51987e0f6d8c36f2be732b431d2ded0f4d13944c",
+      "manifestGitBlob": "55176de1a5e9e09c8c1a9affac0f283eb915a82b"
+    },
+    {
+      "slug": "cohesa",
+      "sourceCommit": "773439ecda4eca41c8f26523227cb6c62ce02ffe",
+      "manifestGitBlob": "e424ddd2793ade62dd8669b8d8142c7aee8a380a"
+    },
+    {
+      "slug": "compokit",
+      "sourceCommit": "af78dcf9cc32acc79328bddc1b5622d4d6dad4d6",
+      "manifestGitBlob": "a01e3f0b5e2c7a92593647be5e294fc3f9d3ba8f"
+    },
+    {
+      "slug": "contactly",
+      "sourceCommit": "8c3c947fc31e0884c90fadce3273ad026630ac6b",
+      "manifestGitBlob": "735ca1fba5eff448c275e4d3c879abbbb9fd4810"
+    },
+    {
+      "slug": "dashcam",
+      "sourceCommit": "5adc6ca2582e9fe4e9136d1d2f558a0f3d802df4",
+      "manifestGitBlob": "8677f285888de2bda99036f798e96dc18a6bdcd9"
+    },
+    {
+      "slug": "dataferry",
+      "sourceCommit": "82594878b8460bc4bf0953aa30646625a5f41503",
+      "manifestGitBlob": "caa06b7899fb14e2dbf10984d841f5211474f41f"
+    },
+    {
+      "slug": "daylog",
+      "sourceCommit": "1f83f232bebb9f8b249ef554cb4e5d5ed18f2ab9",
+      "manifestGitBlob": "a3b05f110ee3a08274a2b05c791134fedb007d3d"
+    },
+    {
+      "slug": "dictaro",
+      "sourceCommit": "e5afad95972e00dd8613d9719c3b7c0ef55cd40e",
+      "manifestGitBlob": "827a7292e5d5aeabd8811f239d26b13ccbcb0657"
+    },
+    {
+      "slug": "docpeel",
+      "sourceCommit": "3e3f855b17e49d894f2f7c5f1fd19e9cddd05259",
+      "manifestGitBlob": "1d5d77b14515c42fe9bed9eb687fd7eb13009542"
+    },
+    {
+      "slug": "gitdex",
+      "sourceCommit": "bee564e777d4e91a50f34003d3c8e6a34d8a35dd",
+      "manifestGitBlob": "d111cff8ab631921f997670ce89101cf4c519bcb"
+    },
+    {
+      "slug": "githerald",
+      "sourceCommit": "faba3855cf3db224e2549e420424bdc2e26dfc4a",
+      "manifestGitBlob": "401676a1e17fccedd708134f23191baf25c30864"
+    },
+    {
+      "slug": "hale",
+      "sourceCommit": "9f902b0c098dd344f1d0332b87d6ea9c9005790c",
+      "manifestGitBlob": "aa6f3fba1c7f68f717e28d46206ce1d26a43c41e"
+    },
+    {
+      "slug": "herdr-stith",
+      "sourceCommit": "22d3c0fa5b7b6ee4bd2bedcfaa37b2138248dbb8",
+      "manifestGitBlob": "1b824caf00a67c8a079f9b0135bad8e967d08849"
+    },
+    {
+      "slug": "inglenook",
+      "sourceCommit": "1b1b548733f9a2bbe4720825438198a4f518c18d",
+      "manifestGitBlob": "e2f12fe69a3f302abbd46870019bdebdde5b8853"
+    },
+    {
+      "slug": "inspekt",
+      "sourceCommit": "a0bf827480881eed781f37f9343aa37d4ec5e9c5",
+      "manifestGitBlob": "13e2b44d186474365f25be55fd4b95afeca5b518"
+    },
+    {
+      "slug": "knowmine",
+      "sourceCommit": "cd099d00b53448e25eb4ee2b623d2fcfc8ac1c19",
+      "manifestGitBlob": "4ffb1c3ddc905f5288da7ebd83868f4eb04b0918"
+    },
+    {
+      "slug": "linkstash",
+      "sourceCommit": "5de1326d60f312a48aa77f1ac17991f8a5c3b168",
+      "manifestGitBlob": "0413c205397b712868dad2eaa5bd73ddce7bb578"
+    },
+    {
+      "slug": "lintel",
+      "sourceCommit": "e9c3f8b78d6797945cdd2089f12817582ae08049",
+      "manifestGitBlob": "090f35412beafd0ecc291c9c21759d43fd6ab6b8"
+    },
+    {
+      "slug": "mullion",
+      "sourceCommit": "6c984cddaa9460b049472b7b6a0053255da44afd",
+      "manifestGitBlob": "05d869a7f04c8ca79b48c5c77eb1483ab2fb2280"
+    },
+    {
+      "slug": "ourobuild",
+      "sourceCommit": "41cb4cbbf4aeed2be8848e692536f9ac92b4ce37",
+      "manifestGitBlob": "654554230f8149092620efd0ff91359dab125d04"
+    },
+    {
+      "slug": "pintle",
+      "sourceCommit": "8462454bb8645685e91ccc52d9b8d874b2811f63",
+      "manifestGitBlob": "b9878f5849faea19b51bbf2c80f3739a44425f61"
+    },
+    {
+      "slug": "plainbase",
+      "sourceCommit": "baa61eaa4697bd27aa45ac94a8ce9ec814d110ba",
+      "manifestGitBlob": "127591477d8e7f2456a8b3df1ded6b5e653e629a"
+    },
+    {
+      "slug": "proomptal",
+      "sourceCommit": "a7cd552559d46d8899caeee7ba47b4a6fa188aa2",
+      "manifestGitBlob": "76b4754bb28cde7f45ef0bc778b70a5143d8a623"
+    },
+    {
+      "slug": "reelery",
+      "sourceCommit": "83f21c5af2420af0d921d9583bee82006770ce4a",
+      "manifestGitBlob": "44410940a1348e8197f208ec63227645896576d8"
+    },
+    {
+      "slug": "rig",
+      "sourceCommit": "a9cac39a8ceb9d93d0fa19e963c69269329d9455",
+      "manifestGitBlob": "78717fd519d96faf6d8a4163d67101af8b856c94"
+    },
+    {
+      "slug": "selfbloom",
+      "sourceCommit": "456865da09360e3209a29304cc44f914c1a7929e",
+      "manifestGitBlob": "c6b26275ffe6d34777e7e0e9ddd627bb78225d88"
+    },
+    {
+      "slug": "shefrd",
+      "sourceCommit": "20175eabd0f9cd24d06b39b914ec9fdddca1f1a2",
+      "manifestGitBlob": "4d06232de1da1c214a82c9299795932828e98ca9"
+    },
+    {
+      "slug": "shefros",
+      "sourceCommit": "c82f68afb87cf3aabc5539f9a503de2ead6d9ce9",
+      "manifestGitBlob": "f9ddaa7d7743afd64723b28dbf4c9ca710696017"
+    },
+    {
+      "slug": "shiptron",
+      "sourceCommit": "f2a2c33dcbcd87a7a7ea3c3450522dd0be49ea5b",
+      "manifestGitBlob": "208ad2d44e5ed6d0892858970c36b4795cef98b0"
+    },
+    {
+      "slug": "simherd",
+      "sourceCommit": "c6b5c82b17df1f8d5d290618b1c47c4e12ad94b3",
+      "manifestGitBlob": "6d398332b9e65d781a10544a28a8edaa148a41f2"
+    },
+    {
+      "slug": "specwatch",
+      "sourceCommit": "5875e54b8d125c94f8b654a73ab475521d257452",
+      "manifestGitBlob": "fc79b1cd76cf0ec961a0d5b86502a2b1ab2bb9d2"
+    },
+    {
+      "slug": "stith",
+      "sourceCommit": "173aa1d8c15556229c5ce2e20fac5b82a8807724",
+      "manifestGitBlob": "3ace4ff358b9696c664d42461e83b0920a02d9d6"
+    },
+    {
+      "slug": "stith-deck",
+      "sourceCommit": "a68abab92343e517d56e8ca7ca0f5f72f299ca3c",
+      "manifestGitBlob": "d86a814044501fb7498e57d2c571d24d1e8be816"
+    },
+    {
+      "slug": "tickets",
+      "sourceCommit": "4eae330899f1e69f650225fd566d943ad342d789",
+      "manifestGitBlob": "9a57b5ef340ddc20fac287c83ba83465629ebc6d"
+    },
+    {
+      "slug": "tokenflow",
+      "sourceCommit": "4e0455ab45f7f7e59fb61547e38ea3adb150f5ef",
+      "manifestGitBlob": "d96e95e7f5639889db5796ca176acb50b9f05250"
+    },
+    {
+      "slug": "torbie",
+      "sourceCommit": "f832f0dff9e7d7d43b10f5c4eb23127e44d99294",
+      "manifestGitBlob": "e86d7435fa7e4c1088935b968da7cc8211747d28"
+    },
+    {
+      "slug": "tuilith",
+      "sourceCommit": "d8fa2e4b4cad66495f4f601cad94cf6790710ee1",
+      "manifestGitBlob": "2ebe10da94defedb48c6013c1f3e88b59ea914f1"
+    },
+    {
+      "slug": "videx",
+      "sourceCommit": "da7d47960a6d30962cc10d48e2c3e8659303df1a",
+      "manifestGitBlob": "59cb3d17d3b1be34dcd94c97e40c7081a7acaf85"
+    },
+    {
+      "slug": "wisdone",
+      "sourceCommit": "f9bbf81a8481c5ce1ddf3a117c26963da1acfac3",
+      "manifestGitBlob": "12dc2d2578b6997585d6f0feca386e06547fd38d"
+    },
+    {
+      "slug": "whittle",
+      "sourceCommit": "0d69148df34d136cf04ead9e9e2fe6feef7c8820",
+      "manifestGitBlob": "d6b37ce98415819cde75bd4649b5908ce720a9e4"
+    }
+  ]
+}

@@ -118,6 +118,7 @@ export function toMarkdown(project) {
 		gradientTo: project.gradientTo,
 		repoUrl: project.repoUrl
 	};
+	if (typeof project.sourcePublic === 'boolean') frontmatter.sourcePublic = project.sourcePublic;
 	if (project.order !== undefined) frontmatter.order = project.order;
 	if (project.websiteUrl !== undefined) frontmatter.websiteUrl = project.websiteUrl;
 	if (project.onboarding !== undefined) frontmatter.onboarding = project.onboarding;

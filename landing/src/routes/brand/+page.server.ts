@@ -1,11 +1,7 @@
 import { parseCatalog } from '$lib/brand/assets';
+import catalog from '$lib/brand/catalog-2026-10-04-pruned-v3.json';
 
-// Pull the immutable media catalog at prerender time, without a runtime API.
-export async function load({ fetch }) {
-	const response = await fetch('https://media.aylith.com/aylith-com/brand/2026-10-04-social-library/catalog-2026-10-04-pruned-v3.json');
-	if (!response.ok) throw new Error(`Brand asset catalog unavailable: ${response.status}`);
-	return { catalog: parseCatalog(await response.json()) };
+// Exact immutable owning-media Git blob is retained as a reproducible build input.
+export function load() {
+	return { catalog: parseCatalog(catalog) };
 }
-
-
-

@@ -1,0 +1,650 @@
+{
+  "schemaVersion": 1,
+  "updatedOn": "2026-10-04",
+  "datePolicy": "Added dates describe entry into this media library, not creation. Earlier recorded dates and profile decisions retain their evidence. Unknown creation dates remain unknown.",
+  "assets": [
+    {
+      "id": "aylith-option-1-upper-left-avatar",
+      "title": "Upper-left constellation",
+      "brand": "Aylith",
+      "kind": "logo",
+      "status": "in-use",
+      "url": "https://media.aylith.com/aylith-com/brand/2026-10-04-constellation-ascent/aylith-option-1-upper-left-avatar.png",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 964106,
+      "sha256": "3fcf964ea78cc60b252dbcc4beb4a5eece63d87297007bb9101e39030688be84",
+      "addedOn": "2026-10-04",
+      "createdOn": null,
+      "history": [
+        {
+          "date": "2026-10-04",
+          "event": "Added to the media repository",
+          "source": "Git commit ab59f1a"
+        },
+        {
+          "date": "2026-10-04",
+          "event": "Applied to @aylith_labs on X",
+          "source": "Saved profile visually verified in Android X"
+        }
+      ]
+    },
+    {
+      "id": "aylith-option-2-p1-inner-ascent",
+      "title": "P1 · Inner ascent",
+      "brand": "Aylith",
+      "kind": "logo",
+      "status": "alternative",
+      "url": "https://media.aylith.com/aylith-com/brand/2026-10-04-constellation-ascent/aylith-option-2-p1-inner-ascent.png",
+      "width": 1254,
+      "height": 1254,
+      "bytes": 962096,
+      "sha256": "d0234b893ea703c82746a39846debd5f9ea796a14a513d4c431013ea8fcf2cf6",
+      "addedOn": "2026-10-04",
+      "createdOn": null,
+      "history": [
+        {
+          "date": "2026-10-04",
+          "event": "Added to the media repository",
+          "source": "Git commit ab59f1a"
+        },
+        {
+          "date": "2026-10-04",
+          "event": "Retained as option 2",
+          "source": "Explicit selection in the brand review"
+        }
+      ]
+    },
+    {
+      "id": "option-1-original-presentation",
+      "title": "Upper-left constellation · presentation",
+      "brand": "Aylith",
+      "kind": "contact-sheet",
+      "status": "reference",
+      "url": "https://media.aylith.com/aylith-com/brand/2026-10-04-constellation-ascent/option-1-original-presentation.png",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 1228645,
+      "sha256": "095745dcbcbef5ea828aa2a630e316820a6b3c9622506b52c3f386b3932a9d57",
+      "addedOn": "2026-10-04",
+      "createdOn": null,
+      "history": [
+        {
+          "date": "2026-10-04",
+          "event": "Added to the media repository",
+          "source": "Git commit ab59f1a"
+        }
+      ]
+    },
+    {
+      "id": "option-2-original-contact-sheet",
+      "title": "Parabolic ascent · P1–P6",
+      "brand": "Aylith",
+      "kind": "contact-sheet",
+      "status": "exploration",
+      "url": "https://media.aylith.com/aylith-com/brand/2026-10-04-constellation-ascent/option-2-original-contact-sheet.png",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 1315053,
+      "sha256": "3e0590003786242ab8082e309ac1d45e6496b96fa0398ab2ea61f93b59d7f887",
+      "addedOn": "2026-10-04",
+      "createdOn": null,
+      "history": [
+        {
+          "date": "2026-10-04",
+          "event": "Added to the media repository",
+          "source": "Git commit ab59f1a"
+        }
+      ]
+    },
+    {
+      "id": "aylith-avatar",
+      "title": "Original bars and stars",
+      "brand": "Aylith",
+      "kind": "logo",
+      "status": "retired",
+      "url": "https://media.aylith.com/aylith-com/brand/2026-10-04-social-library/aylith-avatar.png",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 42117,
+      "sha256": "fb572a5dc610f3ce1af30796ea466a7e72f59ac47901ab95170fe6f3e68043a9",
+      "addedOn": "2026-10-04",
+      "createdOn": null,
+      "history": [
+        {
+          "date": "2026-10-04",
+          "event": "Added to the brand asset library",
+          "source": "Archived session export; creation date not recorded"
+        },
+        {
+          "date": "2026-10-04",
+          "event": "Replaced by Upper-left constellation on X",
+          "source": "Verified Aylith profile update"
+        }
+      ]
+    },
+    {
+      "id": "aylith-golden-cosmos-banner",
+      "title": "Golden cosmos",
+      "brand": "Aylith",
+      "kind": "banner",
+      "status": "exploration",
+      "url": "https://media.aylith.com/aylith-com/brand/2026-10-04-social-library/aylith-golden-cosmos-banner.png",
+      "width": 2172,
+      "height": 724,
+      "bytes": 2377977,
+      "sha256": "64c1cdbb7e156d6386ffb2b19bbde7cf964e5716553827eadb9bf222afc761c5",
+      "addedOn": "2026-10-04",
+      "createdOn": null,
+      "history": [
+        {
+          "date": "2026-10-04",
+          "event": "Added to the brand asset library",
+          "source": "Archived session export; creation date not recorded"
+        }
+      ]
+    },
+    {
+      "id": "aylith-unlock-potential-banner",
+      "title": "Tools that unlock your agents’ potential",
+      "brand": "Aylith",
+      "kind": "banner",
+      "status": "in-use",
+      "url": "https://media.aylith.com/aylith-com/brand/2026-10-04-social-library/aylith-unlock-potential-banner.png",
+      "width": 2172,
+      "height": 724,
+      "bytes": 1868551,
+      "sha256": "4416a0eae6bde94ebe74fe6f74e3f2bd148d455d127e02b717645ba3e774e9b8",
+      "addedOn": "2026-10-04",
+      "createdOn": null,
+      "history": [
+        {
+          "date": "2026-10-04",
+          "event": "Added to the brand asset library",
+          "source": "Archived session export; creation date not recorded"
+        },
+        {
+          "date": "2026-10-04",
+          "event": "Applied to @aylith_labs on X",
+          "source": "Saved profile visually verified in Android X"
+        }
+      ]
+    },
+    {
+      "id": "personal-conductor-banner",
+      "title": "The conductor",
+      "brand": "Personal",
+      "kind": "banner",
+      "status": "exploration",
+      "url": "https://media.aylith.com/aylith-com/brand/2026-10-04-social-library/personal-conductor-banner.png",
+      "width": 2172,
+      "height": 724,
+      "bytes": 2130034,
+      "sha256": "a52956829b9883b9adcf83d03ccb8dd437b56311f33714c311ca9454eb7ffe54",
+      "addedOn": "2026-10-04",
+      "createdOn": null,
+      "history": [
+        {
+          "date": "2026-10-04",
+          "event": "Added to the brand asset library",
+          "source": "Archived session export; creation date not recorded"
+        }
+      ]
+    },
+    {
+      "id": "personal-living-weave-banner",
+      "title": "Living weave",
+      "brand": "Personal",
+      "kind": "banner",
+      "status": "exploration",
+      "url": "https://media.aylith.com/aylith-com/brand/2026-10-04-social-library/personal-living-weave-banner.png",
+      "width": 2172,
+      "height": 724,
+      "bytes": 2364485,
+      "sha256": "1c5bf85bebb9cab0aaf72d7054b81a76c68c077a9a3949dff88d2a4feeb24c10",
+      "addedOn": "2026-10-04",
+      "createdOn": null,
+      "history": [
+        {
+          "date": "2026-10-04",
+          "event": "Added to the brand asset library",
+          "source": "Archived session export; creation date not recorded"
+        }
+      ]
+    },
+    {
+      "id": "personal-workshop-banner",
+      "title": "The workshop",
+      "brand": "Personal",
+      "kind": "banner",
+      "status": "exploration",
+      "url": "https://media.aylith.com/aylith-com/brand/2026-10-04-social-library/personal-workshop-banner.png",
+      "width": 2172,
+      "height": 724,
+      "bytes": 1886669,
+      "sha256": "18fbf6ac4711ddd24ffcf390ca039bebff069b29fd81508832b87135dadb290c",
+      "addedOn": "2026-10-04",
+      "createdOn": null,
+      "history": [
+        {
+          "date": "2026-10-04",
+          "event": "Added to the brand asset library",
+          "source": "Archived session export; creation date not recorded"
+        }
+      ]
+    },
+    {
+      "id": "pribilinskiy-banner-01-atelier",
+      "title": "The atelier",
+      "brand": "Personal",
+      "kind": "banner",
+      "status": "exploration",
+      "url": "https://media.aylith.com/aylith-com/brand/2026-10-04-social-library/pribilinskiy-banner-01-atelier.png",
+      "width": 2172,
+      "height": 724,
+      "bytes": 2173774,
+      "sha256": "e8f9b0ac885dd4c12a32e63b0ae94cf06a68ca0c176ea5cd8b5c254bcd1ee41b",
+      "addedOn": "2026-10-04",
+      "createdOn": null,
+      "history": [
+        {
+          "date": "2026-10-04",
+          "event": "Added to the brand asset library",
+          "source": "Archived session export; creation date not recorded"
+        }
+      ]
+    },
+    {
+      "id": "pribilinskiy-banner-02-connected-worlds",
+      "title": "Connected worlds",
+      "brand": "Personal",
+      "kind": "banner",
+      "status": "exploration",
+      "url": "https://media.aylith.com/aylith-com/brand/2026-10-04-social-library/pribilinskiy-banner-02-connected-worlds.png",
+      "width": 2172,
+      "height": 724,
+      "bytes": 2000614,
+      "sha256": "e3258b8f590a59ba34f564d50b37e42c937945273758a7c4b239c7db4e643ebf",
+      "addedOn": "2026-10-04",
+      "createdOn": null,
+      "history": [
+        {
+          "date": "2026-10-04",
+          "event": "Added to the brand asset library",
+          "source": "Archived session export; creation date not recorded"
+        }
+      ]
+    },
+    {
+      "id": "pribilinskiy-orchestration-no-text-banner",
+      "title": "Orchestration · no copy",
+      "brand": "Personal",
+      "kind": "banner",
+      "status": "exploration",
+      "url": "https://media.aylith.com/aylith-com/brand/2026-10-04-social-library/pribilinskiy-orchestration-no-text-banner.png",
+      "width": 2172,
+      "height": 724,
+      "bytes": 2656288,
+      "sha256": "1948454920021e06c9fc2e10718fb39370d1b57b307e9c248ede60300ba6fa67",
+      "addedOn": "2026-10-04",
+      "createdOn": null,
+      "history": [
+        {
+          "date": "2026-10-04",
+          "event": "Added to the brand asset library",
+          "source": "Archived session export; creation date not recorded"
+        }
+      ]
+    },
+    {
+      "id": "shefrd-e1a-avatar",
+      "title": "s2 · e1a · Prompt first",
+      "brand": "shefrd",
+      "kind": "logo",
+      "status": "in-use",
+      "url": "https://media.aylith.com/aylith-com/brand/2026-10-04-social-library/shefrd-e1a-avatar.png",
+      "width": 1024,
+      "height": 1024,
+      "bytes": 39478,
+      "sha256": "bc020911f192bd2a9366e75e0c4260944b47a1d4a593c35211896ea611f48707",
+      "addedOn": "2026-10-04",
+      "createdOn": null,
+      "history": [
+        {
+          "date": "2026-10-04",
+          "event": "Added to the brand asset library",
+          "source": "Archived session export; creation date not recorded"
+        },
+        {
+          "date": "2026-10-04",
+          "event": "Applied to @shefrd_ai on X",
+          "source": "Saved profile visually verified in Android X"
+        }
+      ],
+      "vectorUrl": "https://media.aylith.com/aylith-com/brand/2026-10-04-social-library/shefrd-e1a-avatar.svg"
+    },
+    {
+      "id": "shefrd-floating-valleys-distinct-herds-v2",
+      "title": "Floating valleys · distinct herds",
+      "brand": "shefrd",
+      "kind": "banner",
+      "status": "in-use",
+      "url": "https://media.aylith.com/aylith-com/brand/2026-10-04-social-library/shefrd-floating-valleys-distinct-herds-v2.png",
+      "width": 2168,
+      "height": 725,
+      "bytes": 2616557,
+      "sha256": "69fbfe0de1903a221d044e23c80425cbedfcd16ea98a1864ebc6b01877d94c8d",
+      "addedOn": "2026-10-04",
+      "createdOn": null,
+      "history": [
+        {
+          "date": "2026-10-04",
+          "event": "Added to the brand asset library",
+          "source": "Archived session export; creation date not recorded"
+        },
+        {
+          "date": "2026-10-04",
+          "event": "Applied to @shefrd_ai on X",
+          "source": "Saved profile visually verified in Android X"
+        }
+      ]
+    },
+    {
+      "id": "shefrd-surreal-02-folded-world",
+      "title": "Folded world",
+      "brand": "shefrd",
+      "kind": "banner",
+      "status": "exploration",
+      "url": "https://media.aylith.com/aylith-com/brand/2026-10-04-social-library/shefrd-surreal-02-folded-world.png",
+      "width": 2171,
+      "height": 724,
+      "bytes": 2854506,
+      "sha256": "23257e71cfac7e03f31ab8570a4a4f723b2c14629b0e4370c308330204e6328b",
+      "addedOn": "2026-10-04",
+      "createdOn": null,
+      "history": [
+        {
+          "date": "2026-10-04",
+          "event": "Added to the brand asset library",
+          "source": "Archived session export; creation date not recorded"
+        }
+      ]
+    },
+    {
+      "id": "shefrd-surreal-03-worlds-in-arches",
+      "title": "Worlds in arches",
+      "brand": "shefrd",
+      "kind": "banner",
+      "status": "exploration",
+      "url": "https://media.aylith.com/aylith-com/brand/2026-10-04-social-library/shefrd-surreal-03-worlds-in-arches.png",
+      "width": 2171,
+      "height": 724,
+      "bytes": 2738708,
+      "sha256": "3c76a13a1c8d3e868556affc497dc0d2b9d86ff02132a3855a131c22a6ae39c4",
+      "addedOn": "2026-10-04",
+      "createdOn": null,
+      "history": [
+        {
+          "date": "2026-10-04",
+          "event": "Added to the brand asset library",
+          "source": "Archived session export; creation date not recorded"
+        }
+      ]
+    },
+    {
+      "id": "avatar-aylith-arch",
+      "title": "Aylith arch",
+      "brand": "Aylith",
+      "kind": "avatar",
+      "status": "exploration",
+      "url": "https://media.aylith.com/aylith-com/brand/2026-10-04-social-library/avatar-aylith-arch.jpg",
+      "width": 800,
+      "height": 800,
+      "bytes": 141527,
+      "sha256": "e5170b8c083a9608d964e9a21bb561f4a5a2d5d3a2b649957bec3d5362de6a4d",
+      "addedOn": "2026-10-04",
+      "createdOn": null,
+      "history": [
+        {
+          "date": "2026-09-30",
+          "event": "Added to the earlier X concept collection",
+          "source": "Notes repository Git history"
+        },
+        {
+          "date": "2026-10-04",
+          "event": "Archived in the brand asset library",
+          "source": "Imported from the X media picker"
+        }
+      ]
+    },
+    {
+      "id": "avatar-crook-stone",
+      "title": "Crook in stone",
+      "brand": "shefrd",
+      "kind": "avatar",
+      "status": "exploration",
+      "url": "https://media.aylith.com/aylith-com/brand/2026-10-04-social-library/avatar-crook-stone.jpg",
+      "width": 800,
+      "height": 800,
+      "bytes": 125814,
+      "sha256": "6298d71bc4151243c7d0ba4f321ad542106c058c2645f5e0eab328b39bbddb97",
+      "addedOn": "2026-10-04",
+      "createdOn": null,
+      "history": [
+        {
+          "date": "2026-09-30",
+          "event": "Added to the earlier X concept collection",
+          "source": "Notes repository Git history"
+        },
+        {
+          "date": "2026-10-04",
+          "event": "Archived in the brand asset library",
+          "source": "Imported from the X media picker"
+        }
+      ]
+    },
+    {
+      "id": "avatar-hall-copper",
+      "title": "Copper hall emblem",
+      "brand": "shefrd",
+      "kind": "avatar",
+      "status": "exploration",
+      "url": "https://media.aylith.com/aylith-com/brand/2026-10-04-social-library/avatar-hall-copper.jpg",
+      "width": 800,
+      "height": 800,
+      "bytes": 150478,
+      "sha256": "f5b358a0a68a5c01882f438abc35ea2c7a3a441d2ae845f9b17bce0ffa9429b8",
+      "addedOn": "2026-10-04",
+      "createdOn": null,
+      "history": [
+        {
+          "date": "2026-09-30",
+          "event": "Added to the earlier X concept collection",
+          "source": "Notes repository Git history"
+        },
+        {
+          "date": "2026-10-04",
+          "event": "Archived in the brand asset library",
+          "source": "Imported from the X media picker"
+        }
+      ]
+    },
+    {
+      "id": "ref-aylith-unlock-potential-banner",
+      "title": "Aylith banner reference",
+      "brand": "Aylith",
+      "kind": "banner",
+      "status": "reference",
+      "url": "https://media.aylith.com/aylith-com/brand/2026-10-04-social-library/ref-aylith-unlock-potential-banner.jpg",
+      "width": 1500,
+      "height": 500,
+      "bytes": 102721,
+      "sha256": "e764097e99abdd00e52c97916a6ac6f586e14bd2fcdcc3915f6d96aba92abd56",
+      "addedOn": "2026-10-04",
+      "createdOn": null,
+      "history": [
+        {
+          "date": "2026-09-30",
+          "event": "Added to the earlier X concept collection",
+          "source": "Notes repository Git history"
+        },
+        {
+          "date": "2026-10-04",
+          "event": "Archived in the brand asset library",
+          "source": "Imported from the X media picker"
+        }
+      ]
+    },
+    {
+      "id": "ref-personal-conductor-banner",
+      "title": "Personal conductor reference",
+      "brand": "Personal",
+      "kind": "banner",
+      "status": "reference",
+      "url": "https://media.aylith.com/aylith-com/brand/2026-10-04-social-library/ref-personal-conductor-banner.jpg",
+      "width": 1500,
+      "height": 500,
+      "bytes": 156578,
+      "sha256": "6911dc795eb71ebc1bda32cf5c884bc1099a33653996d2fd1d43fb25edfba774",
+      "addedOn": "2026-10-04",
+      "createdOn": null,
+      "history": [
+        {
+          "date": "2026-09-30",
+          "event": "Added to the earlier X concept collection",
+          "source": "Notes repository Git history"
+        },
+        {
+          "date": "2026-10-04",
+          "event": "Archived in the brand asset library",
+          "source": "Imported from the X media picker"
+        }
+      ]
+    },
+    {
+      "id": "ref-the-workshop-banner",
+      "title": "Workshop reference",
+      "brand": "Personal",
+      "kind": "banner",
+      "status": "reference",
+      "url": "https://media.aylith.com/aylith-com/brand/2026-10-04-social-library/ref-the-workshop-banner.jpg",
+      "width": 1500,
+      "height": 500,
+      "bytes": 136204,
+      "sha256": "a09fa78dca3dd48a89f71ba9ee57d32d6f4e2ced900ebb89ab32ba95c9b92dd5",
+      "addedOn": "2026-10-04",
+      "createdOn": null,
+      "history": [
+        {
+          "date": "2026-09-30",
+          "event": "Added to the earlier X concept collection",
+          "source": "Notes repository Git history"
+        },
+        {
+          "date": "2026-10-04",
+          "event": "Archived in the brand asset library",
+          "source": "Imported from the X media picker"
+        }
+      ]
+    },
+    {
+      "id": "x-banner-shefrd-hall",
+      "title": "The conductor’s board",
+      "brand": "shefrd",
+      "kind": "banner",
+      "status": "exploration",
+      "url": "https://media.aylith.com/aylith-com/brand/2026-10-04-social-library/x-banner-shefrd-hall.jpg",
+      "width": 1500,
+      "height": 500,
+      "bytes": 229852,
+      "sha256": "77dafda34302b654e933401d500b217f0b92c5e1a3d28dc8b905cc2e86c70c60",
+      "addedOn": "2026-10-04",
+      "createdOn": null,
+      "history": [
+        {
+          "date": "2026-09-30",
+          "event": "Added to the earlier X concept collection",
+          "source": "Notes repository Git history"
+        },
+        {
+          "date": "2026-10-04",
+          "event": "Archived in the brand asset library",
+          "source": "Imported from the X media picker"
+        }
+      ]
+    },
+    {
+      "id": "x-banner-shefrd-stone",
+      "title": "shefrd in stone",
+      "brand": "shefrd",
+      "kind": "banner",
+      "status": "exploration",
+      "url": "https://media.aylith.com/aylith-com/brand/2026-10-04-social-library/x-banner-shefrd-stone.jpg",
+      "width": 1500,
+      "height": 500,
+      "bytes": 174707,
+      "sha256": "edd8a24c218c895647c058070b6ed8e33e2d1114f74f11a1392bc92c81bcccbb",
+      "addedOn": "2026-10-04",
+      "createdOn": null,
+      "history": [
+        {
+          "date": "2026-09-30",
+          "event": "Added to the earlier X concept collection",
+          "source": "Notes repository Git history"
+        },
+        {
+          "date": "2026-10-04",
+          "event": "Archived in the brand asset library",
+          "source": "Imported from the X media picker"
+        }
+      ]
+    },
+    {
+      "id": "x-banner-shefrd-workshop",
+      "title": "The workshop sorts the flock",
+      "brand": "shefrd",
+      "kind": "banner",
+      "status": "exploration",
+      "url": "https://media.aylith.com/aylith-com/brand/2026-10-04-social-library/x-banner-shefrd-workshop.jpg",
+      "width": 1500,
+      "height": 500,
+      "bytes": 233846,
+      "sha256": "e59cdb107f46ce8f8d014d29e7f9a26c36f47c2cdcfcd4f670753f838b8e9b95",
+      "addedOn": "2026-10-04",
+      "createdOn": null,
+      "history": [
+        {
+          "date": "2026-09-30",
+          "event": "Added to the earlier X concept collection",
+          "source": "Notes repository Git history"
+        },
+        {
+          "date": "2026-10-04",
+          "event": "Archived in the brand asset library",
+          "source": "Imported from the X media picker"
+        }
+      ]
+    },
+    {
+      "id": "exec-3a8c4f98-9f42-4078-8dd2-51d60fa70c47",
+      "title": "Aylith · first logo directions",
+      "brand": "Aylith",
+      "kind": "contact-sheet",
+      "status": "exploration",
+      "url": "https://media.aylith.com/aylith-com/brand/2026-10-04-social-library/exec-3a8c4f98-9f42-4078-8dd2-51d60fa70c47.png",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 1351519,
+      "sha256": "c05db4005084a55cf803290851a1848349efee9a2d8ecd47e8ea96c55988387c",
+      "addedOn": "2026-10-04",
+      "createdOn": null,
+      "history": [
+        {
+          "date": "2026-10-04",
+          "event": "Added to the brand asset library",
+          "source": "Media repository import"
+        }
+      ]
+    }
+  ]
+}

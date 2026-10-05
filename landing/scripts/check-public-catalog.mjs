@@ -7,7 +7,7 @@ const dir = path.resolve(process.argv[2] ?? '.generated/projects');
 const files = readdirSync(dir, { withFileTypes: true });
 const allowedFields = new Set([
 	'name', 'tagline', 'description', 'category', 'features', 'targetUser', 'websiteUrl',
-	'featured', 'icon', 'gradientFrom', 'gradientTo', 'repoUrl', 'order', 'onboarding'
+	'featured', 'icon', 'gradientFrom', 'gradientTo', 'repoUrl', 'sourcePublic', 'order', 'onboarding'
 ]);
 const prohibited = [
 	[/\b(?:api[_-]?key|secret|password|token)\s*[:=]\s*[A-Za-z0-9_+/=-]{12,}/i, 'credential-shaped assignment'],
@@ -32,6 +32,7 @@ for (const file of files.filter((entry) => entry.name.endsWith('.md'))) {
 	for (const field of Object.keys(data)) {
 		if (!allowedFields.has(field)) throw new Error(`${slug}: unexpected frontmatter field ${field}`);
 	}
+	if (data.sourcePublic !== undefined && typeof data.sourcePublic !== 'boolean') throw new Error(`${slug}: invalid source visibility metadata`);
 	for (const [pattern, label] of prohibited) {
 		if (pattern.test(markdown)) throw new Error(`${slug}: ${label} in generated catalog`);
 	}

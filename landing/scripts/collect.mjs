@@ -4,23 +4,26 @@
 //
 // Lists every repo in the aylith-labs org, drops archived repos, the site repo
 // itself, and any repo carrying the EXCLUDE_TOPIC. For each remaining repo it
-// fetches `.aylith/project.md`; when that's absent it synthesizes an uncategorized
-// placeholder from the repo name + GitHub description. Results are written as
+// fetches a valid `.aylith/project.md` for every included product and refuses
+// incomplete or invalid acquisition before replacing the prior catalog. Results are written as
 // frontmatter+body Markdown into landing/.generated/projects/<slug>.md so the
 // existing gray-matter + marked pipeline (server/markdown.ts) reads them unchanged.
 //
+// --owner-capture explicitly consumes an already reviewed pinned GitHub readback,
+// checks each manifest Git blob, and makes no claim of a new live remote read.
 // The pure transforms live in ./manifest.js; this file owns the network and disk.
 //
 // Auth: CATALOG_GITHUB_TOKEN (preferred) or GITHUB_TOKEN. Unauthenticated runs
 // hit the 60 req/hr ceiling, so a token is effectively required in CI.
 
 import { spawnSync } from 'node:child_process';
+import { createHash } from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { Octokit } from '@octokit/rest';
 import { EXCLUDE_TOPIC, ORG, SELF_REPO } from '../src/lib/catalog/defaults.js';
-import { manifestReceipt, placeholderProject, projectFromManifest, toMarkdown } from './manifest.js';
+import { manifestReceipt, projectFromManifest, toMarkdown } from './manifest.js';
 
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const outDir = path.resolve(scriptDir, '../.generated/projects');
@@ -31,9 +34,23 @@ const previousDir = path.resolve(scriptDir, '../.generated/projects.previous');
 const snapshotDir = path.resolve(scriptDir, '../src/content/projects');
 const MANIFEST_PATH = '.aylith/project.md';
 
+const captureFlag = process.argv.indexOf('--owner-capture');
+const capturePath = captureFlag < 0 ? null : process.argv[captureFlag + 1];
+if (captureFlag >= 0 && (!capturePath || capturePath.startsWith('--'))) throw new Error('Missing owner capture path');
+const capture = capturePath ? JSON.parse(fs.readFileSync(capturePath, 'utf8')) : null;
+const captureOwners = new Map();
+for (const row of capture?.owners ?? []) {
+ if (!/^[a-z][a-z0-9-]*$/.test(row.slug) || captureOwners.has(row.slug) || !/^[a-f0-9]{40}$/.test(row.sourceCommit) || row.isError || row.file?.encoding !== 'utf-8' || typeof row.file.content !== 'string') throw new Error('Invalid or duplicate owning capture');
+ const bytes = Buffer.from(row.file.content, 'utf8');
+ if (createHash('sha1').update(`blob ${bytes.length}\0`).update(bytes).digest('hex') !== row.file.sha) throw new Error(`Owning manifest blob differs: ${row.slug}`);
+ captureOwners.set(row.slug, row);
+}
+const requiredOwners = JSON.parse(fs.readFileSync(path.resolve(scriptDir, '../src/content/catalog-required.json'), 'utf8')).owners.map(row => row.slug);
+if (new Set(requiredOwners).size !== requiredOwners.length || requiredOwners.some(slug => !/^[a-z][a-z0-9-]*$/.test(slug))) throw new Error('Invalid required owning product inventory');
+
 const token = process.env.CATALOG_GITHUB_TOKEN || process.env.GITHUB_TOKEN;
 const useGh = process.argv.includes('--gh');
-if (!token && !useGh) {
+if (!token && !useGh && !capture) {
 	console.error(
 		'[collect] No CATALOG_GITHUB_TOKEN / GITHUB_TOKEN set — refusing to run unauthenticated.'
 	);
@@ -60,6 +77,7 @@ function ghRead(endpoint, paginate = false) {
 
 /** Fetch a file from the pinned default-branch revision, or null if missing. */
 async function fetchFile(repo, filePath, sourceCommit) {
+ if (capture) { const row = captureOwners.get(repo); if (row?.sourceCommit !== sourceCommit) throw new Error('Capture revision differs'); return filePath === MANIFEST_PATH ? row.file.content : null; }
 	try {
 		const data = useGh ? ghRead(`repos/${ORG}/${repo}/contents/${filePath}?ref=${sourceCommit}`)
 			: (await octokit.repos.getContent({ owner: ORG, repo, path: filePath, ref: sourceCommit })).data;
@@ -76,6 +94,7 @@ async function fetchFile(repo, filePath, sourceCommit) {
 
 /** Resolve the exact default-branch revision before reading any file from it. */
 async function defaultBranchCommit(repo) {
+ if (capture) return captureOwners.get(repo.name).sourceCommit;
 	const branch = useGh
 		? ghRead(`repos/${ORG}/${repo.name}/branches/${encodeURIComponent(repo.default_branch)}`)
 		: (await octokit.repos.getBranch({ owner: ORG, repo: repo.name, branch: repo.default_branch })).data;
@@ -86,37 +105,49 @@ async function defaultBranchCommit(repo) {
 	return sourceCommit;
 }
 
-/** Slugs present in the committed snapshot — the set the live site currently shows. */
-function snapshotSlugs() {
-	if (!fs.existsSync(snapshotDir)) return [];
-	return fs
-		.readdirSync(snapshotDir)
-		.filter((filename) => filename.endsWith('.md'))
-		.map((filename) => filename.replace(/\.md$/, ''));
-}
+
 
 /**
  * A token that cannot see the org's private repos still succeeds — it just returns
  * fewer repos, and the site quietly deploys with projects missing. Comparing against
- * the committed snapshot turns that silent shrink into a visible warning.
+ * the committed snapshot turns that silent shrink into a pre-swap failure.
  */
+function knownOwnerSlugs() {
+	const names = [...requiredOwners];
+	for (const directory of [snapshotDir, outDir, previousDir]) {
+		if (!fs.existsSync(directory)) continue;
+		for (const name of fs.readdirSync(directory)) if (name.endsWith('.md')) names.push(name.slice(0, -3));
+	}
+	return [...new Set(names)];
+}
+
 function reportDroppedProjects(collectedSlugs) {
 	const collected = new Set(collectedSlugs);
-	const dropped = snapshotSlugs().filter((slug) => !collected.has(slug));
-	if (dropped.length === 0) return;
-	console.warn(
-		`::warning::[collect] ${dropped.length} project(s) in the committed snapshot were not collected: ${dropped.join(', ')}. ` +
-			'Expected if those repos were archived or removed; otherwise the token cannot see them (CATALOG_GITHUB_TOKEN needs org read access).'
-	);
+	const dropped = knownOwnerSlugs().filter(slug => !collected.has(slug));
+	if (dropped.length) throw new Error(`Incomplete owning catalog: missing ${dropped.join(', ')}`);
 }
 
 async function main() {
 	console.log(`[collect] Listing repos for org "${ORG}"…`);
-	const repos = useGh ? ghRead(`orgs/${ORG}/repos?type=all&per_page=100`, true).flat() : await octokit.paginate(octokit.repos.listForOrg, {
+	const repos = capture ? [...captureOwners.values()].map(row => ({ name: row.slug, html_url: `https://github.com/${ORG}/${row.slug}`, default_branch: 'captured', archived: false, topics: [] })) : useGh ? ghRead(`orgs/${ORG}/repos?type=all&per_page=100`, true).flat() : await octokit.paginate(octokit.repos.listForOrg, {
 		org: ORG,
 		type: 'all',
 		per_page: 100
 	});
+
+	// Repository listing visibility is not repository contents permission. Known
+	// owners get one ordinary explicit metadata read; a real denial fails closed.
+	if (!capture) {
+		const listed = new Set(repos.map(repo => repo.name));
+		for (const slug of knownOwnerSlugs()) {
+			if (listed.has(slug)) continue;
+			const repo = useGh ? ghRead(`repos/${ORG}/${slug}`)
+				: (await octokit.repos.get({ owner: ORG, repo: slug })).data;
+			if (!repo || repo.name !== slug || typeof repo.default_branch !== 'string' || !repo.default_branch) throw new Error(`Known owner metadata unavailable: ${slug}`);
+			if (repo.full_name && repo.full_name !== `${ORG}/${slug}`) throw new Error(`Known owner identity differs: ${slug}`);
+			repos.push(repo); listed.add(slug);
+		}
+	}
 
 	const included = repos.filter((repo) => {
 		if (repo.archived) return false;
@@ -125,13 +156,14 @@ async function main() {
 		return true;
 	});
 
+	if (new Set(included.map(repo => repo.name)).size !== included.length) throw new Error('Duplicate owning repositories');
 	console.log(`[collect] ${repos.length} repos total → ${included.length} after exclusions.`);
 
 	fs.rmSync(tmpDir, { recursive: true, force: true });
 	fs.mkdirSync(tmpDir, { recursive: true });
 
 	let fromManifest = 0;
-	let placeholders = 0;
+	
 	const collectedAt = new Date().toISOString();
 	const provenance = {};
 
@@ -147,22 +179,18 @@ async function main() {
 				fromManifest += 1;
 				console.log(`[collect]   ✓ ${repo.name} (manifest)`);
 			} catch (error) {
-				console.warn(
-					`[collect]   ! ${repo.name} manifest invalid (${error.message}) — using placeholder.`
-				);
+				throw new Error(`Invalid owning manifest ${repo.name}: ${error.message}`);
 			}
 		}
-		if (!project) {
-			const readme = await fetchFile(repo.name, 'README.md', sourceCommit);
-			project = placeholderProject(repo, readme);
-			placeholders += 1;
-			console.log(`[collect]   · ${repo.name} (placeholder)`);
-		}
+		if (!project) throw new Error(`Missing owning manifest: ${repo.name}`);
+		project.sourcePublic = repo.private === false;
 		const markdown = toMarkdown(project);
 		fs.writeFileSync(path.join(tmpDir, `${repo.name}.md`), markdown, 'utf-8');
 		if (verifiedManifest) provenance[repo.name] = manifestReceipt(sourceCommit, markdown, collectedAt);
 	}
 	fs.writeFileSync(path.join(tmpDir, 'catalog-provenance.json'), `${JSON.stringify(provenance, null, 2)}\n`, 'utf-8');
+
+	reportDroppedProjects(included.map((repo) => repo.name));
 
 	// Replace the complete Markdown + receipt set together, retaining the old set
 	// for rollback if the final rename fails. Readers fail closed during the gap.
@@ -177,10 +205,8 @@ async function main() {
 	}
 	fs.rmSync(previousDir, { recursive: true, force: true });
 
-	reportDroppedProjects(included.map((repo) => repo.name));
-
 	console.log(
-		`[collect] Wrote ${included.length} projects → ${outDir} (${fromManifest} manifest, ${placeholders} placeholder).`
+		`[collect] Wrote ${included.length} projects → ${outDir} (${fromManifest} owning manifests, no placeholders).`
 	);
 }
 

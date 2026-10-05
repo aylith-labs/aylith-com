@@ -33,7 +33,7 @@ describe('rich choice data', () => {
   });
 
   it('offers descriptive view and route choices and predictable keyboard movement', () => {
-    expect(VIEW_CHOICES.map((choice) => choice.value)).toEqual(['classic', 'explore', 'ayla']);
+    expect(VIEW_CHOICES.map((choice) => choice.value)).toEqual(['explore', 'ayla']);
     expect(VOICE_ROUTE_CHOICES.map((choice) => choice.value)).toEqual([
       'auto',
       'browser',

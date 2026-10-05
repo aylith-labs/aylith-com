@@ -14,8 +14,12 @@ const config = {
 			strict: true
 		}),
 		prerender: {
+			entries: ['/', '/ayla', '/ayla/immersive', '/classic', '*'],
 			handleUnseenRoutes: 'warn',
-			handleHttpError: 'warn'
+			handleHttpError: ({ path, message }) => {
+				if (['/', '/ayla', '/ayla/immersive', '/classic'].includes(path)) throw new Error(message);
+				console.warn(message);
+			}
 		}
 	}
 };

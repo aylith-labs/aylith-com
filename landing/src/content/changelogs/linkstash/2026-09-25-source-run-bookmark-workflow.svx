@@ -16,9 +16,9 @@ hero:
   import ThemedClip from '$lib/components/changelog/ThemedClip.svelte';
 </script>
 
-The [public Linkstash product page](https://aylith-labs.github.io/linkstash/) now explains the source-run workflow and its limits. It is a static page, **not a hosted bookmark account**. The app itself remains a trusted, single-operator prototype without built-in authentication.
+These September 25 captures record the local bookmark workflow as it worked at that date, using a trusted single-operator installation. The [current Linkstash homepage](https://linkstash.aylith.com/home) provides the public package and its installation instructions.
 
-## Current source-run capture
+## Bookmark workflow captured · 2026-09-25
 
 These paired light and dark images come from the **actual locally running Linkstash web app**, with fictional `.example.test` bookmarks and disposable collections. One bookmark was saved through the app form; the rest of the fictional fixture was populated through its API. The poster is an annotated study assembled from real UI pixels, not evidence of a customer library.
 

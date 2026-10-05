@@ -24,8 +24,8 @@
 			<div>
 				<h3 class="text-xs font-semibold uppercase tracking-wider text-surface-400 dark:text-warm-400">Explore</h3>
 				<ul class="mt-3 columns-2 gap-x-8 space-y-2">
-					<li><a href="/#try" class="text-sm text-surface-600 underline dark:text-warm-300">Explore tools</a></li>
-					<li><a href="/projects" class="text-sm text-surface-600 underline dark:text-warm-300">Browse {projects.length} projects</a></li>
+					<li><a href="/classic#try" class="text-sm text-surface-600 underline dark:text-warm-300">Explore tools</a></li>
+					<li><a href="/classic#catalog" class="text-sm text-surface-600 underline dark:text-warm-300">Browse {projects.length} projects</a></li>
 				</ul>
 			</div>
 

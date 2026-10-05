@@ -6,7 +6,7 @@ tags:
 summary: Source-level schema exploration, dashboard sharing, CSV/chart export, sessions, and a static SQL guard with a PostgreSQL read-only transaction.
 ---
 
-This source milestone expanded the PostgreSQL prototype from a query page into
+This source milestone expanded the PostgreSQL application from a query page into
 a workspace. The schema explorer added table metadata and AI descriptions and
 suggestions. Dashboards gained pinned queries, ordering, a public bearer-token
 link, and CSV result/chart PNG export paths. Sessions, profile editing, a
@@ -16,11 +16,5 @@ were also added.
 A static SQL guard and PostgreSQL `READ ONLY` transaction restrict execution;
 they do not guarantee query safety or answer accuracy. Anyone holding a shared
 dashboard token can rerun its pinned queries without signing in, and results
-can change. The prototype needs bounded-result, connection-transport, and
-share-permission review before use with sensitive data.
+can change. Use synthetic data while reviewing result bounds, connection transport security, and sharing permissions.
 
-The former paired images showed an older marketing landing, not a captured
-query or dashboard workflow. They visibly advertised a waitlist, MySQL support,
-performance and success metrics without verification, and a false claim that
-data never leaves the database. Those stills are withdrawn. Real paired
-light/dark product captures and narrated release films remain to be made.

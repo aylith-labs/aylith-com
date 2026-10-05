@@ -39,7 +39,7 @@ describe('owned voice fallback', () => {
 		expect(availability.cartesiaDiscoveryPending).toBe(true);
 	});
 
-	it('opts into cloud narration only when native-language Cartesia TTS is ready', async () => {
+	it('keeps legacy client synthesis preference out of the public session request', async () => {
 		let microphoneRequested: (() => void) | undefined;
 		let grantMicrophone: ((stream: MediaStream) => void) | undefined;
 		const requested = new Promise<void>((resolve) => { microphoneRequested = resolve; });
@@ -69,7 +69,7 @@ describe('owned voice fallback', () => {
 		speech.ttsPreference = 'cartesia_then_owned';
 		const starting = speech.start();
 		await requested;
-		expect(JSON.parse(String(fetcher.mock.calls.find((call) => call[0].endsWith('/sessions'))?.[1]?.body))).toEqual({ provider: 'owned', ttsPreference: 'cartesia_then_owned' });
+		expect(JSON.parse(String(fetcher.mock.calls.find((call) => call[0].endsWith('/sessions'))?.[1]?.body))).toEqual({});
 		await speech.stop();
 		grantMicrophone?.({ getTracks: () => [{ stop: vi.fn() }] } as unknown as MediaStream);
 		await starting;
@@ -110,15 +110,19 @@ describe('owned voice fallback', () => {
 		}
 		vi.stubGlobal('WebSocket', Socket);
 		vi.stubGlobal('fetch', vi.fn(async (input: string) => input.endsWith('/capabilities')
-			? new Response(JSON.stringify({ stt: { serverAvailable: true, readyLanguages: ['en'], maxRecordingSeconds: 30 }, tts: { serverAvailable: true, readyVoices: [{ id: 'voice', locale: 'en_US' }] }, providers: { owned: { stt: true, tts: true } } }))
+			? new Response(JSON.stringify({ stt: { serverAvailable: true, readyLanguages: ['en', 'hu'], maxRecordingSeconds: 30 }, tts: { serverAvailable: true, readyVoices: [{ id: 'voice', locale: 'en_US' }] }, providers: { owned: { stt: true, tts: true } } }))
 			: new Response(JSON.stringify({ url: 'wss://ai.example.test/api/voice/ws' }))));
 		const onAction = vi.fn(), onAnswer = vi.fn(), onVoice = vi.fn();
 		const speech = new OwnedSpeech('https://ai.example.test', { onTranscript: () => {}, onAnswer, onAction, onVoice, context: () => [] });
+		speech.language = 'hu';
 		await speech.start();
+		expect(JSON.parse(String(Socket.instances[0].send.mock.calls[0][0])).language).toBe('hu');
 		const firstTurnId = JSON.parse(String(Socket.instances[0].send.mock.calls.find((call) => JSON.parse(String(call[0])).type === 'mic.start')?.[0])).turnId;
 		expect(typeof firstTurnId).toBe('string');
 		await speech.stop();
+		speech.language = 'auto';
 		await speech.start();
+		expect(JSON.parse(String(Socket.instances[1].send.mock.calls[0][0])).language).toBe('auto');
 		const secondTurnId = JSON.parse(String(Socket.instances[1].send.mock.calls.find((call) => JSON.parse(String(call[0])).type === 'mic.start')?.[0])).turnId;
 		expect(secondTurnId).not.toBe(firstTurnId);
 		Socket.instances[0].onmessage?.({ data: JSON.stringify({ type: 'assistant.action', turnId: firstTurnId, action: { type: 'open_project', slug: 'torbie', view: 'website' } }) });

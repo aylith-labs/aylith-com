@@ -97,7 +97,7 @@ export class OwnedSpeech {
 	}
 
 	private async openSession(turn: Turn): Promise<void> {
-		const response = await fetch(`${this.apiUrl}/api/voice/sessions`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ provider: 'owned', ...(turn.ttsPreference === 'cartesia_then_owned' ? { ttsPreference: turn.ttsPreference } : {}), ...(this.voiceId ? { voiceId: this.voiceId } : {}) }) });
+		const response = await fetch(`${this.apiUrl}/api/voice/sessions`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ ...(this.voiceId ? { voiceId: this.voiceId } : {}) }) });
 		if (!response.ok) throw new Error('The Aylith voice server could not start a session.');
 		const session = await response.json() as { url?: unknown };
 		if (!this.isCurrent(turn)) return;

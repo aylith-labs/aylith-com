@@ -7,9 +7,11 @@ import {
 	DEFAULT_GRADIENT_TO, 
 	DEFAULT_ICON
 } from '$lib/catalog/defaults.js';
+import { verifiedProductEntry } from '$lib/catalog/entry-point';
 import { normalizeOnboarding } from '$lib/catalog/onboarding.js';
 import { normalizeWebsiteUrl } from '$lib/catalog/website.js';
 import type { Project } from '$lib/types/project';
+import { customerProjectBody, customerProjectFields } from './customer-copy';
 
 // Source of truth is the collector's output (.generated/projects, fetched from
 // each repo's .aylith/project.md at build time). When that's absent — local dev
@@ -26,7 +28,8 @@ export function projectFromFrontmatter(
 	slug: string,
 	body?: string
 ): Project {
-	const fields = { ...data };
+	const fields = customerProjectFields(data, slug);
+	if (data.sourcePublic !== true) delete fields.repoUrl;
 	delete fields.status;
 	delete fields.stage;
 	return {
@@ -36,8 +39,9 @@ export function projectFromFrontmatter(
 		gradientFrom: data.gradientFrom ?? DEFAULT_GRADIENT_FROM,
 		gradientTo: data.gradientTo ?? DEFAULT_GRADIENT_TO,
 		featured: data.featured ?? false,
-		onboarding: normalizeOnboarding(data.onboarding),
+		onboarding: normalizeOnboarding(fields.onboarding),
 		websiteUrl: normalizeWebsiteUrl(data.websiteUrl),
+		entryUrl: verifiedProductEntry(slug),
 		body
 	} as Project;
 }
@@ -56,7 +60,7 @@ export function getProjects(): Project[] {
 			const raw = fs.readFileSync(path.join(contentDir, filename), 'utf-8');
 			const { data, content } = matter(raw);
 			const slug = filename.replace('.md', '');
-			const html = content.trim() ? renderProjectBody(content) : undefined;
+			const html = content.trim() ? renderProjectBody(customerProjectBody(content, slug)) : undefined;
 
 			return projectFromFrontmatter(data, slug, html);
 		})

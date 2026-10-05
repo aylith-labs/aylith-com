@@ -23,6 +23,7 @@ export type Project = {
 	body?: string;
 	repoUrl?: string;
 	websiteUrl?: string;
+	entryUrl?: string;
 	order?: number;
 	onboarding?: {
 		access: 'public-source' | 'restricted';

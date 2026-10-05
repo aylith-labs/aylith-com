@@ -16,6 +16,8 @@
 		session?: Chat<UIMessage>;
 		showHistory?: boolean;
 		spotlight?: boolean;
+		showComposer?: boolean;
+		preservePending?: boolean;
 		showSpeak?: boolean;
 		speakAvailable?: boolean;
 		speechActive?: boolean;
@@ -23,6 +25,7 @@
 		onSpeak?: () => void;
 		onStopVoice?: () => void;
 		onBeforeSend?: () => void;
+		onAuthIntent?: (text: string) => boolean;
 	};
 
 	let {
@@ -41,13 +44,16 @@
 		session,
 		showHistory = true,
 		spotlight = false,
+		showComposer = true,
+		preservePending = false,
 		showSpeak = false,
 		speakAvailable = false,
 		speechActive = false,
 		speakLabel = 'Speak to Ayla',
 		onSpeak = () => {},
 		onStopVoice = () => {},
-		onBeforeSend = () => {}
+		onBeforeSend = () => {},
+		onAuthIntent = () => false
 	}: Props = $props();
 
 	// Session/endpoint are fixed for this mounted composer; the Explore shell owns
@@ -95,12 +101,18 @@
 		scroller?.scrollTo({ top: scroller.scrollHeight, behavior: 'smooth' });
 	}
 
-	function send(text: string) {
+	async function send(text: string) {
 		const trimmed = text.trim();
 		if (!trimmed || isBusy) return;
-		input = '';
+		if (onAuthIntent(trimmed)) { input = ''; return; }
+		if (!preservePending) input = '';
 		onBeforeSend();
-		chat.sendMessage({ text: trimmed });
+		try {
+			await chat.sendMessage({ text: trimmed });
+			if (preservePending && !chat.error && input === text) input = '';
+		} catch {
+			// Keep the typed request available for a retry.
+		}
 		scrollToEnd();
 	}
 
@@ -132,7 +144,7 @@
 </script>
 
 <div class="flex h-full flex-col">
-	<div bind:this={scroller} class="flex-1 space-y-5 overflow-y-auto px-1 py-4 {spotlight ? 'invisible' : ''}" aria-hidden={spotlight ? 'true' : undefined}>
+	<div bind:this={scroller} inert={spotlight} class="flex-1 space-y-5 overflow-y-auto px-1 py-4 {spotlight ? 'invisible' : ''}" aria-hidden={spotlight ? 'true' : undefined}>
 		{#if chat.messages.length === 0}
 			<div class="mx-auto max-w-2xl text-center {showIntro ? 'pt-6' : 'pt-0'}">
 				{#if showIntro}
@@ -208,7 +220,7 @@
 		{/if}
 	</div>
 
-	<div class="{immersive ? 'px-1 pt-3' : 'border-t border-surface-200 bg-white/60 px-1 pt-3 dark:border-surface-800 dark:bg-surface-950/60'}">
+	{#if showComposer}<div id={preservePending ? 'ayla-immersive-composer' : undefined} class="{immersive ? 'px-1 pt-3' : 'border-t border-surface-200 bg-white/60 px-1 pt-3 dark:border-surface-800 dark:bg-surface-950/60'}">
 		<div class="flex items-end gap-2 rounded-2xl border border-surface-200 bg-surface-50 px-3 py-2 focus-within:border-accent-400 dark:border-surface-800 dark:bg-surface-900">
 			{#if showSpeak}<button onclick={onSpeak} disabled={!speakAvailable && !speechActive} aria-label={speakLabel} title={speakLabel} class="flex size-8 shrink-0 items-center justify-center self-center rounded-full border border-surface-200 text-surface-400 dark:border-surface-700"><svg class="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3m-4 0h8"/></svg></button>{/if}
 			<textarea
@@ -243,5 +255,5 @@
 		{#if !immersive}<p class="px-2 py-1.5 text-center text-[0.7rem] text-surface-400">
 			Answers are grounded in the Aylith catalog and the shared entity graph. Verify anything important.
 		</p>{/if}
-	</div>
+	</div>{/if}
 </div>
