@@ -17,6 +17,7 @@ icon: >-
 gradientFrom: '#d4894a'
 gradientTo: '#c97a3a'
 repoUrl: 'https://github.com/aylith-labs/tokenflow'
+sourcePublic: false
 ---
 
 Give each connected app a virtual key and send its chat requests through one local endpoint. The

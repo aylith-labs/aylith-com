@@ -21,6 +21,7 @@ icon: >-
 gradientFrom: '#e11d48'
 gradientTo: '#fb7185'
 repoUrl: 'https://github.com/aylith-labs/selfbloom'
+sourcePublic: false
 order: 9
 onboarding:
   access: restricted

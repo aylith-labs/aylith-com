@@ -22,6 +22,7 @@ icon: >-
 gradientFrom: '#3b82f6'
 gradientTo: '#60a5fa'
 repoUrl: 'https://github.com/aylith-labs/plainbase'
+sourcePublic: false
 order: 6
 onboarding:
   access: restricted

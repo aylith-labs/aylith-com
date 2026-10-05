@@ -34,6 +34,7 @@ icon: >-
 gradientFrom: '#c97a3a'
 gradientTo: '#e0a86b'
 repoUrl: 'https://github.com/aylith-labs/tickets'
+sourcePublic: true
 order: 8
 onboarding:
   access: public-source

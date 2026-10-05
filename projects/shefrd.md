@@ -21,6 +21,7 @@ icon: M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h9
 gradientFrom: '#232830'
 gradientTo: '#e8a33d'
 repoUrl: 'https://github.com/aylith-labs/shefrd'
+sourcePublic: false
 ---
 
 ## Vision

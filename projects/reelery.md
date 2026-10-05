@@ -20,6 +20,7 @@ icon: >-
 gradientFrom: '#c2410c'
 gradientTo: '#f59e0b'
 repoUrl: 'https://github.com/aylith-labs/reelery'
+sourcePublic: false
 order: 4
 ---
 

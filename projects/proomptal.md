@@ -2,14 +2,19 @@
 name: Proomptal
 tagline: 'Draft, organize, and retrieve prompts from a local library'
 description: >-
-  A local SQLite prompt library with a web UI and CLI for creating, finding, and
-  copying reusable prompts. Installation into AI tools is planned.
+  A local prompt library for writing reusable templates, filling typed
+  variables, and keeping your coding-tool instructions in step with saved
+  revisions.
 category: ai-infrastructure
 features:
-  - Create and edit prompts with detected placeholder names
-  - 'Organize prompts with tags, favorites, groups, and API collections'
-  - Search prompt fields by substring and copy bodies in the web UI
-  - 'Add, list, search, and show prompts with the local CLI'
+  - 'Create reusable prompt templates with text, number, and choice fields'
+  - Fill variables and copy the rendered prompt from the web UI or CLI
+  - 'Organize prompts with tags, favorites, groups, and collections'
+  - Compare saved revisions and restore a selected version
+  - >-
+    Install prompts as project or global coding-tool instructions and refresh
+    managed files
+  - Keep personal ratings and notes alongside saved prompts
 targetUser: People who reuse prompts in coding tools and want a local place to find them
 featured: false
 icon: >-
@@ -19,39 +24,18 @@ icon: >-
 gradientFrom: '#0ea5e9'
 gradientTo: '#7dd3fc'
 repoUrl: 'https://github.com/aylith-labs/proomptal'
+sourcePublic: false
 order: 24
-onboarding:
-  access: restricted
-  prerequisites:
-    - >-
-      Run the Bun server and SvelteKit web app from source against a local
-      SQLite database
-    - >-
-      Keep the unauthenticated API on a trusted local machine and review its
-      network binding
-  limitations:
-    - >-
-      The public source overview is static; no hosted prompt app, account
-      service, or packaged install is available
-    - >-
-      Prompt CRUD and search routes have no user authentication; CORS is not an
-      access control
-    - >-
-      Placeholder names are detected but not substituted when copying or
-      printing a prompt
-    - >-
-      AI-tool installation, prompt revisions, semantic search, and cross-device
-      sync are not implemented
 ---
 
-## What works today
+## Write once, reuse with confidence
 
-The [public source overview](https://aylith-labs.github.io/proomptal/) explains the local workflow. It does not host the prompt library, its SQLite store, an account, or AI-tool installation.
+Turn a useful prompt into a reusable template. Define text, number, and choice fields, fill the values for your next task, and copy the rendered prompt. The web UI and CLI use the same saved library.
 
-Proomptal stores prompts in SQLite and exposes create, read, update, delete, and substring search through a local API. Its web UI can browse, edit, and copy prompt bodies. The CLI can add, list, search, and print a saved prompt body by ID. Tags, favorites, and groups are stored with prompts; collections can be created through the API.
+## Find and refine your prompts
 
-## Current limits
+Keep related prompts together with tags, favorites, groups, and collections. Search saved prompt text, compare revisions, and restore a selected version when an earlier approach worked better. Personal ratings and notes help you remember what you want to reuse.
 
-Placeholder names are detected, but variable substitution is not implemented. Prompt IDs are local ULIDs without revision identifiers or version history. Installation into Claude Code, Cursor, or other tools, import from Agentry, semantic search, and cross-device sync are roadmap work. No installation receipt or source provenance is stored.
+## Keep coding-tool instructions in step
 
-The local API has no account authentication. Run it only in a trusted environment and verify its network exposure before storing sensitive prompts. CORS only limits participating browsers; it does not protect the API from other clients.
+Install a prompt into a project or a global coding-tool configuration. Managed installations refresh when the saved prompt changes; a missing or invalid required value leaves the previous installed file intact. The CLI can retrieve and render prompts from the same local SQLite library.

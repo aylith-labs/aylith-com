@@ -21,6 +21,7 @@ icon: >-
 gradientFrom: '#ca8a04'
 gradientTo: '#facc15'
 repoUrl: 'https://github.com/aylith-labs/knowmine'
+sourcePublic: false
 order: 14
 onboarding:
   access: restricted

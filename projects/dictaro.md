@@ -21,6 +21,7 @@ icon: >-
 gradientFrom: '#f59e0b'
 gradientTo: '#fbbf24'
 repoUrl: 'https://github.com/aylith-labs/dictaro'
+sourcePublic: false
 order: 3
 onboarding:
   access: restricted

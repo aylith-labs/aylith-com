@@ -30,6 +30,7 @@ icon: >-
 gradientFrom: '#8b5cf6'
 gradientTo: '#ec4899'
 repoUrl: 'https://github.com/aylith-labs/videx'
+sourcePublic: false
 order: 20
 onboarding:
   access: restricted

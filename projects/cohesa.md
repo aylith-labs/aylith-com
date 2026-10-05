@@ -24,6 +24,7 @@ icon: >-
 gradientFrom: '#0d9488'
 gradientTo: '#5eead4'
 repoUrl: 'https://github.com/aylith-labs/cohesa'
+sourcePublic: false
 order: 12
 onboarding:
   access: restricted

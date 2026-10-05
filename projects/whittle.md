@@ -15,6 +15,7 @@ icon: scissors
 gradientFrom: '#6366f1'
 gradientTo: '#818cf8'
 repoUrl: 'https://github.com/aylith-labs/whittle'
+sourcePublic: true
 ---
 
 whittle collects token-saving techniques for coding agents into one CLI and turns each into a

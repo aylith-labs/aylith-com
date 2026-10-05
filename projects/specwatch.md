@@ -23,25 +23,25 @@ icon: >-
 gradientFrom: '#a54f37'
 gradientTo: '#d97750'
 repoUrl: 'https://github.com/aylith-labs/specwatch'
+sourcePublic: false
 order: 4
 onboarding:
   access: restricted
   prerequisites:
     - >-
-      Obtain source access, build the CLI under app, and link it into a JS/TS
+      Download the CLI archive and install it in a Node.js 22.12 or newer JS/TS
       project
     - Run Ollama locally or explicitly configure a cloud model provider
     - >-
       Use Jest or Vitest and supply an Istanbul coverage-final.json for coverage
       checks
   limitations:
-    - >-
-      No public package publication, install path, or hosted service has been
-      verified
+    - The CLI archive is public; repository source access is separate
+    - Runs in your own project; a hosted testing service is not included
     - 'Normal gen, watch, and fix can replace an existing sibling test file'
     - >-
-      ci --coverage can report no gaps when its coverage report is missing or
-      malformed
+      Coverage checks require a pre-generated Istanbul report; missing or
+      malformed reports fail explicitly
     - >-
       A passing generated file does not prove useful assertions or a coverage
       gain
@@ -61,6 +61,8 @@ Writing and maintaining tests can lag behind source changes. A local CLI can red
 - **Execution result**: The runner returns whether a generated test file passed. The number of `test(...)` calls detected in model output is not an executed pass count.
 - **Scope**: The current parser and runner cover JavaScript and TypeScript with Jest or Vitest. Coverage reporting reads an existing Istanbul JSON artifact.
 
-## Current boundary
+## Use it in your project
 
-The CLI is a source prototype. `gen --dry-run` preserves files, but normal generation, watch, and fix can overwrite an existing test file. Keep changes under version control and review the resulting diff. The `ci --coverage` path does not currently fail closed for a missing or malformed coverage artifact. No public package or hosted access has been verified.
+Download the CLI archive from the public homepage, check its SHA-256 checksum, and install it in your project with `npm install --save-dev ./specwatch-0.1.0.tgz`. Run the installed command with Node.js 22.12 or newer.
+
+`gen --dry-run` preserves files. Normal generation, watch, and fix can replace an existing sibling test file, so keep changes under version control and review the resulting diff. Generate an Istanbul coverage report before using `ci --coverage`: missing or malformed coverage input fails explicitly, while valid measured function locations are accepted. The existing test runner still determines test success. Specwatch runs locally; it does not provide a hosted testing service.

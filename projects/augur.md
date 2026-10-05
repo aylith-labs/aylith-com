@@ -22,6 +22,7 @@ icon: >-
 gradientFrom: '#7c3aed'
 gradientTo: '#c4b5fd'
 repoUrl: 'https://github.com/aylith-labs/augur'
+sourcePublic: false
 order: 16
 onboarding:
   access: restricted

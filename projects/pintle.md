@@ -20,6 +20,7 @@ icon: >-
 gradientFrom: '#6366f1'
 gradientTo: '#818cf8'
 repoUrl: 'https://github.com/aylith-labs/pintle'
+sourcePublic: true
 onboarding:
   access: public-source
   url: 'https://github.com/aylith-labs/pintle#setup'

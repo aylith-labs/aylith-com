@@ -20,6 +20,7 @@ icon: M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5
 gradientFrom: '#475569'
 gradientTo: '#94a3b8'
 repoUrl: 'https://github.com/aylith-labs/gitdex'
+sourcePublic: false
 order: 19
 onboarding:
   access: restricted

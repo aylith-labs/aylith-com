@@ -23,6 +23,7 @@ icon: >-
 gradientFrom: '#4338ca'
 gradientTo: '#818cf8'
 repoUrl: 'https://github.com/aylith-labs/shiptron'
+sourcePublic: false
 order: 15
 onboarding:
   access: restricted

@@ -20,6 +20,7 @@ icon: >-
 gradientFrom: '#64748b'
 gradientTo: '#94a3b8'
 repoUrl: 'https://github.com/aylith-labs/inglenook'
+sourcePublic: false
 order: 7
 onboarding:
   access: restricted

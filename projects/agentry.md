@@ -23,6 +23,7 @@ icon: >-
 gradientFrom: '#0d9488'
 gradientTo: '#5eead4'
 repoUrl: 'https://github.com/aylith-labs/agentry'
+sourcePublic: false
 order: 17
 onboarding:
   access: restricted

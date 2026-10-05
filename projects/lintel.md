@@ -19,6 +19,7 @@ icon: >-
 gradientFrom: '#6366f1'
 gradientTo: '#818cf8'
 repoUrl: 'https://github.com/aylith-labs/lintel'
+sourcePublic: true
 ---
 
 Lintel is the format the Aylith terminals share for link previews and click actions.

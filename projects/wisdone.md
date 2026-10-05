@@ -22,6 +22,7 @@ icon: >-
 gradientFrom: '#9333ea'
 gradientTo: '#c084fc'
 repoUrl: 'https://github.com/aylith-labs/wisdone'
+sourcePublic: false
 order: 13
 ---
 

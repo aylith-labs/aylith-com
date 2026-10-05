@@ -19,28 +19,22 @@ icon: >-
 gradientFrom: '#16a34a'
 gradientTo: '#4ade80'
 repoUrl: 'https://github.com/aylith-labs/linkstash'
+sourcePublic: false
 order: 22
 ---
 
 ## Vision
 
-Linkstash helps a single operator save links and find them again with search, tags, and collections. The current app runs without authentication or per-user access control.
+Linkstash keeps useful links close to the reasons you saved them. Add context as you save, then return by searching the words, tags, or collection you remember.
 
-## The Problem
+## Save with context
 
-Every browser has bookmarks, and every set of bookmarks becomes a junk drawer. Links pile into folders no one revisits, with no context about why they were saved, so finding the right one means scrolling or giving up and re-googling. Saving without retrieval is just hoarding.
+Save a URL in the app, edit its title and description, and add tags. Linkstash can fetch a page title, description, image, and favicon from a public page. Bookmarks can belong to more than one named collection without moving the original link.
 
-## Key Differentiators
+## Find the right link
 
-- **Search**: find bookmarks by title, description, or URL.
-- **Context attached**: add a description and tags when saving a link.
-- **Collections**: group bookmarks in named collections without moving the underlying bookmark.
-- **Transfer**: import and export bookmarks as JSON or Netscape HTML.
+Search titles, descriptions, and URLs, or filter by tag, collection, and active or archived status. Browse further matching results and search the collection picker when your library grows.
 
-## How the current app works
+## Bring your library along
 
-Save a URL in the app, optionally add a description and tags, then return to the bookmark list to search its title, description, or URL. Filter the list by status, tag, or collection. Collections group existing bookmarks, so removing a link from one collection leaves the saved bookmark in your library. Export creates a URL-based transfer file in JSON or Netscape HTML.
-
-## Current boundaries
-
-Linkstash is a self-hostable, single-operator prototype. It has no sign-in or per-user access control, so its API should stay on a trusted network. Saving starts in the app; there is no browser extension or share-sheet capture. The main list currently shows only the first 50 matching bookmarks, the add-to-collection picker loads only the first 100, and import skips duplicate URLs rather than restoring distinct bookmark identities. Those limits matter before using Linkstash as a large personal archive or treating export as a full backup.
+Import or export bookmarks as JSON or Netscape HTML. Import skips URLs already saved; export is a transfer format based on URLs and context, not a lossless copy of every bookmark identity. Link capture starts in the app.

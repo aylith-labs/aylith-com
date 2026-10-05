@@ -14,6 +14,7 @@ icon: >-
 gradientFrom: '#6366f1'
 gradientTo: '#818cf8'
 repoUrl: 'https://github.com/aylith-labs/shefros'
+sourcePublic: false
 ---
 
 shefros is an Arch-based distribution where the desktop session **is** [shefrd](https://shefrd.dev):

@@ -24,6 +24,7 @@ icon: >-
 gradientFrom: '#ec4899'
 gradientTo: '#f472b6'
 repoUrl: 'https://github.com/aylith-labs/compokit'
+sourcePublic: false
 order: 1
 onboarding:
   access: restricted

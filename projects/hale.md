@@ -25,6 +25,7 @@ icon: >-
 gradientFrom: '#d4894a'
 gradientTo: '#c97a3a'
 repoUrl: 'https://github.com/aylith-labs/hale'
+sourcePublic: false
 ---
 
 hale is a personal, all-around health platform. Capture anything about your body — meals, drinks,

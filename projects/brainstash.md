@@ -21,40 +21,18 @@ icon: >-
 gradientFrom: '#db2777'
 gradientTo: '#f9a8d4'
 repoUrl: 'https://github.com/aylith-labs/brainstash'
+sourcePublic: false
 order: 18
-onboarding:
-  access: restricted
-  prerequisites:
-    - Run the Bun API and SvelteKit web workspaces from source with local SQLite
-    - Set an AUTH_SECRET and create an account on that instance
-  limitations:
-    - No hosted Brainstash origin or public account service has been verified
-    - >-
-      Media files are currently served by ID without authentication; do not
-      treat uploads as private
-    - >-
-      Search filters are applied after FTS pagination, so filtered counts and
-      pages can be incomplete
 ---
 
-## Vision
+## Keep the context with the note
 
-Brainstash stores notes and references as entries with source URLs, categories, tags, and version history. Its SQLite FTS5 search retrieves matching titles and content; filtered result counts and pages have a known pagination limit.
+Capture notes and references with a source URL, categories, and tags. Your library gives each entry a place to return to when you need the original idea again.
 
-The [public source overview](https://aylith-labs.github.io/brainstash/) introduces the workflow. It is a static page, not a hosted knowledge base or sign-in service.
+## Retrieve what you remember
 
-## The Problem
+Search saved entry titles and content with SQLite full-text search. Open a matching entry to revisit the note and its source, or use categories and tags to organize related knowledge.
 
-Most note tools are excellent at swallowing information and terrible at returning it. Entries go in, structure never emerges, and the search that would surface the right note never quite works. The knowledge exists; the ability to use it does not.
+## Revisit an earlier idea
 
-## Key Differentiators
-
-- **Retrieval-first**: use title and content search to find saved entries.
-- **Structured capture**: entries can carry categories, tags, and source URLs.
-- **Edit history**: earlier title and content snapshots can be browsed and restored.
-
-## Current boundaries
-
-- Entry and category routes use an authenticated account, including an owner check for newly selected categories. Older cross-account category associations are not repaired by that guard.
-- Uploaded media is served by a public-by-ID route, and deleting an entry can leave its media available. Uploaded files should not be described as private.
-- Source URLs are stored and shown, but the current editor cannot clear an existing source URL by emptying the field.
+Browse earlier title and content snapshots and restore the version you want to keep. Notes and uploaded references belong to the signed-in account on your locally run instance.

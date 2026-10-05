@@ -33,6 +33,7 @@ icon: >-
 gradientFrom: '#7c3aed'
 gradientTo: '#a78bfa'
 repoUrl: 'https://github.com/aylith-labs/clipwell'
+sourcePublic: true
 order: 26
 ---
 

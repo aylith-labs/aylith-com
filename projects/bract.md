@@ -19,6 +19,7 @@ icon: >-
 gradientFrom: '#3f3f46'
 gradientTo: '#71717a'
 repoUrl: 'https://github.com/aylith-labs/bract'
+sourcePublic: false
 order: 0
 onboarding:
   access: restricted

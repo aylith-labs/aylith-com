@@ -23,6 +23,7 @@ icon: >-
 gradientFrom: '#dc2626'
 gradientTo: '#f87171'
 repoUrl: 'https://github.com/aylith-labs/dashcam'
+sourcePublic: false
 order: 25
 ---
 

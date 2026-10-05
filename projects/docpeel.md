@@ -21,6 +21,7 @@ icon: >-
 gradientFrom: '#14b8a6'
 gradientTo: '#2dd4bf'
 repoUrl: 'https://github.com/aylith-labs/docpeel'
+sourcePublic: false
 order: 8
 ---
 

@@ -23,6 +23,7 @@ icon: >-
 gradientFrom: '#2f6bff'
 gradientTo: '#00e0ff'
 repoUrl: 'https://github.com/aylith-labs/rig'
+sourcePublic: false
 ---
 
 ## Vision

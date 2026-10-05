@@ -23,6 +23,7 @@ icon: >-
 gradientFrom: '#0284c7'
 gradientTo: '#38bdf8'
 repoUrl: 'https://github.com/aylith-labs/contactly'
+sourcePublic: false
 order: 21
 onboarding:
   access: restricted

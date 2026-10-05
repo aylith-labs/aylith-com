@@ -31,6 +31,7 @@ icon: >-
 gradientFrom: '#6366f1'
 gradientTo: '#818cf8'
 repoUrl: 'https://github.com/aylith-labs/simherd'
+sourcePublic: false
 ---
 
 ## Why
