@@ -92,7 +92,23 @@
 	function toolsOf(message: UIMessage): string[] {
 		return message.parts
 			.filter((part) => part.type.startsWith('tool-'))
-			.map((part) => part.type.replace(/^tool-/, ''))
+			.map((part) => {
+				const labels: Record<string, string> = {
+					listProducts: 'Product catalogue',
+					describeProduct: 'Product details',
+					findProductsForNeed: 'Product suggestions',
+					searchGraph: 'Related information',
+					relatedEntities: 'Related items',
+					recentActivity: 'Recent activity',
+					suiteStats: 'Suite overview',
+					searchDocs: 'Documentation',
+					summarizeRequest: 'Request summary',
+					showLogin: 'Sign in',
+					openProject: 'Product navigation',
+					openExperience: 'View navigation'
+				};
+				return labels[part.type.replace(/^tool-/, '')] ?? 'Request action';
+			})
 			.filter((name, index, all) => all.indexOf(name) === index);
 	}
 
