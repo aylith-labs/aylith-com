@@ -27,12 +27,15 @@ export const VOICE_ROUTE_CHOICES: RichChoice[] = [
   { value: 'owned', label: 'Aylith server', description: 'Use available server speech' },
 ];
 
+// ISO names from the owning translate/languages.json registry fill missing Intl data.
+const LANGUAGE_NAME_FALLBACKS: Readonly<Record<string, string>> = { ba: 'Bashkir', bo: 'Tibetan' };
+
 function displayName(code: string, uiLocale: string): string {
   try {
     const name = new Intl.DisplayNames([uiLocale], { type: 'language' }).of(code.replace('_', '-'));
-    return name && name !== code ? name : code;
+    return name && name !== code ? name : (LANGUAGE_NAME_FALLBACKS[code] ?? code);
   } catch {
-    return code;
+    return LANGUAGE_NAME_FALLBACKS[code] ?? code;
   }
 }
 
