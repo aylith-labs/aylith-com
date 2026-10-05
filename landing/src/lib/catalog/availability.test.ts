@@ -62,3 +62,14 @@ it.each(['public-download', 'public-app'] as const)('keeps %s usable without exp
  expect(hasPublicOnboarding(p)).toBe(true);expect(p.repoUrl).toBeUndefined();expect(p.onboarding?.access).toBe(access);
  for(const bad of [{...setup,access,url:undefined},{...setup,access,url:'javascript:alert(1)'},{...setup,access,prerequisites:[]}])expect(normalizeOnboarding(bad)).toBeUndefined();
 });
+
+
+it('uses four owner-published HTTPS roots and separate website previews without acquisition inference', async () => {
+ const {verifiedProductEntry,productWebsitePreview}=await import('./entry-point');
+ for(const slug of ['agentry','compokit','gitdex','ourobuild']) {
+  expect(verifiedProductEntry(slug)).toBe(`https://${slug}.aylith.com/`);
+  expect(productWebsitePreview({slug})).toBe(`https://${slug}.aylith.com/home/`);
+ }
+ expect(hasPublicOnboarding(project({access:'restricted',url:'https://gitdex.aylith.com/',prerequisites:['Development setup'],limitations:[]}))).toBe(false);
+ expect(verifiedProductEntry('cohesa')).toBeUndefined();
+});

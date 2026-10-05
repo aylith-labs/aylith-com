@@ -20,14 +20,18 @@ const roots: Readonly<Record<string, string>> = Object.freeze({
 	daylog: 'https://daylog.aylith.com/',
 	pintle: 'https://pintle.aylith.com/',
 	clipwell: 'https://clipwell.aylith.com/',
+	agentry: 'https://agentry.aylith.com/',
+	compokit: 'https://compokit.aylith.com/',
+	gitdex: 'https://gitdex.aylith.com/',
+	ourobuild: 'https://ourobuild.aylith.com/',
 });
 export function verifiedProductEntry(slug: string): string | undefined {
 	return Object.hasOwn(roots, slug) ? roots[slug] : undefined;
 }
 
-/** Public-home role is distinct from the signed-in product entry. The verified owner homepages below include their real public acquisition
- * actions; a private repository does not prevent a public package download. Contactly root is session-dependent. */
-const publicHomes: Readonly<Record<string,string>> = Object.freeze({linkstash:'https://linkstash.aylith.com/home',proomptal:'https://proomptal.aylith.com/home',brainstash:'https://brainstash.aylith.com/home',inspekt:'https://inspekt.aylith.com/home/',specwatch:'https://specwatch.aylith.com/home/',bindlume:'https://bindlume.aylith.com/home',lintel:'https://lintel.aylith.com/',mullion:'https://mullion.aylith.com/',torbie:'https://torbie.aylith.com/',tuilith:'https://tuilith.aylith.com/home/',githerald:'https://githerald.aylith.com/home/',dictaro:'https://dictaro.aylith.com/home/','agent-quota':'https://agent-quota.aylith.com/home/',daylog:'https://daylog.aylith.com/home/',pintle:'https://pintle.aylith.com/home/',clipwell:'https://clipwell.aylith.com/home/'});
+/** Public-home role is distinct from the signed-in product entry. The mappings below prove public marketing/home routes only; acquisition is assessed
+ * separately from website availability and source visibility. Contactly root is session-dependent. */
+const publicHomes: Readonly<Record<string,string>> = Object.freeze({linkstash:'https://linkstash.aylith.com/home',proomptal:'https://proomptal.aylith.com/home',brainstash:'https://brainstash.aylith.com/home',inspekt:'https://inspekt.aylith.com/home/',specwatch:'https://specwatch.aylith.com/home/',bindlume:'https://bindlume.aylith.com/home',lintel:'https://lintel.aylith.com/',mullion:'https://mullion.aylith.com/',torbie:'https://torbie.aylith.com/',tuilith:'https://tuilith.aylith.com/home/',githerald:'https://githerald.aylith.com/home/',dictaro:'https://dictaro.aylith.com/home/','agent-quota':'https://agent-quota.aylith.com/home/',daylog:'https://daylog.aylith.com/home/',pintle:'https://pintle.aylith.com/home/',clipwell:'https://clipwell.aylith.com/home/',agentry:'https://agentry.aylith.com/home/',compokit:'https://compokit.aylith.com/home/',gitdex:'https://gitdex.aylith.com/home/',ourobuild:'https://ourobuild.aylith.com/home/'});
 export function productWebsitePreview(project: {slug:string;websiteUrl?:string}): string | undefined {
  if(Object.hasOwn(publicHomes,project.slug)) return publicHomes[project.slug];
  if(!project.websiteUrl) return undefined;
