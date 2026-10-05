@@ -42,3 +42,13 @@ it('keeps verified app entries at the root and their public website previews at 
   expect(productWebsitePreview({slug})).toBe(`https://${slug}.aylith.com/home`);
  }
 });
+
+it('keeps the seven newly verified product roots distinct from public home previews', async () => {
+ const {verifiedProductEntry,productWebsitePreview}=await import('./entry-point');
+ for(const slug of ['tuilith','githerald','specwatch','inspekt','dictaro','agent-quota','daylog']) {
+  expect(verifiedProductEntry(slug)).toBe(`https://${slug}.aylith.com/`);
+  expect(productWebsitePreview({slug})).toBe(`https://${slug}.aylith.com/home/`);
+ }
+ expect(verifiedProductEntry('pintle')).toBeUndefined();
+ expect(verifiedProductEntry('cohesa')).toBeUndefined();
+});
