@@ -4,10 +4,11 @@
 export function normalizeOnboarding(raw) {
 	if (!raw || typeof raw !== 'object') return undefined;
 	const value = /** @type {{access?: unknown, url?: unknown, releasesUrl?: unknown, prerequisites?: unknown, limitations?: unknown}} */ (raw);
-	if (value.access !== 'public-source' && value.access !== 'restricted') return undefined;
+	if (value.access !== 'public-source' && value.access !== 'public-download' && value.access !== 'public-app' && value.access !== 'restricted') return undefined;
 	/** @param {unknown} items @returns {items is string[]} */
 	const nonemptyStrings = (items) => Array.isArray(items) && items.every((item) => typeof item === 'string' && item.trim());
 	if (!nonemptyStrings(value.prerequisites) || !nonemptyStrings(value.limitations)) return undefined;
+	if (['public-download', 'public-app'].includes(value.access) && (typeof value.url !== 'string' || !value.prerequisites.length)) return undefined;
 	for (const candidate of [value.url, value.releasesUrl]) {
 		if (candidate === undefined) continue;
 		if (typeof candidate !== 'string') return undefined;

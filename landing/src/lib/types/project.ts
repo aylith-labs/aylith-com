@@ -26,7 +26,7 @@ export type Project = {
 	entryUrl?: string;
 	order?: number;
 	onboarding?: {
-		access: 'public-source' | 'restricted';
+		access: 'public-source' | 'public-download' | 'public-app' | 'restricted';
 		url?: string;
 		releasesUrl?: string;
 		prerequisites: string[];

@@ -2,6 +2,7 @@ import { createHash } from 'node:crypto';
 import { readdirSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import matter from 'gray-matter';
+import { normalizeOnboarding } from '../src/lib/catalog/onboarding.js';
 
 const dir = path.resolve(process.argv[2] ?? '.generated/projects');
 const files = readdirSync(dir, { withFileTypes: true });
@@ -32,6 +33,7 @@ for (const file of files.filter((entry) => entry.name.endsWith('.md'))) {
 	for (const field of Object.keys(data)) {
 		if (!allowedFields.has(field)) throw new Error(`${slug}: unexpected frontmatter field ${field}`);
 	}
+	if (data.onboarding !== undefined && !normalizeOnboarding(data.onboarding)) throw new Error(`${slug}: invalid acquisition metadata`);
 	if (data.sourcePublic !== undefined && typeof data.sourcePublic !== 'boolean') throw new Error(`${slug}: invalid source visibility metadata`);
 	for (const [pattern, label] of prohibited) {
 		if (pattern.test(markdown)) throw new Error(`${slug}: ${label} in generated catalog`);

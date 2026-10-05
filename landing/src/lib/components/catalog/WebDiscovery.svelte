@@ -80,7 +80,7 @@
 		<div class="min-w-0 flex-1"><label for="explore-search" class="sr-only">Find a project</label><input bind:this={searchInput} id="explore-search" type="search" value={query} oninput={(event) => filter(event.currentTarget.value, category, true)} placeholder="Find a tool by name or purpose…" class="catalog-control h-12 w-full px-4 py-0" /></div>
 		<div class="w-full shrink-0 sm:w-60"><RichCombobox id="explore-category" label="Category" value={category} options={choices} onSelect={(value) => filter(query, value)} searchable={false} showSelectedMeta hideLabel tall popupMode="floating" /></div>
 	</div>
-	<p class="mt-3 text-xs uppercase tracking-[0.18em] text-surface-500" aria-live="polite">{results.length} projects</p>
+	<p class="mt-3 text-xs uppercase tracking-[0.18em] text-surface-500" aria-live="polite">{results.length} {results.length === 1 ? 'project' : 'projects'}</p>
 	{#if view === 'split'}
 		<div class="mt-3 grid min-h-[32rem] overflow-hidden rounded-2xl border border-surface-200 bg-white dark:border-surface-800 dark:bg-surface-950 lg:grid-cols-[minmax(17rem,22rem)_minmax(0,1fr)]">
 			<div class={pane === 'preview' ? 'hidden min-h-0 border-r border-surface-200 dark:border-surface-800 lg:block' : 'min-h-0 border-r border-surface-200 dark:border-surface-800'} aria-label="Products">

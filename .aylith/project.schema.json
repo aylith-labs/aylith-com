@@ -16,14 +16,15 @@
 			"type": "object",
 			"additionalProperties": false,
 			"required": ["access", "prerequisites", "limitations"],
-			"description": "Source-owned setup information. Public availability requires a usable public setup URL, prerequisites, and limitations.",
+			"description": "Source-owned acquisition path, independent of repository visibility. Public downloads and hosted apps may have private source; prerequisites and limitations remain mandatory.",
 			"properties": {
-				"access": { "enum": ["public-source", "restricted"] },
+				"access": { "enum": ["public-source", "public-download", "public-app", "restricted"] },
 				"url": { "type": "string", "pattern": "^https://" },
 				"releasesUrl": { "type": "string", "pattern": "^https://", "description": "Authoritative public package/release versions and publication dates; separate from studio notes and operation acceptance." },
 				"prerequisites": { "type": "array", "items": { "type": "string" } },
 				"limitations": { "type": "array", "items": { "type": "string" } }
-			}
+			},
+			"allOf": [{ "if": { "properties": { "access": { "enum": ["public-download", "public-app"] } } }, "then": { "required": ["url"], "properties": { "prerequisites": { "minItems": 1 } } } }]
 		},
 		"name": {
 			"type": "string",

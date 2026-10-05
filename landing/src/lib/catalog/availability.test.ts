@@ -55,3 +55,10 @@ it('keeps the seven newly verified product roots distinct from public home previ
  expect(productWebsitePreview({slug:'clipwell'})).toBe('https://clipwell.aylith.com/home/');
  expect(verifiedProductEntry('cohesa')).toBeUndefined();
 });
+
+// Public acquisition is independent of private canonical source access.
+it.each(['public-download', 'public-app'] as const)('keeps %s usable without exposing private source', (access) => {
+ const p=projectFromFrontmatter({name:'Private-source product',sourcePublic:false,repoUrl:'https://github.com/aylith-labs/private',onboarding:{...setup,access}},'probe');
+ expect(hasPublicOnboarding(p)).toBe(true);expect(p.repoUrl).toBeUndefined();expect(p.onboarding?.access).toBe(access);
+ for(const bad of [{...setup,access,url:undefined},{...setup,access,url:'javascript:alert(1)'},{...setup,access,prerequisites:[]}])expect(normalizeOnboarding(bad)).toBeUndefined();
+});
