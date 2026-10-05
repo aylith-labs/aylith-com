@@ -33,6 +33,7 @@ gradientFrom: '#0f766e'
 gradientTo: '#5eead4'
 repoUrl: 'https://github.com/aylith-labs/mullion'
 sourcePublic: true
+websiteUrl: 'https://mullion.aylith.com/'
 ---
 
 ## Vision

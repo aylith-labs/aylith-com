@@ -23,6 +23,7 @@ gradientTo: '#fbbf24'
 repoUrl: 'https://github.com/aylith-labs/dictaro'
 sourcePublic: false
 order: 3
+websiteUrl: 'https://dictaro.aylith.com/'
 onboarding:
   access: restricted
   prerequisites:
@@ -43,7 +44,7 @@ onboarding:
 
 ## Current product
 
-The [public Dictaro product page](https://aylith-labs.github.io/dictaro/) explains the source-run workflow and coverage boundaries. It is a static landing, **not** a hosted dictation app, account, or browser-store install.
+The [public Dictaro product page](https://dictaro.aylith.com/) explains the source-run workflow and coverage boundaries. It is a static landing, **not** a hosted dictation app, account, or browser-store install.
 
 Dictaro provides local speech-to-text and deterministic cleanup. The browser extension runs Whisper in the browser, while the Windows desktop daemon uses a resident local faster-whisper server and injects the cleaned result into the focused application. The Android and iOS apps have platform-specific input flows with documented gaps; the web settings host has no microphone or daemon.
 

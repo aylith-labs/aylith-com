@@ -2,8 +2,8 @@
 name: Agent Quota
 tagline: Read AI coding subscription quota through a typed provider library
 description: >-
-  A Node library for normalized Anthropic coding subscription quota readings,
-  with per-account polling budgets and single-flight coordination.
+  Read installed Codex and Anthropic subscription quota through a local CLI and
+  typed Node library, with explicit freshness and coordinated Anthropic polling.
 category: developer-tools
 features:
   - >-
@@ -13,6 +13,8 @@ features:
     Anthropic subscription usage adapter with absent values kept distinct from
     zero
   - Per-account polling budget and single-flight request coordination
+  - Read-only installed Codex quota windows and available reset balance
+  - Public npm-compatible CLI and library archive with SHA256 verification
 targetUser: Developers integrating AI coding subscription usage into their own tools
 featured: false
 icon: >-
@@ -24,17 +26,27 @@ gradientFrom: '#6366f1'
 gradientTo: '#818cf8'
 repoUrl: 'https://github.com/aylith-labs/agent-quota'
 sourcePublic: false
+websiteUrl: 'https://agent-quota.aylith.com/'
 onboarding:
   access: restricted
   prerequisites:
-    - Authorized access to the private source repository and Node 20 or newer
-    - A caller-supplied Anthropic credential for live usage reads
+    - Node 20 or newer and the public package archive linked from the homepage
+    - Installed official Codex CLI with an existing sign-in for Codex reads
+    - A caller-supplied Anthropic credential for Anthropic usage reads
   limitations:
+    - Repository source access is separate from the public package archive
     - >-
       Anthropic usage reads require a caller-supplied credential and respect
       polling limits
+    - >-
+      Independent CLI processes do not share a polling budget; no reset
+      redemption or hosted quota service is supplied
 ---
 
 ## Quota readings with explicit limits
 
 Agent Quota provides typed Anthropic subscription readings that distinguish a reported quota, an unknown value and a local calculation. Callers supply their own credential. Per-account polling budgets and single-flight coordination reduce duplicate and overly frequent usage requests.
+
+## A fresh reading on your machine
+
+Install the public npm-compatible archive and run `agent-quota codex` to read the official installed app-server quota windows, reset times and available reset balance. Codex keeps its existing sign-in; this read does not start inference, export credentials or redeem a reset. Fetch time accompanies each result, and missing windows remain unknown.

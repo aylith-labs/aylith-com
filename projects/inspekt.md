@@ -29,6 +29,7 @@ gradientTo: '#ec4899'
 repoUrl: 'https://github.com/aylith-labs/inspekt'
 sourcePublic: true
 order: 23
+websiteUrl: 'https://inspekt.aylith.com/'
 ---
 
 ## From an element to its source

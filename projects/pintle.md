@@ -21,14 +21,15 @@ gradientFrom: '#6366f1'
 gradientTo: '#818cf8'
 repoUrl: 'https://github.com/aylith-labs/pintle'
 sourcePublic: true
+websiteUrl: 'https://aylith-labs.github.io/pintle/'
 onboarding:
   access: public-source
-  url: 'https://github.com/aylith-labs/pintle#setup'
+  url: 'https://aylith-labs.github.io/pintle/home/#install'
   prerequisites:
     - Local TLS certificates from mkcert and route configuration
     - >-
-      Docker for the recommended mode, or a locally built Go binary for
-      host-native use
+      Linux x64 for the public binary, or Docker/source build for another
+      supported setup
   limitations:
     - Host-native port redirection requires administrator privileges
     - >-
@@ -40,4 +41,4 @@ onboarding:
 
 Pintle routes local HTTPS domains to development services. Its source accepts Pintle, Traefik and Caddy label formats, reads static route files, and can pass an SNI domain through to another proxy. The embedded dashboard and `GET /api/self` describe the running local configuration.
 
-The [setup guide](https://github.com/aylith-labs/pintle#setup) covers certificates, route files, build and Docker use. The optional static-only mode serves loopback HTTP routes and omits Docker discovery, TCP listeners and SNI passthrough.
+The [public homepage and Linux download](https://aylith-labs.github.io/pintle/home/#install) provide the binary, checksum and full setup guide. Extracting the archive starts no service and does not install a certificate authority. The [source setup guide](https://github.com/aylith-labs/pintle#setup) also covers other-platform builds and Docker use. The optional static-only mode serves loopback HTTP routes and omits Docker discovery, TCP listeners and SNI passthrough.

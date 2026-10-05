@@ -23,6 +23,7 @@ gradientTo: '#5eead4'
 repoUrl: 'https://github.com/aylith-labs/daylog'
 sourcePublic: false
 order: 20
+websiteUrl: 'https://daylog.aylith.com/'
 ---
 
 ## A small place to keep your day

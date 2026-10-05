@@ -25,6 +25,7 @@ gradientTo: '#d97750'
 repoUrl: 'https://github.com/aylith-labs/specwatch'
 sourcePublic: false
 order: 4
+websiteUrl: 'https://specwatch.aylith.com/'
 onboarding:
   access: restricted
   prerequisites:

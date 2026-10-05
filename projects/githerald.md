@@ -29,13 +29,14 @@ gradientTo: '#818cf8'
 repoUrl: 'https://github.com/aylith-labs/githerald'
 sourcePublic: false
 order: 2
+websiteUrl: 'https://githerald.aylith.com/'
 ---
 
 ## Vision
 
 Developers ship fast but lag on communicating what they shipped. GitHerald reads GitHub commits and merged PRs for a selected UTC date range and generates changelog, blog, and social drafts. The signed-in dashboard retains source identities, with verified links when available, for new drafts so users can inspect the underlying work. The reader pages through GitHub activity and refuses a partial draft when its 1,000-record scan limit or a provider page failure prevents a complete result.
 
-The [public GitHerald overview](https://aylith-labs.github.io/githerald/) explains this source-run workflow. It is a static product page, not a hosted GitHub connection, AI generation service, account, or published changelog instance.
+The [public GitHerald overview](https://githerald.aylith.com/) explains this source-run workflow. It is a static product page, not a hosted GitHub connection, AI generation service, account, or published changelog instance.
 
 ## The Problem
 
