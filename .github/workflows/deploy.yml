@@ -51,7 +51,11 @@ jobs:
         # A failed collection must not replace the live catalog with the older
         # tokenless development snapshot. Retain the last successful deployment.
         run: npm run collect
-      - run: npm run build
+      - name: Build with public enrolled login bindings
+        env:
+          AYLITH_LOGIN_CLIENTS_JSON: ${{ vars.AYLITH_LOGIN_CLIENTS_JSON }}
+          AYLITH_LOGIN_STARTS_JSON: ${{ vars.AYLITH_LOGIN_STARTS_JSON }}
+        run: npm run build
       # Blocking in `verify`, where the content is this repo's own snapshot. Here the pages are
       # built from manifests collected out of other repos, and a relative link in somebody else's
       # manifest body must not be able to hold the whole site's deploy hostage.
